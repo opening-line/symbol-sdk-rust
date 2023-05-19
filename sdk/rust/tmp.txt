@@ -1,0 +1,583 @@
+using Amount = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b400>
+using BlockDuration = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b730>
+using BlockFeeMultiplier = uint32
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b700>
+using Difficulty = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b760>
+using FinalizationEpoch = uint32
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b6a0>
+using FinalizationPoint = uint32
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b7c0>
+using Height = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b3a0>
+using Importance = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b730>
+using ImportanceHeight = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b6d0>
+using UnresolvedMosaicId = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b850>
+using MosaicId = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b3d0>
+using Timestamp = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b790>
+using UnresolvedAddress = binary_fixed(24)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b400>
+using Address = binary_fixed(24)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b820>
+using Hash256 = binary_fixed(32)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b700>
+using Hash512 = binary_fixed(64)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b760>
+using PublicKey = binary_fixed(32)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b6a0>
+using VotingPublicKey = binary_fixed(32)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b7c0>
+using Signature = binary_fixed(64)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b3a0>
+struct Mosaic  # 2 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b730>
+struct UnresolvedMosaic  # 2 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+enum LinkAction : uint8  # 2 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7b3d0>
+enum NetworkType : uint8  # 2 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7b700>
+enum TransactionType : uint16  # 25 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7b7c0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+abstract struct Transaction  # 10 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b850>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+abstract struct EmbeddedTransaction  # 7 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b760>
+using ProofGamma = binary_fixed(32)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b400>
+using ProofVerificationHash = binary_fixed(16)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7ba00>
+using ProofScalar = binary_fixed(32)
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b9d0>
+enum BlockType : uint16  # 3 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7b940>
+struct VrfProof  # 3 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b970>
+@size(size)
+@initializes(version, BLOCK_VERSION)
+@initializes(type, BLOCK_TYPE)
+@discriminator(type)
+@is_aligned
+abstract struct Block  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b760>
+@size(size)
+@initializes(version, BLOCK_VERSION)
+@initializes(type, BLOCK_TYPE)
+@discriminator(type)
+@is_aligned
+struct NemesisBlockV1  # 25 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b7f0>
+@size(size)
+@initializes(version, BLOCK_VERSION)
+@initializes(type, BLOCK_TYPE)
+@discriminator(type)
+@is_aligned
+struct NormalBlockV1  # 22 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b6d0>
+@size(size)
+@initializes(version, BLOCK_VERSION)
+@initializes(type, BLOCK_TYPE)
+@discriminator(type)
+@is_aligned
+struct ImportanceBlockV1  # 25 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bb80>
+struct FinalizationRound  # 2 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd00>
+struct FinalizedBlockHeader  # 3 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b9d0>
+enum ReceiptType : uint16  # 16 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7ba00>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+abstract struct Receipt  # 3 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc10>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct HarvestFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7ba30>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct InflationReceipt  # 5 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b8e0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct LockHashCreatedFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdc0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct LockHashCompletedFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7ba00>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct LockHashExpiredFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b940>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct LockSecretCreatedFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc40>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct LockSecretCompletedFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bbe0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct LockSecretExpiredFeeReceipt  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b8e0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct MosaicExpiredReceipt  # 5 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b9d0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct MosaicRentalFeeReceipt  # 7 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7ba00>
+using NamespaceId = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b8e0>
+enum NamespaceRegistrationType : uint8  # 2 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7b880>
+enum AliasAction : uint8  # 2 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7b8e0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct NamespaceExpiredReceipt  # 5 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc10>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct NamespaceDeletedReceipt  # 5 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdf0>
+@size(size)
+@initializes(type, RECEIPT_TYPE)
+@discriminator(type)
+@is_aligned
+struct NamespaceRentalFeeReceipt  # 7 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b880>
+struct ReceiptSource  # 2 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd90>
+struct AddressResolutionEntry  # 2 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+struct AddressResolutionStatement  # 3 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b8e0>
+struct MosaicResolutionEntry  # 2 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd00>
+struct MosaicResolutionStatement  # 3 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdf0>
+struct TransactionStatement  # 4 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+struct BlockStatement  # 6 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd30>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AccountKeyLinkTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc10>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedAccountKeyLinkTransactionV1  # 11 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct NodeKeyLinkTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b970>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedNodeKeyLinkTransactionV1  # 11 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd30>
+@is_aligned
+struct Cosignature  # 3 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7ba30>
+@is_aligned
+@is_aligned
+struct DetachedCosignature  # 4 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AggregateCompleteTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b940>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AggregateCompleteTransactionV2  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd90>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AggregateBondedTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b970>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AggregateBondedTransactionV2  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b910>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct VotingKeyLinkTransactionV1  # 16 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bbe0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedVotingKeyLinkTransactionV1  # 13 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd60>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct VrfKeyLinkTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdf0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedVrfKeyLinkTransactionV1  # 11 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc40>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct HashLockTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bcd0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedHashLockTransactionV1  # 12 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdc0>
+enum LockHashAlgorithm : uint8  # 3 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7bdf0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct SecretLockTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b9d0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedSecretLockTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdc0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct SecretProofTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd60>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedSecretProofTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bb20>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AccountMetadataTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b940>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedAccountMetadataTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicMetadataTransactionV1  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7ba30>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicMetadataTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bee0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct NamespaceMetadataTransactionV1  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bf10>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedNamespaceMetadataTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b970>
+using MosaicNonce = uint32
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b940>
+@is_bitwise
+enum MosaicFlags : uint8  # 5 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7bb80>
+enum MosaicSupplyChangeAction : uint8  # 2 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7ba00>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicDefinitionTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b790>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicDefinitionTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd30>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicSupplyChangeTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b700>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicSupplyChangeTransactionV1  # 12 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc40>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicSupplyRevocationTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bee0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicSupplyRevocationTransactionV1  # 11 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b8e0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MultisigAccountModificationTransactionV1  # 19 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b790>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMultisigAccountModificationTransactionV1  # 16 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc40>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AddressAliasTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b7f0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedAddressAliasTransactionV1  # 12 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bee0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicAliasTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bb20>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicAliasTransactionV1  # 12 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc10>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct NamespaceRegistrationTransactionV1  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b8e0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedNamespaceRegistrationTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b970>
+@is_bitwise
+enum AccountRestrictionFlags : uint16  # 5 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7bdf0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AccountAddressRestrictionTransactionV1  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bb20>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedAccountAddressRestrictionTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b3d0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AccountMosaicRestrictionTransactionV1  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bcd0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedAccountMosaicRestrictionTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc40>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct AccountOperationRestrictionTransactionV1  # 18 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc10>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedAccountOperationRestrictionTransactionV1  # 15 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bbe0>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicAddressRestrictionTransactionV1  # 17 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b730>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicAddressRestrictionTransactionV1  # 14 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7ba00>
+using MosaicRestrictionKey = uint64
+<generator.PodTypeFormatter.PodTypeFormatter object at 0x7f7394b7b3d0>
+enum MosaicRestrictionType : uint8  # 7 value(s)
+<generator.EnumTypeFormatter.EnumTypeFormatter object at 0x7f7394b7bc10>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct MosaicGlobalRestrictionTransactionV1  # 19 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7b880>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedMosaicGlobalRestrictionTransactionV1  # 16 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bd00>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct TransferTransactionV1  # 19 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bc40>
+@size(size)
+@initializes(version, TRANSACTION_VERSION)
+@initializes(type, TRANSACTION_TYPE)
+@discriminator(type, version)
+@is_aligned
+struct EmbeddedTransferTransactionV1  # 16 field(s)
+<generator.StructTypeFormatter.StructFormatter object at 0x7f7394b7bdf0>
