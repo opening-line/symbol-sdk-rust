@@ -7,7 +7,7 @@ class EnumTypeFormatter(AbstractTypeFormatter):
 		super().__init__()
 
 		self.enum_type = ast_model
-		self.base_type = 'Flag' if self.enum_type.is_bitwise else 'Enum'
+		self.base_type = ''
 
 		self.int_printer = IntPrinter(self.enum_type)
 
@@ -16,12 +16,12 @@ class EnumTypeFormatter(AbstractTypeFormatter):
 		return self.enum_type.name
 
 	def get_base_class(self):
-		return f'({self.base_type})'
+		return None
 
 	def get_fields(self):
 		return list(
 			map(
-				lambda e: f'{e.name} = {e.value}\n',
+				lambda e: f'{e.name} = {e.value},\n',
 				self.enum_type.values,
 			)
 		)

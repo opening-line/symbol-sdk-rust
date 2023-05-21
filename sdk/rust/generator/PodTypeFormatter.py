@@ -26,7 +26,7 @@ class PodTypeFormatter(AbstractTypeFormatter):
 		return [f'SIZE = {self.pod.size}']
 
 	def get_base_class(self):
-		return '(ByteArray)' if self._is_array else '(BaseValue)'
+		return ''
 
 	def get_ctor_descriptor(self):
 		variable_name = self.printer.name
