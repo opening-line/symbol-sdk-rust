@@ -2,7 +2,7 @@
 use hex;
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Amount {
 	value: u64
 }
@@ -19,8 +19,8 @@ impl Amount {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -31,7 +31,7 @@ impl Amount {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BlockDuration {
 	value: u64
 }
@@ -48,8 +48,8 @@ impl BlockDuration {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -60,7 +60,7 @@ impl BlockDuration {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BlockFeeMultiplier {
 	value: u32
 }
@@ -77,8 +77,8 @@ impl BlockFeeMultiplier {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 4]) -> Self {
-		Self::new(u32::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 4]) -> Self {
+		Self::new(u32::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 4] {
 		self.value.to_le_bytes()
@@ -89,7 +89,7 @@ impl BlockFeeMultiplier {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Difficulty {
 	value: u64
 }
@@ -106,8 +106,8 @@ impl Difficulty {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -118,7 +118,7 @@ impl Difficulty {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct FinalizationEpoch {
 	value: u32
 }
@@ -135,8 +135,8 @@ impl FinalizationEpoch {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 4]) -> Self {
-		Self::new(u32::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 4]) -> Self {
+		Self::new(u32::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 4] {
 		self.value.to_le_bytes()
@@ -147,7 +147,7 @@ impl FinalizationEpoch {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct FinalizationPoint {
 	value: u32
 }
@@ -164,8 +164,8 @@ impl FinalizationPoint {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 4]) -> Self {
-		Self::new(u32::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 4]) -> Self {
+		Self::new(u32::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 4] {
 		self.value.to_le_bytes()
@@ -176,7 +176,7 @@ impl FinalizationPoint {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Height {
 	value: u64
 }
@@ -193,8 +193,8 @@ impl Height {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -205,7 +205,7 @@ impl Height {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Importance {
 	value: u64
 }
@@ -222,8 +222,8 @@ impl Importance {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -234,7 +234,7 @@ impl Importance {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ImportanceHeight {
 	value: u64
 }
@@ -251,8 +251,8 @@ impl ImportanceHeight {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -263,7 +263,7 @@ impl ImportanceHeight {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UnresolvedMosaicId {
 	value: u64
 }
@@ -280,8 +280,8 @@ impl UnresolvedMosaicId {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -292,7 +292,7 @@ impl UnresolvedMosaicId {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MosaicId {
 	value: u64
 }
@@ -309,8 +309,8 @@ impl MosaicId {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -321,7 +321,7 @@ impl MosaicId {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Timestamp {
 	value: u64
 }
@@ -338,8 +338,8 @@ impl Timestamp {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -350,7 +350,7 @@ impl Timestamp {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UnresolvedAddress {
 	bytes: [u8; 24]
 }
@@ -367,8 +367,8 @@ impl UnresolvedAddress {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(unresolvedaddress: [u8; 24]) -> Self {
-		Self::new(unresolvedaddress)
+	pub fn deserialize(unresolvedaddress: &[u8; 24]) -> Self {
+		Self::new(unresolvedaddress.clone())
 	}
 	pub fn serialize(&self) -> [u8; 24] {
 		self.bytes
@@ -379,7 +379,7 @@ impl UnresolvedAddress {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Address {
 	bytes: [u8; 24]
 }
@@ -396,8 +396,8 @@ impl Address {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(address: [u8; 24]) -> Self {
-		Self::new(address)
+	pub fn deserialize(address: &[u8; 24]) -> Self {
+		Self::new(address.clone())
 	}
 	pub fn serialize(&self) -> [u8; 24] {
 		self.bytes
@@ -408,7 +408,7 @@ impl Address {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Hash256 {
 	bytes: [u8; 32]
 }
@@ -425,8 +425,8 @@ impl Hash256 {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(hash256: [u8; 32]) -> Self {
-		Self::new(hash256)
+	pub fn deserialize(hash256: &[u8; 32]) -> Self {
+		Self::new(hash256.clone())
 	}
 	pub fn serialize(&self) -> [u8; 32] {
 		self.bytes
@@ -437,7 +437,7 @@ impl Hash256 {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Hash512 {
 	bytes: [u8; 64]
 }
@@ -454,8 +454,8 @@ impl Hash512 {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(hash512: [u8; 64]) -> Self {
-		Self::new(hash512)
+	pub fn deserialize(hash512: &[u8; 64]) -> Self {
+		Self::new(hash512.clone())
 	}
 	pub fn serialize(&self) -> [u8; 64] {
 		self.bytes
@@ -466,7 +466,7 @@ impl Hash512 {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PublicKey {
 	bytes: [u8; 32]
 }
@@ -483,8 +483,8 @@ impl PublicKey {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(publickey: [u8; 32]) -> Self {
-		Self::new(publickey)
+	pub fn deserialize(publickey: &[u8; 32]) -> Self {
+		Self::new(publickey.clone())
 	}
 	pub fn serialize(&self) -> [u8; 32] {
 		self.bytes
@@ -495,7 +495,7 @@ impl PublicKey {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct VotingPublicKey {
 	bytes: [u8; 32]
 }
@@ -512,8 +512,8 @@ impl VotingPublicKey {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(votingpublickey: [u8; 32]) -> Self {
-		Self::new(votingpublickey)
+	pub fn deserialize(votingpublickey: &[u8; 32]) -> Self {
+		Self::new(votingpublickey.clone())
 	}
 	pub fn serialize(&self) -> [u8; 32] {
 		self.bytes
@@ -524,7 +524,7 @@ impl VotingPublicKey {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Signature {
 	bytes: [u8; 64]
 }
@@ -541,8 +541,8 @@ impl Signature {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(signature: [u8; 64]) -> Self {
-		Self::new(signature)
+	pub fn deserialize(signature: &[u8; 64]) -> Self {
+		Self::new(signature.clone())
 	}
 	pub fn serialize(&self) -> [u8; 64] {
 		self.bytes
@@ -559,6 +559,27 @@ pub struct Mosaic {
 	pub amount: Amount,
 }
 impl Mosaic {
+	pub fn new() -> Self {
+		Self {
+			mosaic_id: MosaicId::default(),
+			amount: Amount::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += MosaicId::SIZE;
+		size += Amount::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
@@ -567,9 +588,30 @@ pub struct UnresolvedMosaic {
 	pub amount: Amount,
 }
 impl UnresolvedMosaic {
+	pub fn new() -> Self {
+		Self {
+			mosaic_id: UnresolvedMosaicId::default(),
+			amount: Amount::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += UnresolvedMosaicId::SIZE;
+		size += Amount::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum LinkAction {
 	UNLINK = 0,
@@ -583,15 +625,15 @@ impl LinkAction {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(LinkAction::UNLINK),
 			1 => Some(LinkAction::LINK),
 			_ => None,
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("LinkAction::{:?}", self)
@@ -599,7 +641,7 @@ impl LinkAction {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum NetworkType {
 	MAINNET = 104,
@@ -613,15 +655,15 @@ impl NetworkType {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			104 => Some(NetworkType::MAINNET),
 			152 => Some(NetworkType::TESTNET),
 			_ => None,
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("NetworkType::{:?}", self)
@@ -629,7 +671,7 @@ impl NetworkType {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum TransactionType {
 	ACCOUNT_KEY_LINK = 16716,
@@ -666,8 +708,8 @@ impl TransactionType {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 2]) -> Option<Self> {
-		match u16::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 2]) -> Option<Self> {
+		match u16::from_le_bytes(payload.clone()) {
 			16716 => Some(TransactionType::ACCOUNT_KEY_LINK),
 			16972 => Some(TransactionType::NODE_KEY_LINK),
 			16705 => Some(TransactionType::AGGREGATE_COMPLETE),
@@ -697,7 +739,7 @@ impl TransactionType {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 2] {
-		(*self as u16).to_le_bytes()
+		(self.clone() as u16).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("TransactionType::{:?}", self)
@@ -707,34 +749,98 @@ impl TransactionType {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct Transaction {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 }
 impl Transaction {
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: 0,
+			network: NetworkType::default(),
+			type_: TransactionType::default(),
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedTransaction {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 }
 impl EmbeddedTransaction {
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: 0,
+			network: NetworkType::default(),
+			type_: TransactionType::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ProofGamma {
 	bytes: [u8; 32]
 }
@@ -751,8 +857,8 @@ impl ProofGamma {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(proofgamma: [u8; 32]) -> Self {
-		Self::new(proofgamma)
+	pub fn deserialize(proofgamma: &[u8; 32]) -> Self {
+		Self::new(proofgamma.clone())
 	}
 	pub fn serialize(&self) -> [u8; 32] {
 		self.bytes
@@ -763,7 +869,7 @@ impl ProofGamma {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ProofVerificationHash {
 	bytes: [u8; 16]
 }
@@ -780,8 +886,8 @@ impl ProofVerificationHash {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(proofverificationhash: [u8; 16]) -> Self {
-		Self::new(proofverificationhash)
+	pub fn deserialize(proofverificationhash: &[u8; 16]) -> Self {
+		Self::new(proofverificationhash.clone())
 	}
 	pub fn serialize(&self) -> [u8; 16] {
 		self.bytes
@@ -792,7 +898,7 @@ impl ProofVerificationHash {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ProofScalar {
 	bytes: [u8; 32]
 }
@@ -809,8 +915,8 @@ impl ProofScalar {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(proofscalar: [u8; 32]) -> Self {
-		Self::new(proofscalar)
+	pub fn deserialize(proofscalar: &[u8; 32]) -> Self {
+		Self::new(proofscalar.clone())
 	}
 	pub fn serialize(&self) -> [u8; 32] {
 		self.bytes
@@ -821,7 +927,7 @@ impl ProofScalar {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum BlockType {
 	NEMESIS = 32835,
@@ -836,8 +942,8 @@ impl BlockType {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 2]) -> Option<Self> {
-		match u16::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 2]) -> Option<Self> {
+		match u16::from_le_bytes(payload.clone()) {
 			32835 => Some(BlockType::NEMESIS),
 			33091 => Some(BlockType::NORMAL),
 			33347 => Some(BlockType::IMPORTANCE),
@@ -845,7 +951,7 @@ impl BlockType {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 2] {
-		(*self as u16).to_le_bytes()
+		(self.clone() as u16).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("BlockType::{:?}", self)
@@ -860,18 +966,40 @@ pub struct VrfProof {
 	pub scalar: ProofScalar,
 }
 impl VrfProof {
+	pub fn new() -> Self {
+		Self {
+			gamma: ProofGamma::default(),
+			verification_hash: ProofVerificationHash::default(),
+			scalar: ProofScalar::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += ProofGamma::SIZE;
+		size += ProofVerificationHash::SIZE;
+		size += ProofScalar::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct Block {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: BlockType,
+	pub type_: BlockType,
 	pub height: Height,
 	pub timestamp: Timestamp,
 	pub difficulty: Difficulty,
@@ -884,18 +1012,69 @@ pub struct Block {
 	pub fee_multiplier: BlockFeeMultiplier,
 }
 impl Block {
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: 0,
+			network: NetworkType::default(),
+			type_: BlockType::default(),
+			height: Height::default(),
+			timestamp: Timestamp::default(),
+			difficulty: Difficulty::default(),
+			generation_hash_proof: VrfProof::default(),
+			previous_block_hash: Hash256::default(),
+			transactions_hash: Hash256::default(),
+			receipts_hash: Hash256::default(),
+			state_hash: Hash256::default(),
+			beneficiary_address: Address::default(),
+			fee_multiplier: BlockFeeMultiplier::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += BlockType::SIZE;
+		size += Height::SIZE;
+		size += Timestamp::SIZE;
+		size += Difficulty::SIZE;
+		size += VrfProof::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Address::SIZE;
+		size += BlockFeeMultiplier::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NemesisBlockV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: BlockType,
+	pub type_: BlockType,
 	pub height: Height,
 	pub timestamp: Timestamp,
 	pub difficulty: Difficulty,
@@ -910,21 +1089,84 @@ pub struct NemesisBlockV1 {
 	pub harvesting_eligible_accounts_count: u64,
 	pub total_voting_balance: Amount,
 	pub previous_importance_block_hash: Hash256,
-	pub transactions: array(Transaction, __FILL__),
+	pub transactions: Vec<Transaction>,
 }
 impl NemesisBlockV1 {
-	const BLOCK_VERSION: u8 = 	const BLOCK_TYPE: BlockType = 
+	const BLOCK_VERSION: u8 = 1;
+	const BLOCK_TYPE: BlockType = BlockType::NEMESIS;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::BLOCK_VERSION,
+			network: NetworkType::default(),
+			type_: Self::BLOCK_TYPE,
+			height: Height::default(),
+			timestamp: Timestamp::default(),
+			difficulty: Difficulty::default(),
+			generation_hash_proof: VrfProof::default(),
+			previous_block_hash: Hash256::default(),
+			transactions_hash: Hash256::default(),
+			receipts_hash: Hash256::default(),
+			state_hash: Hash256::default(),
+			beneficiary_address: Address::default(),
+			fee_multiplier: BlockFeeMultiplier::default(),
+			voting_eligible_accounts_count: 0,
+			harvesting_eligible_accounts_count: 0,
+			total_voting_balance: Amount::default(),
+			previous_importance_block_hash: Hash256::default(),
+			transactions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += BlockType::SIZE;
+		size += Height::SIZE;
+		size += Timestamp::SIZE;
+		size += Difficulty::SIZE;
+		size += VrfProof::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Address::SIZE;
+		size += BlockFeeMultiplier::SIZE;
+		size += 4;
+		size += 8;
+		size += Amount::SIZE;
+		size += Hash256::SIZE;
+		size += self.transactions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NormalBlockV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: BlockType,
+	pub type_: BlockType,
 	pub height: Height,
 	pub timestamp: Timestamp,
 	pub difficulty: Difficulty,
@@ -936,21 +1178,78 @@ pub struct NormalBlockV1 {
 	pub beneficiary_address: Address,
 	pub fee_multiplier: BlockFeeMultiplier,
 	pub block_header_reserved_1: u32,
-	pub transactions: array(Transaction, __FILL__),
+	pub transactions: Vec<Transaction>,
 }
 impl NormalBlockV1 {
-	const BLOCK_VERSION: u8 = 	const BLOCK_TYPE: BlockType = 
+	const BLOCK_VERSION: u8 = 1;
+	const BLOCK_TYPE: BlockType = BlockType::NORMAL;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::BLOCK_VERSION,
+			network: NetworkType::default(),
+			type_: Self::BLOCK_TYPE,
+			height: Height::default(),
+			timestamp: Timestamp::default(),
+			difficulty: Difficulty::default(),
+			generation_hash_proof: VrfProof::default(),
+			previous_block_hash: Hash256::default(),
+			transactions_hash: Hash256::default(),
+			receipts_hash: Hash256::default(),
+			state_hash: Hash256::default(),
+			beneficiary_address: Address::default(),
+			fee_multiplier: BlockFeeMultiplier::default(),
+			block_header_reserved_1: 0,
+			transactions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += BlockType::SIZE;
+		size += Height::SIZE;
+		size += Timestamp::SIZE;
+		size += Difficulty::SIZE;
+		size += VrfProof::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Address::SIZE;
+		size += BlockFeeMultiplier::SIZE;
+		size += 4;
+		size += self.transactions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct ImportanceBlockV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: BlockType,
+	pub type_: BlockType,
 	pub height: Height,
 	pub timestamp: Timestamp,
 	pub difficulty: Difficulty,
@@ -965,10 +1264,74 @@ pub struct ImportanceBlockV1 {
 	pub harvesting_eligible_accounts_count: u64,
 	pub total_voting_balance: Amount,
 	pub previous_importance_block_hash: Hash256,
-	pub transactions: array(Transaction, __FILL__),
+	pub transactions: Vec<Transaction>,
 }
 impl ImportanceBlockV1 {
-	const BLOCK_VERSION: u8 = 	const BLOCK_TYPE: BlockType = 
+	const BLOCK_VERSION: u8 = 1;
+	const BLOCK_TYPE: BlockType = BlockType::IMPORTANCE;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::BLOCK_VERSION,
+			network: NetworkType::default(),
+			type_: Self::BLOCK_TYPE,
+			height: Height::default(),
+			timestamp: Timestamp::default(),
+			difficulty: Difficulty::default(),
+			generation_hash_proof: VrfProof::default(),
+			previous_block_hash: Hash256::default(),
+			transactions_hash: Hash256::default(),
+			receipts_hash: Hash256::default(),
+			state_hash: Hash256::default(),
+			beneficiary_address: Address::default(),
+			fee_multiplier: BlockFeeMultiplier::default(),
+			voting_eligible_accounts_count: 0,
+			harvesting_eligible_accounts_count: 0,
+			total_voting_balance: Amount::default(),
+			previous_importance_block_hash: Hash256::default(),
+			transactions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += BlockType::SIZE;
+		size += Height::SIZE;
+		size += Timestamp::SIZE;
+		size += Difficulty::SIZE;
+		size += VrfProof::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Hash256::SIZE;
+		size += Address::SIZE;
+		size += BlockFeeMultiplier::SIZE;
+		size += 4;
+		size += 8;
+		size += Amount::SIZE;
+		size += Hash256::SIZE;
+		size += self.transactions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct FinalizationRound {
@@ -976,6 +1339,27 @@ pub struct FinalizationRound {
 	pub point: FinalizationPoint,
 }
 impl FinalizationRound {
+	pub fn new() -> Self {
+		Self {
+			epoch: FinalizationEpoch::default(),
+			point: FinalizationPoint::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += FinalizationEpoch::SIZE;
+		size += FinalizationPoint::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
@@ -985,9 +1369,32 @@ pub struct FinalizedBlockHeader {
 	pub hash: Hash256,
 }
 impl FinalizedBlockHeader {
+	pub fn new() -> Self {
+		Self {
+			round: FinalizationRound::default(),
+			height: Height::default(),
+			hash: Hash256::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += FinalizationRound::SIZE;
+		size += Height::SIZE;
+		size += Hash256::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum ReceiptType {
 	MOSAIC_RENTAL_FEE = 4685,
@@ -1015,8 +1422,8 @@ impl ReceiptType {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 2]) -> Option<Self> {
-		match u16::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 2]) -> Option<Self> {
+		match u16::from_le_bytes(payload.clone()) {
 			4685 => Some(ReceiptType::MOSAIC_RENTAL_FEE),
 			4942 => Some(ReceiptType::NAMESPACE_RENTAL_FEE),
 			8515 => Some(ReceiptType::HARVEST_FEE),
@@ -1037,7 +1444,7 @@ impl ReceiptType {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 2] {
-		(*self as u16).to_le_bytes()
+		(self.clone() as u16).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("ReceiptType::{:?}", self)
@@ -1047,123 +1454,402 @@ impl ReceiptType {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct Receipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 }
 impl Receipt {
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: ReceiptType::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct HarvestFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl HarvestFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::HARVEST_FEE;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct InflationReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 }
 impl InflationReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::INFLATION;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct LockHashCreatedFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl LockHashCreatedFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_CREATED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct LockHashCompletedFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl LockHashCompletedFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_COMPLETED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct LockHashExpiredFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl LockHashExpiredFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_EXPIRED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct LockSecretCreatedFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl LockSecretCreatedFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_CREATED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct LockSecretCompletedFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl LockSecretCompletedFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_COMPLETED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct LockSecretExpiredFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub target_address: Address,
 }
 impl LockSecretExpiredFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_EXPIRED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			target_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicExpiredReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub artifact_id: MosaicId,
 }
 impl MosaicExpiredReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::MOSAIC_EXPIRED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			artifact_id: MosaicId::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += MosaicId::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicRentalFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub sender_address: Address,
 	pub recipient_address: Address,
 }
 impl MosaicRentalFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::MOSAIC_RENTAL_FEE;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			sender_address: Address::default(),
+			recipient_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct NamespaceId {
 	value: u64
 }
@@ -1180,8 +1866,8 @@ impl NamespaceId {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -1192,7 +1878,7 @@ impl NamespaceId {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum NamespaceRegistrationType {
 	ROOT = 0,
@@ -1206,15 +1892,15 @@ impl NamespaceRegistrationType {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(NamespaceRegistrationType::ROOT),
 			1 => Some(NamespaceRegistrationType::CHILD),
 			_ => None,
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("NamespaceRegistrationType::{:?}", self)
@@ -1222,7 +1908,7 @@ impl NamespaceRegistrationType {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum AliasAction {
 	UNLINK = 0,
@@ -1236,15 +1922,15 @@ impl AliasAction {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(AliasAction::UNLINK),
 			1 => Some(AliasAction::LINK),
 			_ => None,
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("AliasAction::{:?}", self)
@@ -1254,35 +1940,111 @@ impl AliasAction {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NamespaceExpiredReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub artifact_id: NamespaceId,
 }
 impl NamespaceExpiredReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_EXPIRED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			artifact_id: NamespaceId::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += NamespaceId::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NamespaceDeletedReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub artifact_id: NamespaceId,
 }
 impl NamespaceDeletedReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_DELETED;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			artifact_id: NamespaceId::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += NamespaceId::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NamespaceRentalFeeReceipt {
-	pub size: u32,
 	pub version: u16,
-	pub type: ReceiptType,
+	pub type_: ReceiptType,
 	pub mosaic: Mosaic,
 	pub sender_address: Address,
 	pub recipient_address: Address,
 }
 impl NamespaceRentalFeeReceipt {
-	const RECEIPT_TYPE: ReceiptType = 
+	const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_RENTAL_FEE;
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			type_: Self::RECEIPT_TYPE,
+			mosaic: Mosaic::default(),
+			sender_address: Address::default(),
+			recipient_address: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 2;
+		size += ReceiptType::SIZE;
+		size += Mosaic::SIZE;
+		size += Address::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct ReceiptSource {
@@ -1290,6 +2052,27 @@ pub struct ReceiptSource {
 	pub secondary_id: u32,
 }
 impl ReceiptSource {
+	pub fn new() -> Self {
+		Self {
+			primary_id: 0,
+			secondary_id: 0,
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
@@ -1298,15 +2081,57 @@ pub struct AddressResolutionEntry {
 	pub resolved_value: Address,
 }
 impl AddressResolutionEntry {
+	pub fn new() -> Self {
+		Self {
+			source: ReceiptSource::default(),
+			resolved_value: Address::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += ReceiptSource::SIZE;
+		size += Address::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AddressResolutionStatement {
 	pub unresolved: UnresolvedAddress,
-	pub resolution_entries_count: u32,
-	pub resolution_entries: array(AddressResolutionEntry, resolution_entries_count),
+	pub resolution_entries: Vec<AddressResolutionEntry>,
 }
 impl AddressResolutionStatement {
+	pub fn new() -> Self {
+		Self {
+			unresolved: UnresolvedAddress::default(),
+			resolution_entries: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += UnresolvedAddress::SIZE;
+		size += 4;
+		size += self.resolution_entries.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
@@ -1315,104 +2140,344 @@ pub struct MosaicResolutionEntry {
 	pub resolved_value: MosaicId,
 }
 impl MosaicResolutionEntry {
+	pub fn new() -> Self {
+		Self {
+			source: ReceiptSource::default(),
+			resolved_value: MosaicId::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += ReceiptSource::SIZE;
+		size += MosaicId::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicResolutionStatement {
 	pub unresolved: UnresolvedMosaicId,
-	pub resolution_entries_count: u32,
-	pub resolution_entries: array(MosaicResolutionEntry, resolution_entries_count),
+	pub resolution_entries: Vec<MosaicResolutionEntry>,
 }
 impl MosaicResolutionStatement {
+	pub fn new() -> Self {
+		Self {
+			unresolved: UnresolvedMosaicId::default(),
+			resolution_entries: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += UnresolvedMosaicId::SIZE;
+		size += 4;
+		size += self.resolution_entries.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct TransactionStatement {
 	pub primary_id: u32,
 	pub secondary_id: u32,
-	pub receipt_count: u32,
-	pub receipts: array(Receipt, receipt_count),
+	pub receipts: Vec<Receipt>,
 }
 impl TransactionStatement {
+	pub fn new() -> Self {
+		Self {
+			primary_id: 0,
+			secondary_id: 0,
+			receipts: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += 4;
+		size += self.receipts.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct BlockStatement {
-	pub transaction_statement_count: u32,
-	pub transaction_statements: array(TransactionStatement, transaction_statement_count),
-	pub address_resolution_statement_count: u32,
-	pub address_resolution_statements: array(AddressResolutionStatement, address_resolution_statement_count),
-	pub mosaic_resolution_statement_count: u32,
-	pub mosaic_resolution_statements: array(MosaicResolutionStatement, mosaic_resolution_statement_count),
+	pub transaction_statements: Vec<TransactionStatement>,
+	pub address_resolution_statements: Vec<AddressResolutionStatement>,
+	pub mosaic_resolution_statements: Vec<MosaicResolutionStatement>,
 }
 impl BlockStatement {
+	pub fn new() -> Self {
+		Self {
+			transaction_statements: Vec::new(),
+			address_resolution_statements: Vec::new(),
+			mosaic_resolution_statements: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += self.transaction_statements.len();
+		size += 4;
+		size += self.address_resolution_statements.len();
+		size += 4;
+		size += self.mosaic_resolution_statements.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AccountKeyLinkTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub linked_public_key: PublicKey,
 	pub link_action: LinkAction,
 }
 impl AccountKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			linked_public_key: PublicKey::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += PublicKey::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedAccountKeyLinkTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub linked_public_key: PublicKey,
 	pub link_action: LinkAction,
 }
 impl EmbeddedAccountKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			linked_public_key: PublicKey::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += PublicKey::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NodeKeyLinkTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub linked_public_key: PublicKey,
 	pub link_action: LinkAction,
 }
 impl NodeKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::NODE_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			linked_public_key: PublicKey::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += PublicKey::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedNodeKeyLinkTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub linked_public_key: PublicKey,
 	pub link_action: LinkAction,
 }
 impl EmbeddedNodeKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::NODE_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			linked_public_key: PublicKey::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += PublicKey::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct Cosignature {
@@ -1421,6 +2486,29 @@ pub struct Cosignature {
 	pub signature: Signature,
 }
 impl Cosignature {
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			signer_public_key: PublicKey::default(),
+			signature: Signature::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 8;
+		size += PublicKey::SIZE;
+		size += Signature::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
@@ -1431,102 +2519,306 @@ pub struct DetachedCosignature {
 	pub parent_hash: Hash256,
 }
 impl DetachedCosignature {
+	pub fn new() -> Self {
+		Self {
+			version: 0,
+			signer_public_key: PublicKey::default(),
+			signature: Signature::default(),
+			parent_hash: Hash256::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 8;
+		size += PublicKey::SIZE;
+		size += Signature::SIZE;
+		size += Hash256::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
 
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AggregateCompleteTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub transactions_hash: Hash256,
-	pub payload_size: u32,
 	pub aggregate_transaction_header_reserved_1: u32,
-	pub transactions: array(EmbeddedTransaction, payload_size),
-	pub cosignatures: array(Cosignature, __FILL__),
+	pub transactions: Vec<EmbeddedTransaction>,
+	pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateCompleteTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_COMPLETE;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			transactions_hash: Hash256::default(),
+			aggregate_transaction_header_reserved_1: 0,
+			transactions: Vec::new(),
+			cosignatures: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += Hash256::SIZE;
+		size += 4;
+		size += 4;
+		size += self.transactions.len();
+		size += self.cosignatures.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AggregateCompleteTransactionV2 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub transactions_hash: Hash256,
-	pub payload_size: u32,
 	pub aggregate_transaction_header_reserved_1: u32,
-	pub transactions: array(EmbeddedTransaction, payload_size),
-	pub cosignatures: array(Cosignature, __FILL__),
+	pub transactions: Vec<EmbeddedTransaction>,
+	pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateCompleteTransactionV2 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 2;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_COMPLETE;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			transactions_hash: Hash256::default(),
+			aggregate_transaction_header_reserved_1: 0,
+			transactions: Vec::new(),
+			cosignatures: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += Hash256::SIZE;
+		size += 4;
+		size += 4;
+		size += self.transactions.len();
+		size += self.cosignatures.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AggregateBondedTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub transactions_hash: Hash256,
-	pub payload_size: u32,
 	pub aggregate_transaction_header_reserved_1: u32,
-	pub transactions: array(EmbeddedTransaction, payload_size),
-	pub cosignatures: array(Cosignature, __FILL__),
+	pub transactions: Vec<EmbeddedTransaction>,
+	pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateBondedTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_BONDED;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			transactions_hash: Hash256::default(),
+			aggregate_transaction_header_reserved_1: 0,
+			transactions: Vec::new(),
+			cosignatures: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += Hash256::SIZE;
+		size += 4;
+		size += 4;
+		size += self.transactions.len();
+		size += self.cosignatures.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AggregateBondedTransactionV2 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub transactions_hash: Hash256,
-	pub payload_size: u32,
 	pub aggregate_transaction_header_reserved_1: u32,
-	pub transactions: array(EmbeddedTransaction, payload_size),
-	pub cosignatures: array(Cosignature, __FILL__),
+	pub transactions: Vec<EmbeddedTransaction>,
+	pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateBondedTransactionV2 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 2;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_BONDED;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			transactions_hash: Hash256::default(),
+			aggregate_transaction_header_reserved_1: 0,
+			transactions: Vec::new(),
+			cosignatures: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += Hash256::SIZE;
+		size += 4;
+		size += 4;
+		size += self.transactions.len();
+		size += self.cosignatures.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct VotingKeyLinkTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub linked_public_key: VotingPublicKey,
@@ -1535,68 +2827,228 @@ pub struct VotingKeyLinkTransactionV1 {
 	pub link_action: LinkAction,
 }
 impl VotingKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::VOTING_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			linked_public_key: VotingPublicKey::default(),
+			start_epoch: FinalizationEpoch::default(),
+			end_epoch: FinalizationEpoch::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += VotingPublicKey::SIZE;
+		size += FinalizationEpoch::SIZE;
+		size += FinalizationEpoch::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedVotingKeyLinkTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub linked_public_key: VotingPublicKey,
 	pub start_epoch: FinalizationEpoch,
 	pub end_epoch: FinalizationEpoch,
 	pub link_action: LinkAction,
 }
 impl EmbeddedVotingKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::VOTING_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			linked_public_key: VotingPublicKey::default(),
+			start_epoch: FinalizationEpoch::default(),
+			end_epoch: FinalizationEpoch::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += VotingPublicKey::SIZE;
+		size += FinalizationEpoch::SIZE;
+		size += FinalizationEpoch::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct VrfKeyLinkTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub linked_public_key: PublicKey,
 	pub link_action: LinkAction,
 }
 impl VrfKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::VRF_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			linked_public_key: PublicKey::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += PublicKey::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedVrfKeyLinkTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub linked_public_key: PublicKey,
 	pub link_action: LinkAction,
 }
 impl EmbeddedVrfKeyLinkTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::VRF_KEY_LINK;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			linked_public_key: PublicKey::default(),
+			link_action: LinkAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += PublicKey::SIZE;
+		size += LinkAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct HashLockTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub mosaic: UnresolvedMosaic,
@@ -1604,25 +3056,106 @@ pub struct HashLockTransactionV1 {
 	pub hash: Hash256,
 }
 impl HashLockTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::HASH_LOCK;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			mosaic: UnresolvedMosaic::default(),
+			duration: BlockDuration::default(),
+			hash: Hash256::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedMosaic::SIZE;
+		size += BlockDuration::SIZE;
+		size += Hash256::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedHashLockTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub mosaic: UnresolvedMosaic,
 	pub duration: BlockDuration,
 	pub hash: Hash256,
 }
 impl EmbeddedHashLockTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::HASH_LOCK;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			mosaic: UnresolvedMosaic::default(),
+			duration: BlockDuration::default(),
+			hash: Hash256::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedMosaic::SIZE;
+		size += BlockDuration::SIZE;
+		size += Hash256::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum LockHashAlgorithm {
 	SHA3_256 = 0,
@@ -1637,8 +3170,8 @@ impl LockHashAlgorithm {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(LockHashAlgorithm::SHA3_256),
 			1 => Some(LockHashAlgorithm::HASH_160),
 			2 => Some(LockHashAlgorithm::HASH_256),
@@ -1646,7 +3179,7 @@ impl LockHashAlgorithm {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("LockHashAlgorithm::{:?}", self)
@@ -1656,14 +3189,13 @@ impl LockHashAlgorithm {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct SecretLockTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub recipient_address: UnresolvedAddress,
@@ -1673,17 +3205,64 @@ pub struct SecretLockTransactionV1 {
 	pub hash_algorithm: LockHashAlgorithm,
 }
 impl SecretLockTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_LOCK;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			recipient_address: UnresolvedAddress::default(),
+			secret: Hash256::default(),
+			mosaic: UnresolvedMosaic::default(),
+			duration: BlockDuration::default(),
+			hash_algorithm: LockHashAlgorithm::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += Hash256::SIZE;
+		size += UnresolvedMosaic::SIZE;
+		size += BlockDuration::SIZE;
+		size += LockHashAlgorithm::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedSecretLockTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub recipient_address: UnresolvedAddress,
 	pub secret: Hash256,
 	pub mosaic: UnresolvedMosaic,
@@ -1691,169 +3270,555 @@ pub struct EmbeddedSecretLockTransactionV1 {
 	pub hash_algorithm: LockHashAlgorithm,
 }
 impl EmbeddedSecretLockTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_LOCK;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			recipient_address: UnresolvedAddress::default(),
+			secret: Hash256::default(),
+			mosaic: UnresolvedMosaic::default(),
+			duration: BlockDuration::default(),
+			hash_algorithm: LockHashAlgorithm::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += Hash256::SIZE;
+		size += UnresolvedMosaic::SIZE;
+		size += BlockDuration::SIZE;
+		size += LockHashAlgorithm::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct SecretProofTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub recipient_address: UnresolvedAddress,
 	pub secret: Hash256,
-	pub proof_size: u16,
 	pub hash_algorithm: LockHashAlgorithm,
-	pub proof: array(uint8, proof_size),
+	pub proof: Vec<u8>,
 }
 impl SecretProofTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_PROOF;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			recipient_address: UnresolvedAddress::default(),
+			secret: Hash256::default(),
+			hash_algorithm: LockHashAlgorithm::default(),
+			proof: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += Hash256::SIZE;
+		size += 2;
+		size += LockHashAlgorithm::SIZE;
+		size += self.proof.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedSecretProofTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub recipient_address: UnresolvedAddress,
 	pub secret: Hash256,
-	pub proof_size: u16,
 	pub hash_algorithm: LockHashAlgorithm,
-	pub proof: array(uint8, proof_size),
+	pub proof: Vec<u8>,
 }
 impl EmbeddedSecretProofTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_PROOF;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			recipient_address: UnresolvedAddress::default(),
+			secret: Hash256::default(),
+			hash_algorithm: LockHashAlgorithm::default(),
+			proof: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += Hash256::SIZE;
+		size += 2;
+		size += LockHashAlgorithm::SIZE;
+		size += self.proof.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AccountMetadataTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub target_address: UnresolvedAddress,
 	pub scoped_metadata_key: u64,
 	pub value_size_delta: i16,
-	pub value_size: u16,
-	pub value: array(uint8, value_size),
+	pub value: Vec<u8>,
 }
 impl AccountMetadataTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_METADATA;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			target_address: UnresolvedAddress::default(),
+			scoped_metadata_key: 0,
+			value_size_delta: 0,
+			value: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 8;
+		size += 2;
+		size += 2;
+		size += self.value.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedAccountMetadataTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub target_address: UnresolvedAddress,
 	pub scoped_metadata_key: u64,
 	pub value_size_delta: i16,
-	pub value_size: u16,
-	pub value: array(uint8, value_size),
+	pub value: Vec<u8>,
 }
 impl EmbeddedAccountMetadataTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_METADATA;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			target_address: UnresolvedAddress::default(),
+			scoped_metadata_key: 0,
+			value_size_delta: 0,
+			value: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 8;
+		size += 2;
+		size += 2;
+		size += self.value.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicMetadataTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub target_address: UnresolvedAddress,
 	pub scoped_metadata_key: u64,
 	pub target_mosaic_id: UnresolvedMosaicId,
 	pub value_size_delta: i16,
-	pub value_size: u16,
-	pub value: array(uint8, value_size),
+	pub value: Vec<u8>,
 }
 impl MosaicMetadataTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_METADATA;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			target_address: UnresolvedAddress::default(),
+			scoped_metadata_key: 0,
+			target_mosaic_id: UnresolvedMosaicId::default(),
+			value_size_delta: 0,
+			value: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 8;
+		size += UnresolvedMosaicId::SIZE;
+		size += 2;
+		size += 2;
+		size += self.value.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicMetadataTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub target_address: UnresolvedAddress,
 	pub scoped_metadata_key: u64,
 	pub target_mosaic_id: UnresolvedMosaicId,
 	pub value_size_delta: i16,
-	pub value_size: u16,
-	pub value: array(uint8, value_size),
+	pub value: Vec<u8>,
 }
 impl EmbeddedMosaicMetadataTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_METADATA;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			target_address: UnresolvedAddress::default(),
+			scoped_metadata_key: 0,
+			target_mosaic_id: UnresolvedMosaicId::default(),
+			value_size_delta: 0,
+			value: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 8;
+		size += UnresolvedMosaicId::SIZE;
+		size += 2;
+		size += 2;
+		size += self.value.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NamespaceMetadataTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub target_address: UnresolvedAddress,
 	pub scoped_metadata_key: u64,
 	pub target_namespace_id: NamespaceId,
 	pub value_size_delta: i16,
-	pub value_size: u16,
-	pub value: array(uint8, value_size),
+	pub value: Vec<u8>,
 }
 impl NamespaceMetadataTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_METADATA;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			target_address: UnresolvedAddress::default(),
+			scoped_metadata_key: 0,
+			target_namespace_id: NamespaceId::default(),
+			value_size_delta: 0,
+			value: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 8;
+		size += NamespaceId::SIZE;
+		size += 2;
+		size += 2;
+		size += self.value.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedNamespaceMetadataTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub target_address: UnresolvedAddress,
 	pub scoped_metadata_key: u64,
 	pub target_namespace_id: NamespaceId,
 	pub value_size_delta: i16,
-	pub value_size: u16,
-	pub value: array(uint8, value_size),
+	pub value: Vec<u8>,
 }
 impl EmbeddedNamespaceMetadataTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_METADATA;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			target_address: UnresolvedAddress::default(),
+			scoped_metadata_key: 0,
+			target_namespace_id: NamespaceId::default(),
+			value_size_delta: 0,
+			value: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 8;
+		size += NamespaceId::SIZE;
+		size += 2;
+		size += 2;
+		size += self.value.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MosaicNonce {
 	value: u32
 }
@@ -1870,8 +3835,8 @@ impl MosaicNonce {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 4]) -> Self {
-		Self::new(u32::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 4]) -> Self {
+		Self::new(u32::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 4] {
 		self.value.to_le_bytes()
@@ -1882,7 +3847,7 @@ impl MosaicNonce {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum MosaicFlags {
 	NONE = 0,
@@ -1899,8 +3864,8 @@ impl MosaicFlags {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(MosaicFlags::NONE),
 			1 => Some(MosaicFlags::SUPPLY_MUTABLE),
 			2 => Some(MosaicFlags::TRANSFERABLE),
@@ -1910,7 +3875,7 @@ impl MosaicFlags {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("MosaicFlags::{:?}", self)
@@ -1918,7 +3883,7 @@ impl MosaicFlags {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum MosaicSupplyChangeAction {
 	DECREASE = 0,
@@ -1932,15 +3897,15 @@ impl MosaicSupplyChangeAction {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(MosaicSupplyChangeAction::DECREASE),
 			1 => Some(MosaicSupplyChangeAction::INCREASE),
 			_ => None,
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("MosaicSupplyChangeAction::{:?}", self)
@@ -1950,14 +3915,13 @@ impl MosaicSupplyChangeAction {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicDefinitionTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub id: MosaicId,
@@ -1967,17 +3931,64 @@ pub struct MosaicDefinitionTransactionV1 {
 	pub divisibility: u8,
 }
 impl MosaicDefinitionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_DEFINITION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			id: MosaicId::default(),
+			duration: BlockDuration::default(),
+			nonce: MosaicNonce::default(),
+			flags: MosaicFlags::default(),
+			divisibility: 0,
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += MosaicId::SIZE;
+		size += BlockDuration::SIZE;
+		size += MosaicNonce::SIZE;
+		size += MosaicFlags::SIZE;
+		size += 1;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicDefinitionTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub id: MosaicId,
 	pub duration: BlockDuration,
 	pub nonce: MosaicNonce,
@@ -1985,18 +3996,59 @@ pub struct EmbeddedMosaicDefinitionTransactionV1 {
 	pub divisibility: u8,
 }
 impl EmbeddedMosaicDefinitionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_DEFINITION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			id: MosaicId::default(),
+			duration: BlockDuration::default(),
+			nonce: MosaicNonce::default(),
+			flags: MosaicFlags::default(),
+			divisibility: 0,
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += MosaicId::SIZE;
+		size += BlockDuration::SIZE;
+		size += MosaicNonce::SIZE;
+		size += MosaicFlags::SIZE;
+		size += 1;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicSupplyChangeTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub mosaic_id: UnresolvedMosaicId,
@@ -2004,110 +4056,354 @@ pub struct MosaicSupplyChangeTransactionV1 {
 	pub action: MosaicSupplyChangeAction,
 }
 impl MosaicSupplyChangeTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_CHANGE;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			mosaic_id: UnresolvedMosaicId::default(),
+			delta: Amount::default(),
+			action: MosaicSupplyChangeAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += Amount::SIZE;
+		size += MosaicSupplyChangeAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicSupplyChangeTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub mosaic_id: UnresolvedMosaicId,
 	pub delta: Amount,
 	pub action: MosaicSupplyChangeAction,
 }
 impl EmbeddedMosaicSupplyChangeTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_CHANGE;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			mosaic_id: UnresolvedMosaicId::default(),
+			delta: Amount::default(),
+			action: MosaicSupplyChangeAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += Amount::SIZE;
+		size += MosaicSupplyChangeAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicSupplyRevocationTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub source_address: UnresolvedAddress,
 	pub mosaic: UnresolvedMosaic,
 }
 impl MosaicSupplyRevocationTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_REVOCATION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			source_address: UnresolvedAddress::default(),
+			mosaic: UnresolvedMosaic::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += UnresolvedMosaic::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicSupplyRevocationTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub source_address: UnresolvedAddress,
 	pub mosaic: UnresolvedMosaic,
 }
 impl EmbeddedMosaicSupplyRevocationTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_REVOCATION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			source_address: UnresolvedAddress::default(),
+			mosaic: UnresolvedMosaic::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += UnresolvedMosaic::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MultisigAccountModificationTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub min_removal_delta: i8,
 	pub min_approval_delta: i8,
-	pub address_additions_count: u8,
-	pub address_deletions_count: u8,
 	pub multisig_account_modification_transaction_body_reserved_1: u32,
-	pub address_additions: array(UnresolvedAddress, address_additions_count),
-	pub address_deletions: array(UnresolvedAddress, address_deletions_count),
+	pub address_additions: Vec<UnresolvedAddress>,
+	pub address_deletions: Vec<UnresolvedAddress>,
 }
 impl MultisigAccountModificationTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MULTISIG_ACCOUNT_MODIFICATION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			min_removal_delta: 0,
+			min_approval_delta: 0,
+			multisig_account_modification_transaction_body_reserved_1: 0,
+			address_additions: Vec::new(),
+			address_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += 1;
+		size += 1;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.address_additions.len();
+		size += self.address_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMultisigAccountModificationTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub min_removal_delta: i8,
 	pub min_approval_delta: i8,
-	pub address_additions_count: u8,
-	pub address_deletions_count: u8,
 	pub multisig_account_modification_transaction_body_reserved_1: u32,
-	pub address_additions: array(UnresolvedAddress, address_additions_count),
-	pub address_deletions: array(UnresolvedAddress, address_deletions_count),
+	pub address_additions: Vec<UnresolvedAddress>,
+	pub address_deletions: Vec<UnresolvedAddress>,
 }
 impl EmbeddedMultisigAccountModificationTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MULTISIG_ACCOUNT_MODIFICATION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			min_removal_delta: 0,
+			min_approval_delta: 0,
+			multisig_account_modification_transaction_body_reserved_1: 0,
+			address_additions: Vec::new(),
+			address_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += 1;
+		size += 1;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.address_additions.len();
+		size += self.address_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AddressAliasTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub namespace_id: NamespaceId,
@@ -2115,34 +4411,114 @@ pub struct AddressAliasTransactionV1 {
 	pub alias_action: AliasAction,
 }
 impl AddressAliasTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ADDRESS_ALIAS;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			namespace_id: NamespaceId::default(),
+			address: Address::default(),
+			alias_action: AliasAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += NamespaceId::SIZE;
+		size += Address::SIZE;
+		size += AliasAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedAddressAliasTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub namespace_id: NamespaceId,
 	pub address: Address,
 	pub alias_action: AliasAction,
 }
 impl EmbeddedAddressAliasTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ADDRESS_ALIAS;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			namespace_id: NamespaceId::default(),
+			address: Address::default(),
+			alias_action: AliasAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += NamespaceId::SIZE;
+		size += Address::SIZE;
+		size += AliasAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicAliasTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub namespace_id: NamespaceId,
@@ -2150,66 +4526,235 @@ pub struct MosaicAliasTransactionV1 {
 	pub alias_action: AliasAction,
 }
 impl MosaicAliasTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ALIAS;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			namespace_id: NamespaceId::default(),
+			mosaic_id: MosaicId::default(),
+			alias_action: AliasAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += NamespaceId::SIZE;
+		size += MosaicId::SIZE;
+		size += AliasAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicAliasTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub namespace_id: NamespaceId,
 	pub mosaic_id: MosaicId,
 	pub alias_action: AliasAction,
 }
 impl EmbeddedMosaicAliasTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ALIAS;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			namespace_id: NamespaceId::default(),
+			mosaic_id: MosaicId::default(),
+			alias_action: AliasAction::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += NamespaceId::SIZE;
+		size += MosaicId::SIZE;
+		size += AliasAction::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct NamespaceRegistrationTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub duration: BlockDuration,
 	pub parent_id: NamespaceId,
 	pub id: NamespaceId,
 	pub registration_type: NamespaceRegistrationType,
-	pub name_size: u8,
-	pub name: array(uint8, name_size),
+	pub name: Vec<u8>,
 }
 impl NamespaceRegistrationTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_REGISTRATION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			duration: BlockDuration::default(),
+			parent_id: NamespaceId::default(),
+			id: NamespaceId::default(),
+			registration_type: NamespaceRegistrationType::default(),
+			name: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += BlockDuration::SIZE;
+		size += NamespaceId::SIZE;
+		size += NamespaceId::SIZE;
+		size += NamespaceRegistrationType::SIZE;
+		size += 1;
+		size += self.name.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedNamespaceRegistrationTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub duration: BlockDuration,
 	pub parent_id: NamespaceId,
 	pub id: NamespaceId,
 	pub registration_type: NamespaceRegistrationType,
-	pub name_size: u8,
-	pub name: array(uint8, name_size),
+	pub name: Vec<u8>,
 }
 impl EmbeddedNamespaceRegistrationTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_REGISTRATION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			duration: BlockDuration::default(),
+			parent_id: NamespaceId::default(),
+			id: NamespaceId::default(),
+			registration_type: NamespaceRegistrationType::default(),
+			name: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += BlockDuration::SIZE;
+		size += NamespaceId::SIZE;
+		size += NamespaceId::SIZE;
+		size += NamespaceRegistrationType::SIZE;
+		size += 1;
+		size += self.name.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum AccountRestrictionFlags {
 	ADDRESS = 1,
@@ -2226,8 +4771,8 @@ impl AccountRestrictionFlags {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 2]) -> Option<Self> {
-		match u16::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 2]) -> Option<Self> {
+		match u16::from_le_bytes(payload.clone()) {
 			1 => Some(AccountRestrictionFlags::ADDRESS),
 			2 => Some(AccountRestrictionFlags::MOSAIC_ID),
 			4 => Some(AccountRestrictionFlags::TRANSACTION_TYPE),
@@ -2237,7 +4782,7 @@ impl AccountRestrictionFlags {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 2] {
-		(*self as u16).to_le_bytes()
+		(self.clone() as u16).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("AccountRestrictionFlags::{:?}", self)
@@ -2247,137 +4792,388 @@ impl AccountRestrictionFlags {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AccountAddressRestrictionTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub restriction_flags: AccountRestrictionFlags,
-	pub restriction_additions_count: u8,
-	pub restriction_deletions_count: u8,
 	pub account_restriction_transaction_body_reserved_1: u32,
-	pub restriction_additions: array(UnresolvedAddress, restriction_additions_count),
-	pub restriction_deletions: array(UnresolvedAddress, restriction_deletions_count),
+	pub restriction_additions: Vec<UnresolvedAddress>,
+	pub restriction_deletions: Vec<UnresolvedAddress>,
 }
 impl AccountAddressRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_ADDRESS_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			restriction_flags: AccountRestrictionFlags::default(),
+			account_restriction_transaction_body_reserved_1: 0,
+			restriction_additions: Vec::new(),
+			restriction_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += AccountRestrictionFlags::SIZE;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.restriction_additions.len();
+		size += self.restriction_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedAccountAddressRestrictionTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub restriction_flags: AccountRestrictionFlags,
-	pub restriction_additions_count: u8,
-	pub restriction_deletions_count: u8,
 	pub account_restriction_transaction_body_reserved_1: u32,
-	pub restriction_additions: array(UnresolvedAddress, restriction_additions_count),
-	pub restriction_deletions: array(UnresolvedAddress, restriction_deletions_count),
+	pub restriction_additions: Vec<UnresolvedAddress>,
+	pub restriction_deletions: Vec<UnresolvedAddress>,
 }
 impl EmbeddedAccountAddressRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_ADDRESS_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			restriction_flags: AccountRestrictionFlags::default(),
+			account_restriction_transaction_body_reserved_1: 0,
+			restriction_additions: Vec::new(),
+			restriction_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += AccountRestrictionFlags::SIZE;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.restriction_additions.len();
+		size += self.restriction_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AccountMosaicRestrictionTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub restriction_flags: AccountRestrictionFlags,
-	pub restriction_additions_count: u8,
-	pub restriction_deletions_count: u8,
 	pub account_restriction_transaction_body_reserved_1: u32,
-	pub restriction_additions: array(UnresolvedMosaicId, restriction_additions_count),
-	pub restriction_deletions: array(UnresolvedMosaicId, restriction_deletions_count),
+	pub restriction_additions: Vec<UnresolvedMosaicId>,
+	pub restriction_deletions: Vec<UnresolvedMosaicId>,
 }
 impl AccountMosaicRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_MOSAIC_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			restriction_flags: AccountRestrictionFlags::default(),
+			account_restriction_transaction_body_reserved_1: 0,
+			restriction_additions: Vec::new(),
+			restriction_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += AccountRestrictionFlags::SIZE;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.restriction_additions.len();
+		size += self.restriction_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedAccountMosaicRestrictionTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub restriction_flags: AccountRestrictionFlags,
-	pub restriction_additions_count: u8,
-	pub restriction_deletions_count: u8,
 	pub account_restriction_transaction_body_reserved_1: u32,
-	pub restriction_additions: array(UnresolvedMosaicId, restriction_additions_count),
-	pub restriction_deletions: array(UnresolvedMosaicId, restriction_deletions_count),
+	pub restriction_additions: Vec<UnresolvedMosaicId>,
+	pub restriction_deletions: Vec<UnresolvedMosaicId>,
 }
 impl EmbeddedAccountMosaicRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_MOSAIC_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			restriction_flags: AccountRestrictionFlags::default(),
+			account_restriction_transaction_body_reserved_1: 0,
+			restriction_additions: Vec::new(),
+			restriction_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += AccountRestrictionFlags::SIZE;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.restriction_additions.len();
+		size += self.restriction_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct AccountOperationRestrictionTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub restriction_flags: AccountRestrictionFlags,
-	pub restriction_additions_count: u8,
-	pub restriction_deletions_count: u8,
 	pub account_restriction_transaction_body_reserved_1: u32,
-	pub restriction_additions: array(TransactionType, restriction_additions_count),
-	pub restriction_deletions: array(TransactionType, restriction_deletions_count),
+	pub restriction_additions: Vec<TransactionType>,
+	pub restriction_deletions: Vec<TransactionType>,
 }
 impl AccountOperationRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_OPERATION_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			restriction_flags: AccountRestrictionFlags::default(),
+			account_restriction_transaction_body_reserved_1: 0,
+			restriction_additions: Vec::new(),
+			restriction_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += AccountRestrictionFlags::SIZE;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.restriction_additions.len();
+		size += self.restriction_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedAccountOperationRestrictionTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub restriction_flags: AccountRestrictionFlags,
-	pub restriction_additions_count: u8,
-	pub restriction_deletions_count: u8,
 	pub account_restriction_transaction_body_reserved_1: u32,
-	pub restriction_additions: array(TransactionType, restriction_additions_count),
-	pub restriction_deletions: array(TransactionType, restriction_deletions_count),
+	pub restriction_additions: Vec<TransactionType>,
+	pub restriction_deletions: Vec<TransactionType>,
 }
 impl EmbeddedAccountOperationRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_OPERATION_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			restriction_flags: AccountRestrictionFlags::default(),
+			account_restriction_transaction_body_reserved_1: 0,
+			restriction_additions: Vec::new(),
+			restriction_deletions: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += AccountRestrictionFlags::SIZE;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.restriction_additions.len();
+		size += self.restriction_deletions.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicAddressRestrictionTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub mosaic_id: UnresolvedMosaicId,
@@ -2387,17 +5183,64 @@ pub struct MosaicAddressRestrictionTransactionV1 {
 	pub target_address: UnresolvedAddress,
 }
 impl MosaicAddressRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ADDRESS_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			mosaic_id: UnresolvedMosaicId::default(),
+			restriction_key: 0,
+			previous_restriction_value: 0,
+			new_restriction_value: 0,
+			target_address: UnresolvedAddress::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += 8;
+		size += 8;
+		size += 8;
+		size += UnresolvedAddress::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub mosaic_id: UnresolvedMosaicId,
 	pub restriction_key: u64,
 	pub previous_restriction_value: u64,
@@ -2405,9 +5248,51 @@ pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
 	pub target_address: UnresolvedAddress,
 }
 impl EmbeddedMosaicAddressRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ADDRESS_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			mosaic_id: UnresolvedMosaicId::default(),
+			restriction_key: 0,
+			previous_restriction_value: 0,
+			new_restriction_value: 0,
+			target_address: UnresolvedAddress::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += 8;
+		size += 8;
+		size += 8;
+		size += UnresolvedAddress::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MosaicRestrictionKey {
 	value: u64
 }
@@ -2424,8 +5309,8 @@ impl MosaicRestrictionKey {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 8]) -> Self {
-		Self::new(u64::from_le_bytes(payload))
+	pub fn deserialize(payload: &[u8; 8]) -> Self {
+		Self::new(u64::from_le_bytes(payload.clone()))
 	}
 	pub fn serialize(&self) -> [u8; 8] {
 		self.value.to_le_bytes()
@@ -2436,7 +5321,7 @@ impl MosaicRestrictionKey {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum MosaicRestrictionType {
 	NONE = 0,
@@ -2455,8 +5340,8 @@ impl MosaicRestrictionType {
 	pub fn size(&self) -> usize {
 		Self::SIZE
 	}
-	pub fn deserialize(payload: [u8; 1]) -> Option<Self> {
-		match u8::from_le_bytes(payload) {
+	pub fn deserialize(payload: &[u8; 1]) -> Option<Self> {
+		match u8::from_le_bytes(payload.clone()) {
 			0 => Some(MosaicRestrictionType::NONE),
 			1 => Some(MosaicRestrictionType::EQ),
 			2 => Some(MosaicRestrictionType::NE),
@@ -2468,7 +5353,7 @@ impl MosaicRestrictionType {
 		}
 	}
 	pub fn serialize(&self) -> [u8; 1] {
-		(*self as u8).to_le_bytes()
+		(self.clone() as u8).to_le_bytes()
 	}
 	pub fn to_string(&self) -> String {
 		format!("MosaicRestrictionType::{:?}", self)
@@ -2478,14 +5363,13 @@ impl MosaicRestrictionType {
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct MosaicGlobalRestrictionTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub mosaic_id: UnresolvedMosaicId,
@@ -2497,17 +5381,68 @@ pub struct MosaicGlobalRestrictionTransactionV1 {
 	pub new_restriction_type: MosaicRestrictionType,
 }
 impl MosaicGlobalRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_GLOBAL_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			mosaic_id: UnresolvedMosaicId::default(),
+			reference_mosaic_id: UnresolvedMosaicId::default(),
+			restriction_key: 0,
+			previous_restriction_value: 0,
+			new_restriction_value: 0,
+			previous_restriction_type: MosaicRestrictionType::default(),
+			new_restriction_type: MosaicRestrictionType::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += 8;
+		size += 8;
+		size += 8;
+		size += MosaicRestrictionType::SIZE;
+		size += MosaicRestrictionType::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub mosaic_id: UnresolvedMosaicId,
 	pub reference_mosaic_id: UnresolvedMosaicId,
 	pub restriction_key: u64,
@@ -2517,259 +5452,181 @@ pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
 	pub new_restriction_type: MosaicRestrictionType,
 }
 impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_GLOBAL_RESTRICTION;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			mosaic_id: UnresolvedMosaicId::default(),
+			reference_mosaic_id: UnresolvedMosaicId::default(),
+			restriction_key: 0,
+			previous_restriction_value: 0,
+			new_restriction_value: 0,
+			previous_restriction_type: MosaicRestrictionType::default(),
+			new_restriction_type: MosaicRestrictionType::default(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += UnresolvedMosaicId::SIZE;
+		size += 8;
+		size += 8;
+		size += 8;
+		size += MosaicRestrictionType::SIZE;
+		size += MosaicRestrictionType::SIZE;
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct TransferTransactionV1 {
-	pub size: u32,
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub fee: Amount,
 	pub deadline: Timestamp,
 	pub recipient_address: UnresolvedAddress,
-	pub message_size: u16,
-	pub mosaics_count: u8,
 	pub transfer_transaction_body_reserved_1: u8,
 	pub transfer_transaction_body_reserved_2: u32,
-	pub mosaics: array(UnresolvedMosaic, mosaics_count),
-	pub message: array(uint8, message_size),
+	pub mosaics: Vec<UnresolvedMosaic>,
+	pub message: Vec<u8>,
 }
 impl TransferTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::TRANSFER;
+	pub fn new() -> Self {
+		Self {
+			verifiable_entity_header_reserved_1: 0,
+			signature: Signature::default(),
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			fee: Amount::default(),
+			deadline: Timestamp::default(),
+			recipient_address: UnresolvedAddress::default(),
+			transfer_transaction_body_reserved_1: 0,
+			transfer_transaction_body_reserved_2: 0,
+			mosaics: Vec::new(),
+			message: Vec::new(),
+		}
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += Signature::SIZE;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += Amount::SIZE;
+		size += Timestamp::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 2;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.mosaics.len();
+		size += self.message.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
+
+
 /// ast_model.display_type == DisplayType.STRUCT
 #[derive(Debug)]
 pub struct EmbeddedTransferTransactionV1 {
-	pub size: u32,
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
 	pub entity_body_reserved_1: u32,
 	pub version: u8,
 	pub network: NetworkType,
-	pub type: TransactionType,
+	pub type_: TransactionType,
 	pub recipient_address: UnresolvedAddress,
-	pub message_size: u16,
-	pub mosaics_count: u8,
 	pub transfer_transaction_body_reserved_1: u8,
 	pub transfer_transaction_body_reserved_2: u32,
-	pub mosaics: array(UnresolvedMosaic, mosaics_count),
-	pub message: array(uint8, message_size),
+	pub mosaics: Vec<UnresolvedMosaic>,
+	pub message: Vec<u8>,
 }
 impl EmbeddedTransferTransactionV1 {
-	const TRANSACTION_VERSION: u8 = 	const TRANSACTION_TYPE: TransactionType = 
-class TransactionFactory:
-	@classmethod
-	def deserialize(cls, payload: bytes) -> Transaction:
-		buffer = bytes(payload)
-		parent = Transaction.deserialize(buffer)
-		mapping = {
-			(AccountKeyLinkTransactionV1.TRANSACTION_TYPE, AccountKeyLinkTransactionV1.TRANSACTION_VERSION): AccountKeyLinkTransactionV1,
-			(NodeKeyLinkTransactionV1.TRANSACTION_TYPE, NodeKeyLinkTransactionV1.TRANSACTION_VERSION): NodeKeyLinkTransactionV1,
-			(AggregateCompleteTransactionV1.TRANSACTION_TYPE, AggregateCompleteTransactionV1.TRANSACTION_VERSION): AggregateCompleteTransactionV1,
-			(AggregateCompleteTransactionV2.TRANSACTION_TYPE, AggregateCompleteTransactionV2.TRANSACTION_VERSION): AggregateCompleteTransactionV2,
-			(AggregateBondedTransactionV1.TRANSACTION_TYPE, AggregateBondedTransactionV1.TRANSACTION_VERSION): AggregateBondedTransactionV1,
-			(AggregateBondedTransactionV2.TRANSACTION_TYPE, AggregateBondedTransactionV2.TRANSACTION_VERSION): AggregateBondedTransactionV2,
-			(VotingKeyLinkTransactionV1.TRANSACTION_TYPE, VotingKeyLinkTransactionV1.TRANSACTION_VERSION): VotingKeyLinkTransactionV1,
-			(VrfKeyLinkTransactionV1.TRANSACTION_TYPE, VrfKeyLinkTransactionV1.TRANSACTION_VERSION): VrfKeyLinkTransactionV1,
-			(HashLockTransactionV1.TRANSACTION_TYPE, HashLockTransactionV1.TRANSACTION_VERSION): HashLockTransactionV1,
-			(SecretLockTransactionV1.TRANSACTION_TYPE, SecretLockTransactionV1.TRANSACTION_VERSION): SecretLockTransactionV1,
-			(SecretProofTransactionV1.TRANSACTION_TYPE, SecretProofTransactionV1.TRANSACTION_VERSION): SecretProofTransactionV1,
-			(AccountMetadataTransactionV1.TRANSACTION_TYPE, AccountMetadataTransactionV1.TRANSACTION_VERSION): AccountMetadataTransactionV1,
-			(MosaicMetadataTransactionV1.TRANSACTION_TYPE, MosaicMetadataTransactionV1.TRANSACTION_VERSION): MosaicMetadataTransactionV1,
-			(NamespaceMetadataTransactionV1.TRANSACTION_TYPE, NamespaceMetadataTransactionV1.TRANSACTION_VERSION): NamespaceMetadataTransactionV1,
-			(MosaicDefinitionTransactionV1.TRANSACTION_TYPE, MosaicDefinitionTransactionV1.TRANSACTION_VERSION): MosaicDefinitionTransactionV1,
-			(MosaicSupplyChangeTransactionV1.TRANSACTION_TYPE, MosaicSupplyChangeTransactionV1.TRANSACTION_VERSION): MosaicSupplyChangeTransactionV1,
-			(MosaicSupplyRevocationTransactionV1.TRANSACTION_TYPE, MosaicSupplyRevocationTransactionV1.TRANSACTION_VERSION): MosaicSupplyRevocationTransactionV1,
-			(MultisigAccountModificationTransactionV1.TRANSACTION_TYPE, MultisigAccountModificationTransactionV1.TRANSACTION_VERSION): MultisigAccountModificationTransactionV1,
-			(AddressAliasTransactionV1.TRANSACTION_TYPE, AddressAliasTransactionV1.TRANSACTION_VERSION): AddressAliasTransactionV1,
-			(MosaicAliasTransactionV1.TRANSACTION_TYPE, MosaicAliasTransactionV1.TRANSACTION_VERSION): MosaicAliasTransactionV1,
-			(NamespaceRegistrationTransactionV1.TRANSACTION_TYPE, NamespaceRegistrationTransactionV1.TRANSACTION_VERSION): NamespaceRegistrationTransactionV1,
-			(AccountAddressRestrictionTransactionV1.TRANSACTION_TYPE, AccountAddressRestrictionTransactionV1.TRANSACTION_VERSION): AccountAddressRestrictionTransactionV1,
-			(AccountMosaicRestrictionTransactionV1.TRANSACTION_TYPE, AccountMosaicRestrictionTransactionV1.TRANSACTION_VERSION): AccountMosaicRestrictionTransactionV1,
-			(AccountOperationRestrictionTransactionV1.TRANSACTION_TYPE, AccountOperationRestrictionTransactionV1.TRANSACTION_VERSION): AccountOperationRestrictionTransactionV1,
-			(MosaicAddressRestrictionTransactionV1.TRANSACTION_TYPE, MosaicAddressRestrictionTransactionV1.TRANSACTION_VERSION): MosaicAddressRestrictionTransactionV1,
-			(MosaicGlobalRestrictionTransactionV1.TRANSACTION_TYPE, MosaicGlobalRestrictionTransactionV1.TRANSACTION_VERSION): MosaicGlobalRestrictionTransactionV1,
-			(TransferTransactionV1.TRANSACTION_TYPE, TransferTransactionV1.TRANSACTION_VERSION): TransferTransactionV1
+	const TRANSACTION_VERSION: u8 = 1;
+	const TRANSACTION_TYPE: TransactionType = TransactionType::TRANSFER;
+	pub fn new() -> Self {
+		Self {
+			embedded_transaction_header_reserved_1: 0,
+			signer_public_key: PublicKey::default(),
+			entity_body_reserved_1: 0,
+			version: Self::TRANSACTION_VERSION,
+			network: NetworkType::default(),
+			type_: Self::TRANSACTION_TYPE,
+			recipient_address: UnresolvedAddress::default(),
+			transfer_transaction_body_reserved_1: 0,
+			transfer_transaction_body_reserved_2: 0,
+			mosaics: Vec::new(),
+			message: Vec::new(),
 		}
-		discriminator = (parent.type_, parent.version)
-		factory_class = mapping[discriminator]
-		return factory_class.deserialize(buffer)
+	}
+	pub fn default() -> Self {
+		Self::new()
+	}
+	pub fn size(&self) -> usize {
+		let mut size = 0;
+		size += 4;
+		size += 4;
+		size += PublicKey::SIZE;
+		size += 4;
+		size += 1;
+		size += NetworkType::SIZE;
+		size += TransactionType::SIZE;
+		size += UnresolvedAddress::SIZE;
+		size += 2;
+		size += 1;
+		size += 1;
+		size += 4;
+		size += self.mosaics.len();
+		size += self.message.len();
+		size
+	}
+	pub fn deserialize(payload: &[u8]) -> Self {
+		let size = u32::from_le_bytes(payload[..4].clone());
+		assert_eq!(size, payload.len());
+		let payload = &payload[4..];	}
+}
 
-	@classmethod
-	def create_by_name(cls, entity_name: str) -> Transaction:
-		mapping = {
-			'account_key_link_transaction_v1': AccountKeyLinkTransactionV1,
-			'node_key_link_transaction_v1': NodeKeyLinkTransactionV1,
-			'aggregate_complete_transaction_v1': AggregateCompleteTransactionV1,
-			'aggregate_complete_transaction_v2': AggregateCompleteTransactionV2,
-			'aggregate_bonded_transaction_v1': AggregateBondedTransactionV1,
-			'aggregate_bonded_transaction_v2': AggregateBondedTransactionV2,
-			'voting_key_link_transaction_v1': VotingKeyLinkTransactionV1,
-			'vrf_key_link_transaction_v1': VrfKeyLinkTransactionV1,
-			'hash_lock_transaction_v1': HashLockTransactionV1,
-			'secret_lock_transaction_v1': SecretLockTransactionV1,
-			'secret_proof_transaction_v1': SecretProofTransactionV1,
-			'account_metadata_transaction_v1': AccountMetadataTransactionV1,
-			'mosaic_metadata_transaction_v1': MosaicMetadataTransactionV1,
-			'namespace_metadata_transaction_v1': NamespaceMetadataTransactionV1,
-			'mosaic_definition_transaction_v1': MosaicDefinitionTransactionV1,
-			'mosaic_supply_change_transaction_v1': MosaicSupplyChangeTransactionV1,
-			'mosaic_supply_revocation_transaction_v1': MosaicSupplyRevocationTransactionV1,
-			'multisig_account_modification_transaction_v1': MultisigAccountModificationTransactionV1,
-			'address_alias_transaction_v1': AddressAliasTransactionV1,
-			'mosaic_alias_transaction_v1': MosaicAliasTransactionV1,
-			'namespace_registration_transaction_v1': NamespaceRegistrationTransactionV1,
-			'account_address_restriction_transaction_v1': AccountAddressRestrictionTransactionV1,
-			'account_mosaic_restriction_transaction_v1': AccountMosaicRestrictionTransactionV1,
-			'account_operation_restriction_transaction_v1': AccountOperationRestrictionTransactionV1,
-			'mosaic_address_restriction_transaction_v1': MosaicAddressRestrictionTransactionV1,
-			'mosaic_global_restriction_transaction_v1': MosaicGlobalRestrictionTransactionV1,
-			'transfer_transaction_v1': TransferTransactionV1
-		}
 
-		if entity_name not in mapping:
-			raise ValueError(f'unknown Transaction type {entity_name}')
-
-		return mapping[entity_name]()
-class EmbeddedTransactionFactory:
-	@classmethod
-	def deserialize(cls, payload: bytes) -> EmbeddedTransaction:
-		buffer = bytes(payload)
-		parent = EmbeddedTransaction.deserialize(buffer)
-		mapping = {
-			(EmbeddedAccountKeyLinkTransactionV1.TRANSACTION_TYPE, EmbeddedAccountKeyLinkTransactionV1.TRANSACTION_VERSION): EmbeddedAccountKeyLinkTransactionV1,
-			(EmbeddedNodeKeyLinkTransactionV1.TRANSACTION_TYPE, EmbeddedNodeKeyLinkTransactionV1.TRANSACTION_VERSION): EmbeddedNodeKeyLinkTransactionV1,
-			(EmbeddedVotingKeyLinkTransactionV1.TRANSACTION_TYPE, EmbeddedVotingKeyLinkTransactionV1.TRANSACTION_VERSION): EmbeddedVotingKeyLinkTransactionV1,
-			(EmbeddedVrfKeyLinkTransactionV1.TRANSACTION_TYPE, EmbeddedVrfKeyLinkTransactionV1.TRANSACTION_VERSION): EmbeddedVrfKeyLinkTransactionV1,
-			(EmbeddedHashLockTransactionV1.TRANSACTION_TYPE, EmbeddedHashLockTransactionV1.TRANSACTION_VERSION): EmbeddedHashLockTransactionV1,
-			(EmbeddedSecretLockTransactionV1.TRANSACTION_TYPE, EmbeddedSecretLockTransactionV1.TRANSACTION_VERSION): EmbeddedSecretLockTransactionV1,
-			(EmbeddedSecretProofTransactionV1.TRANSACTION_TYPE, EmbeddedSecretProofTransactionV1.TRANSACTION_VERSION): EmbeddedSecretProofTransactionV1,
-			(EmbeddedAccountMetadataTransactionV1.TRANSACTION_TYPE, EmbeddedAccountMetadataTransactionV1.TRANSACTION_VERSION): EmbeddedAccountMetadataTransactionV1,
-			(EmbeddedMosaicMetadataTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicMetadataTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicMetadataTransactionV1,
-			(EmbeddedNamespaceMetadataTransactionV1.TRANSACTION_TYPE, EmbeddedNamespaceMetadataTransactionV1.TRANSACTION_VERSION): EmbeddedNamespaceMetadataTransactionV1,
-			(EmbeddedMosaicDefinitionTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicDefinitionTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicDefinitionTransactionV1,
-			(EmbeddedMosaicSupplyChangeTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicSupplyChangeTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicSupplyChangeTransactionV1,
-			(EmbeddedMosaicSupplyRevocationTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicSupplyRevocationTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicSupplyRevocationTransactionV1,
-			(EmbeddedMultisigAccountModificationTransactionV1.TRANSACTION_TYPE, EmbeddedMultisigAccountModificationTransactionV1.TRANSACTION_VERSION): EmbeddedMultisigAccountModificationTransactionV1,
-			(EmbeddedAddressAliasTransactionV1.TRANSACTION_TYPE, EmbeddedAddressAliasTransactionV1.TRANSACTION_VERSION): EmbeddedAddressAliasTransactionV1,
-			(EmbeddedMosaicAliasTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicAliasTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicAliasTransactionV1,
-			(EmbeddedNamespaceRegistrationTransactionV1.TRANSACTION_TYPE, EmbeddedNamespaceRegistrationTransactionV1.TRANSACTION_VERSION): EmbeddedNamespaceRegistrationTransactionV1,
-			(EmbeddedAccountAddressRestrictionTransactionV1.TRANSACTION_TYPE, EmbeddedAccountAddressRestrictionTransactionV1.TRANSACTION_VERSION): EmbeddedAccountAddressRestrictionTransactionV1,
-			(EmbeddedAccountMosaicRestrictionTransactionV1.TRANSACTION_TYPE, EmbeddedAccountMosaicRestrictionTransactionV1.TRANSACTION_VERSION): EmbeddedAccountMosaicRestrictionTransactionV1,
-			(EmbeddedAccountOperationRestrictionTransactionV1.TRANSACTION_TYPE, EmbeddedAccountOperationRestrictionTransactionV1.TRANSACTION_VERSION): EmbeddedAccountOperationRestrictionTransactionV1,
-			(EmbeddedMosaicAddressRestrictionTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicAddressRestrictionTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicAddressRestrictionTransactionV1,
-			(EmbeddedMosaicGlobalRestrictionTransactionV1.TRANSACTION_TYPE, EmbeddedMosaicGlobalRestrictionTransactionV1.TRANSACTION_VERSION): EmbeddedMosaicGlobalRestrictionTransactionV1,
-			(EmbeddedTransferTransactionV1.TRANSACTION_TYPE, EmbeddedTransferTransactionV1.TRANSACTION_VERSION): EmbeddedTransferTransactionV1
-		}
-		discriminator = (parent.type_, parent.version)
-		factory_class = mapping[discriminator]
-		return factory_class.deserialize(buffer)
-
-	@classmethod
-	def create_by_name(cls, entity_name: str) -> EmbeddedTransaction:
-		mapping = {
-			'account_key_link_transaction_v1': EmbeddedAccountKeyLinkTransactionV1,
-			'node_key_link_transaction_v1': EmbeddedNodeKeyLinkTransactionV1,
-			'voting_key_link_transaction_v1': EmbeddedVotingKeyLinkTransactionV1,
-			'vrf_key_link_transaction_v1': EmbeddedVrfKeyLinkTransactionV1,
-			'hash_lock_transaction_v1': EmbeddedHashLockTransactionV1,
-			'secret_lock_transaction_v1': EmbeddedSecretLockTransactionV1,
-			'secret_proof_transaction_v1': EmbeddedSecretProofTransactionV1,
-			'account_metadata_transaction_v1': EmbeddedAccountMetadataTransactionV1,
-			'mosaic_metadata_transaction_v1': EmbeddedMosaicMetadataTransactionV1,
-			'namespace_metadata_transaction_v1': EmbeddedNamespaceMetadataTransactionV1,
-			'mosaic_definition_transaction_v1': EmbeddedMosaicDefinitionTransactionV1,
-			'mosaic_supply_change_transaction_v1': EmbeddedMosaicSupplyChangeTransactionV1,
-			'mosaic_supply_revocation_transaction_v1': EmbeddedMosaicSupplyRevocationTransactionV1,
-			'multisig_account_modification_transaction_v1': EmbeddedMultisigAccountModificationTransactionV1,
-			'address_alias_transaction_v1': EmbeddedAddressAliasTransactionV1,
-			'mosaic_alias_transaction_v1': EmbeddedMosaicAliasTransactionV1,
-			'namespace_registration_transaction_v1': EmbeddedNamespaceRegistrationTransactionV1,
-			'account_address_restriction_transaction_v1': EmbeddedAccountAddressRestrictionTransactionV1,
-			'account_mosaic_restriction_transaction_v1': EmbeddedAccountMosaicRestrictionTransactionV1,
-			'account_operation_restriction_transaction_v1': EmbeddedAccountOperationRestrictionTransactionV1,
-			'mosaic_address_restriction_transaction_v1': EmbeddedMosaicAddressRestrictionTransactionV1,
-			'mosaic_global_restriction_transaction_v1': EmbeddedMosaicGlobalRestrictionTransactionV1,
-			'transfer_transaction_v1': EmbeddedTransferTransactionV1
-		}
-
-		if entity_name not in mapping:
-			raise ValueError(f'unknown EmbeddedTransaction type {entity_name}')
-
-		return mapping[entity_name]()
-class BlockFactory:
-	@classmethod
-	def deserialize(cls, payload: bytes) -> Block:
-		buffer = bytes(payload)
-		parent = Block.deserialize(buffer)
-		mapping = {
-			(NemesisBlockV1.BLOCK_TYPE): NemesisBlockV1,
-			(NormalBlockV1.BLOCK_TYPE): NormalBlockV1,
-			(ImportanceBlockV1.BLOCK_TYPE): ImportanceBlockV1
-		}
-		discriminator = (parent.type_)
-		factory_class = mapping[discriminator]
-		return factory_class.deserialize(buffer)
-
-	@classmethod
-	def create_by_name(cls, entity_name: str) -> Block:
-		mapping = {
-			'nemesis_block_v1': NemesisBlockV1,
-			'normal_block_v1': NormalBlockV1,
-			'importance_block_v1': ImportanceBlockV1
-		}
-
-		if entity_name not in mapping:
-			raise ValueError(f'unknown Block type {entity_name}')
-
-		return mapping[entity_name]()
-class ReceiptFactory:
-	@classmethod
-	def deserialize(cls, payload: bytes) -> Receipt:
-		buffer = bytes(payload)
-		parent = Receipt.deserialize(buffer)
-		mapping = {
-			(HarvestFeeReceipt.RECEIPT_TYPE): HarvestFeeReceipt,
-			(InflationReceipt.RECEIPT_TYPE): InflationReceipt,
-			(LockHashCreatedFeeReceipt.RECEIPT_TYPE): LockHashCreatedFeeReceipt,
-			(LockHashCompletedFeeReceipt.RECEIPT_TYPE): LockHashCompletedFeeReceipt,
-			(LockHashExpiredFeeReceipt.RECEIPT_TYPE): LockHashExpiredFeeReceipt,
-			(LockSecretCreatedFeeReceipt.RECEIPT_TYPE): LockSecretCreatedFeeReceipt,
-			(LockSecretCompletedFeeReceipt.RECEIPT_TYPE): LockSecretCompletedFeeReceipt,
-			(LockSecretExpiredFeeReceipt.RECEIPT_TYPE): LockSecretExpiredFeeReceipt,
-			(MosaicExpiredReceipt.RECEIPT_TYPE): MosaicExpiredReceipt,
-			(MosaicRentalFeeReceipt.RECEIPT_TYPE): MosaicRentalFeeReceipt,
-			(NamespaceExpiredReceipt.RECEIPT_TYPE): NamespaceExpiredReceipt,
-			(NamespaceDeletedReceipt.RECEIPT_TYPE): NamespaceDeletedReceipt,
-			(NamespaceRentalFeeReceipt.RECEIPT_TYPE): NamespaceRentalFeeReceipt
-		}
-		discriminator = (parent.type_)
-		factory_class = mapping[discriminator]
-		return factory_class.deserialize(buffer)
-
-	@classmethod
-	def create_by_name(cls, entity_name: str) -> Receipt:
-		mapping = {
-			'harvest_fee_receipt': HarvestFeeReceipt,
-			'inflation_receipt': InflationReceipt,
-			'lock_hash_created_fee_receipt': LockHashCreatedFeeReceipt,
-			'lock_hash_completed_fee_receipt': LockHashCompletedFeeReceipt,
-			'lock_hash_expired_fee_receipt': LockHashExpiredFeeReceipt,
-			'lock_secret_created_fee_receipt': LockSecretCreatedFeeReceipt,
-			'lock_secret_completed_fee_receipt': LockSecretCompletedFeeReceipt,
-			'lock_secret_expired_fee_receipt': LockSecretExpiredFeeReceipt,
-			'mosaic_expired_receipt': MosaicExpiredReceipt,
-			'mosaic_rental_fee_receipt': MosaicRentalFeeReceipt,
-			'namespace_expired_receipt': NamespaceExpiredReceipt,
-			'namespace_deleted_receipt': NamespaceDeletedReceipt,
-			'namespace_rental_fee_receipt': NamespaceRentalFeeReceipt
-		}
-
-		if entity_name not in mapping:
-			raise ValueError(f'unknown Receipt type {entity_name}')
-
-		return mapping[entity_name]()

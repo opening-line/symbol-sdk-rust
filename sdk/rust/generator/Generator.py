@@ -8,7 +8,7 @@
 from pathlib import Path
 
 from catparser.DisplayType import DisplayType
-from catparser.generators.util import build_factory_map, extend_models
+from catparser.generators.util import build_factory_map
 
 from .FactoryFormatter import FactoryClassFormatter, FactoryFormatter
 
@@ -21,12 +21,8 @@ class Generator:
 		generate_files(ast_models, Path(output))
 
 
-# def create_printer(descriptor, name, is_pod):
-# 	return (create_pod_printer if is_pod else BuiltinPrinter)(descriptor, name)
-
 def generate_files(ast_models, output_directory: Path):
 	factory_map = build_factory_map(ast_models)
-	# extend_models(ast_models, create_printer)
 
 	output_directory.mkdir(exist_ok=True)
 
@@ -37,8 +33,10 @@ use hex;
 
 '''
 		)
+		import copy
 		output = ''
 		for ast_model in ast_models:
+			ast_model = copy.deepcopy(ast_model)
 			if ast_model.display_type == DisplayType.STRUCT:
 				output += generate_struct(ast_model)
 			elif ast_model.display_type == DisplayType.ENUM:
@@ -50,10 +48,10 @@ use hex;
 			else:
 				raise 'Unexpected'
 
-		for ast_model in ast_models:
-			if DisplayType.STRUCT == ast_model.display_type and ast_model.is_abstract:
-				factory_generator = FactoryClassFormatter(FactoryFormatter(factory_map, ast_model))
-				output += str(factory_generator)
+		# for ast_model in ast_models:
+		# 	if DisplayType.STRUCT == ast_model.display_type and ast_model.is_abstract:
+		# 		factory_generator = FactoryClassFormatter(FactoryFormatter(factory_map, ast_model))
+		# 		output += str(factory_generator)
 
 		output_file.write(output)
 
@@ -69,6 +67,7 @@ def generate_struct(ast_model):
 
 	# common (i.e. prepare)
 	import re
+
 	def is_int(s):
 		try:
 			int(s, 10)
@@ -76,48 +75,61 @@ def generate_struct(ast_model):
 			return False
 		else:
 			return True
+		
+	count_list_for_skip = []
+	ref_const_dict = {}
 	for field in ast_model.fields:
-		field.field_type = re.sub(r'^int(8|16|32|64)$', r'i\1', str(field.field_type))
-		field.field_type = re.sub(r'^uint(8|16|32|64)$', r'u\1', str(field.field_type))
-		# field.field_type = re.sub(r'^array.*$', r'Vec', str(field.field_type))
+		if field.disposition == 'const':
+			key = field.name.split('_')[1].lower()
+			if key == 'type':
+				key = 'type_'
+			ref_const_dict[key] = f"Self::{field.name}"
+		field.field_type = re.sub(r'uint(8|16|32|64)', r'u\1', str(field.field_type))
+		field.field_type = re.sub(r'int(8|16|32|64)', r'i\1', str(field.field_type))
+		if field.name == "type":
+			field.name = "type_"
+		m = re.match(r'^array\((\w*), (\w*)\)', str(field.field_type))
+		if m is not None:
+			count_list_for_skip.append(m.group(2))
+			print(m.group(0))
+			field.field_type = f'Vec<{m.group(1)}>'
+	for field in ast_model.fields:
+		if field.value is None:
+			if field.name in ref_const_dict:
+				field.value = ref_const_dict[field.name]
+			elif field.field_type.startswith("Vec"):
+				field.value = 'Vec::new()'
+			elif field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
+				field.value = 0
+			else:
+				field.value = f'{field.field_type}::default()'
+		elif 'equals' in str(field.value) and 'if' in str(field.value):
+			field.value = f'{field.field_type}::default()'
+	fields = {}
+				
 	ret = ''
 
 	# anotation
+	print("\n\nname: size == ", len(ast_model.fields))
 	ret += '/// ast_model.display_type == DisplayType.STRUCT\n'
 	
-	# print()
-	# print(ast_model.name)
-	# for field in ast_model.fields:
-	# 	tmp = field
-	# 	tmp.field_type = re.sub(r'^int(8|16|32|64)$', r'i\1', str(tmp.field_type))
-	# 	tmp.field_type = re.sub(r'^uint(8|16|32|64)$', r'u\1', str(tmp.field_type))
-	# 	print("0", tmp.value)
-	# 	if tmp.value is None:
-	# 		pass
-			# tmp.value = str(tmp.field_type) + "::default()"
-			# print("1", tmp.value)
-
-	# 	elif is_int(str(filed.value)):
-	# 		continue
-	# 	else:
-	# 		print("3", str(filed.value))
-	# 		# filed.value = f"?{str(filed.value)}"
-	# 		print("3", str(filed.value))
-	# 		continue
-	
 	print("class", ast_model.name)
-	for i in ast_model.fields:
-		print("name", i.name)
-		print("field_type", i.field_type)
-		print("value", i.value)
-		print("disposition", i.disposition)
+	for field in ast_model.fields:
+		print("name", field.name)
+		print("field_type", field.field_type)
+		print("value", field.value)
+		print("disposition", field.disposition)
 	print()
 
-	# # structure
+	# structure
 	ret += '#[derive(Debug)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
 	for field in ast_model.fields:
 		if field.disposition == 'const':
+			continue
+		if field.name in count_list_for_skip:
+			continue
+		if field.name == 'size':
 			continue
 		ret += f'\tpub {field.name}: {field.field_type},\n'
 	ret += '}\n'
@@ -134,28 +146,63 @@ def generate_struct(ast_model):
 		else:
 			# value = 
 			pass
-		ret += f'\tconst {field.name}: {field.field_type} = '
-	## SIZE # or size
+		if field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
+			ret += f'\tconst {field.name}: {field.field_type} = {field.value};\n'
+		else:
+			ret += f'\tconst {field.name}: {field.field_type} = {field.field_type}::{field.value};\n'
+	## constructor
+	ret += '\tpub fn new() -> Self {\n'
+	ret += '\t\tSelf {\n'
+	for field in ast_model.fields:
+		if field.disposition == 'const':
+			continue
+		if field.value is None:
+			continue
+		if field.name in count_list_for_skip:
+			continue
+		if field.name == 'size':
+			continue
+		ret += f'\t\t\t{field.name}: {field.value},\n'
+	ret += '\t\t}\n'
+	ret += '\t}\n'
 
-	# ## constructor
-	# ret += f'\tpub fn new({name_lower}: {value_type}) -> Self {{\n'
-	# ret += '\t\tSelf {\n'
-	# ret += f'\t\t\tvalue: {name_lower}\n'
-	# ret += '\t\t}\n'
-	# ret += '\t}\n'
-	# ret += '\tpub fn default() -> Self {\n'
-	# ret += f'\t\tSelf::new(0)\n'
-	# ret += '\t}\n'
+	ret += '\tpub fn default() -> Self {\n'
+	ret += '\t\tSelf::new()\n'
+	ret += '\t}\n'
 
-	# ## size
-	# ret += '\tpub fn size(&self) -> usize {\n'
-	# ret += f'\t\tSelf::SIZE\n'
-	# ret += '\t}\n'
+	## size
+	ret += '\tpub fn size(&self) -> usize {\n'
+	ret += '\t\tlet mut size = 0;\n'
+	for field in ast_model.fields:
+		if field.disposition == 'const':
+			continue
+		if field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
+			size = int(field.field_type[1:]) // 8
+		elif field.field_type.startswith("Vec"):
+			size = f'self.{field.name}.len()'
+		else:
+			size = f'{field.field_type}::SIZE'
+		ret += f'\t\tsize += {size};\n'
+	ret += '\t\tsize\n'
+	ret += '\t}\n'
 
-	# ## deserialize
-	# ret += f'\tpub fn deserialize(payload: ) -> Self {{\n'
-	# ret += f'\t\tSelf::new({value_type}::from_le_bytes(payload))\n'
-	# ret += '\t}\n'
+	## deserialize
+	ret += '\tpub fn deserialize(payload: &[u8]) -> Self {\n'
+	ret += '\t\tlet size = u32::from_le_bytes(payload[..4].clone());\n'
+	ret += '\t\tassert_eq!(size, payload.len());\n'
+	ret += '\t\tlet payload = &payload[4..];'
+	for field in ast_model.fields:
+		if field.disposition == 'const':
+			continue
+		if field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
+			size = int(field.field_type[1:]) // 8
+		elif field.field_type.startswith("Vec"):
+			size = f'self.{field.name}.len()'
+		else:
+			size = f'{field.field_type}::SIZE'
+		if field.disposition == 'reserved':
+			pass
+	ret += '\t}\n'
 
 	# ## serialize
 	# ret += f'\tpub fn serialize(&self) -> [u8; ] {{\n'
@@ -166,8 +213,8 @@ def generate_struct(ast_model):
 	# ret += f'\tpub fn to_string(&self) -> String {{\n'
 	# ret += '\t}\n'
 
-	# # end
-	# ret += '}\n\n'
+	# end
+	ret += '}\n\n'
 
 	return ret + '\n'
 
@@ -184,7 +231,7 @@ def generate_enum(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.ENUM\n'
 
 	# structure
-	ret += '#[derive(Debug)]\n'
+	ret += '#[derive(Debug, Clone)]\n'
 	ret += '#[allow(non_camel_case_types)]\n'
 	ret += f'pub enum {ast_model.name} {{\n'
 	ret += ''.join(
@@ -213,8 +260,8 @@ def generate_enum(ast_model):
 	ret += '\t}\n'
 
 	## deserialize
-	ret += f'\tpub fn deserialize(payload: [u8; {ast_model.size}]) -> Option<Self> {{\n'
-	ret += f'\t\tmatch {value_type}::from_le_bytes(payload) {{\n'
+	ret += f'\tpub fn deserialize(payload: &[u8; {ast_model.size}]) -> Option<Self> {{\n'
+	ret += f'\t\tmatch {value_type}::from_le_bytes(payload.clone()) {{\n'
 	ret += ''.join(
 		list(
 			map(
@@ -229,7 +276,7 @@ def generate_enum(ast_model):
 
 	## serialize
 	ret += f'\tpub fn serialize(&self) -> [u8; {ast_model.size}] {{\n'
-	ret += f'\t\t(*self as {value_type}).to_le_bytes()\n'
+	ret += f'\t\t(self.clone() as {value_type}).to_le_bytes()\n'
 	ret += '\t}\n'
 
 	## to_string
@@ -252,7 +299,7 @@ def generate_bytearray(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.BYTE_ARRAY\n'
 
 	# structure
-	ret += '#[derive(Debug)]\n'
+	ret += '#[derive(Debug, Clone)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
 	ret += f'\tbytes: {value_type}\n'
 	ret += '}\n'
@@ -278,8 +325,8 @@ def generate_bytearray(ast_model):
 	ret += '\t}\n'
 
 	## deserialize
-	ret += f'\tpub fn deserialize({name_lower}: {value_type}) -> Self {{\n'
-	ret += f'\t\tSelf::new({name_lower})\n'
+	ret += f'\tpub fn deserialize({name_lower}: &{value_type}) -> Self {{\n'
+	ret += f'\t\tSelf::new({name_lower}.clone())\n'
 	ret += '\t}\n'
 
 	## serialize
@@ -311,7 +358,7 @@ def generate_integer(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.INTEGER\n'
 
 	# structure
-	ret += '#[derive(Debug)]\n'
+	ret += '#[derive(Debug, Clone)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
 	ret += f'\tvalue: {value_type}\n'
 	ret += '}\n'
@@ -337,8 +384,8 @@ def generate_integer(ast_model):
 	ret += '\t}\n'
 
 	## deserialize
-	ret += f'\tpub fn deserialize(payload: [u8; {ast_model.size}]) -> Self {{\n'
-	ret += f'\t\tSelf::new({value_type}::from_le_bytes(payload))\n'
+	ret += f'\tpub fn deserialize(payload: &[u8; {ast_model.size}]) -> Self {{\n'
+	ret += f'\t\tSelf::new({value_type}::from_le_bytes(payload.clone()))\n'
 	ret += '\t}\n'
 
 	## serialize
