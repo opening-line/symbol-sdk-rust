@@ -12,15 +12,15 @@ function generate_code() {
 	PYTHONPATH="${git_root}/catbuffer/parser" python3 -m catparser \
 		--schema "${git_root}/catbuffer/schemas/$1/all_generated.cats"  \
 		--include "${git_root}/catbuffer/schemas/$1" \
-		--output "${git_root}/sdk/rust/src/symbol/$2" \
+		--output "${git_root}/sdk/rust/src/$2" \
 		--quiet \
 		--generator generator.Generator
 }
 
 if [[ $# -eq 0 ]]; then
 	echo "updating generated code in git"
-	# generate_code "nem" "nc"
-	generate_code "symbol" "catbuffer"
+	generate_code "nem" "nem/catbuffer"
+	generate_code "symbol" "symbol/catbuffer"
 # elif [[ "$1" = "dryrun" ]]; then
 # 	echo "running dryrun diff"
 # 	generate_code "nem" "nc2"

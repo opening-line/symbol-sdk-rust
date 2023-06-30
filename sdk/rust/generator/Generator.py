@@ -6,10 +6,10 @@
 # default(): no argument required, default value is set
 
 from pathlib import Path
-
+import catparser
+import lark
 from catparser.DisplayType import DisplayType
 from catparser.generators.util import build_factory_map
-
 from .FactoryFormatter import FactoryClassFormatter, FactoryFormatter
 
 from .format import indent
@@ -26,7 +26,7 @@ def generate_files(ast_models, output_directory: Path):
 
 	output_directory.mkdir(exist_ok=True)
 
-	with open(output_directory / 'rust.txt', 'w', encoding='utf8', newline='\n') as output_file:
+	with open(output_directory / 'models.rs', 'w', encoding='utf8', newline='\n') as output_file:
 		output_file.write(
 			'''// rust
 use hex;
@@ -56,113 +56,207 @@ use hex;
 		output_file.write(output)
 
 def generate_struct(ast_model):
-	# self.name = _get_token_value(tokens[1])
-	# self.disposition = _get_token_value(tokens[0]) if tokens[0] else None
-	# self.fields = tokens[2:]
-	# self.factory_type = None
-	# self.display_type = DisplayType.STRUCT
-	# self.attributes = None
-	# self.requires_unaligned = False
-	# self._member_comment_start_regex = None
-
 	# common (i.e. prepare)
 	import re
 
-	def is_int(s):
-		try:
-			int(s, 10)
-		except ValueError:
-			return False
+	struct_name = ast_model.name
+	def update_field_type(field_type):
+		if type(field_type) == lark.lexer.Token:
+			pass
+		elif type(field_type) == catparser.ast.FixedSizeInteger:
+			field_type.short_name = field_type.short_name.replace("uint", "u").replace("int", "i")
+		elif type(field_type) == catparser.ast.Array:
+			element_type = field_type.element_type
+			update_field_type(element_type)
+			field_type.convert_to_vec = f"Vec<{element_type}>"
+		elif type(field_type) == str:
+			pass
 		else:
-			return True
+			raise "unexpected"
+
+	print("\n##", struct_name)
+	my_fields = {}
+	for f in ast_model.fields:
+		name = f.name
+		if name == "type":
+			name = "type_"
+			f.name = name
+		print(name)
+		my_fields[name] = {}
+
+	for f in ast_model.fields:
+		name = f.name
+		disposition = f.disposition
+		field_type = f.field_type
+		my_field = my_fields[name]
+		if "init_value" in my_field.keys():
+			init_value = my_field["init_value"]
+		else:
+			init_value = f.value
 		
-	count_list_for_skip = []
-	ref_const_dict = {}
-	for field in ast_model.fields:
-		if field.disposition == 'const':
-			key = field.name.split('_')[1].lower()
-			if key == 'type':
-				key = 'type_'
-			ref_const_dict[key] = f"Self::{field.name}"
-		field.field_type = re.sub(r'uint(8|16|32|64)', r'u\1', str(field.field_type))
-		field.field_type = re.sub(r'int(8|16|32|64)', r'i\1', str(field.field_type))
-		if field.name == "type":
-			field.name = "type_"
-		m = re.match(r'^array\((\w*), (\w*)\)', str(field.field_type))
-		if m is not None:
-			count_list_for_skip.append(m.group(2))
-			print(m.group(0))
-			field.field_type = f'Vec<{m.group(1)}>'
-	for field in ast_model.fields:
-		if field.value is None:
-			if field.name in ref_const_dict:
-				field.value = ref_const_dict[field.name]
-			elif field.field_type.startswith("Vec"):
-				field.value = 'Vec::new()'
-			elif field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
-				field.value = 0
+		update_field_type(field_type)
+
+		is_member = True # temporarily
+		if name == "size":
+			is_member = False
+
+		if disposition == "const":
+			is_member = False
+			const_member = name.split("_")[1].lower()
+			if const_member == "type":
+				const_member = "type_"
+			for f in ast_model.fields:
+				if const_member == f.name:
+					my_fields[f.name]["init_value"] = f"Self::{name}"
+		
+
+		if type(field_type) == lark.lexer.Token:
+			if init_value is None:
+				init_value = f"{field_type}::default()"
+			elif 'equals' in str(f.value) and 'if' in str(f.value):
+				init_value = f"{field_type}::default()"
+			elif "init_value" in my_field.keys():
+				pass
 			else:
-				field.value = f'{field.field_type}::default()'
-		elif 'equals' in str(field.value) and 'if' in str(field.value):
-			field.value = f'{field.field_type}::default()'
-	fields = {}
+				init_value = f"{field_type}::{init_value}"
+			for_size_method = f"self.{name}.size()"
+			for_deserialize_method = []
+			for_serialize_method = []
+			for_deserialize_method.append(f"let {name};")
+			for_deserialize_method.append(f"({name}, payload) = {field_type}::deserialize(payload).unwrap();")
+			for_serialize_method.append(f"serialized.append(&mut self.{name}.serialize());")
+
+		elif type(field_type) == catparser.ast.FixedSizeInteger:
+			if init_value is None:
+				init_value = 0
+			size = field_type.size
+			for_size_method = size
+			for_deserialize_method = []
+			for_serialize_method = []
+			for_deserialize_method.append(f"let mut bytes = [0u8; {size}];")
+			for_deserialize_method.append(f"bytes.copy_from_slice(payload);")
+			for_deserialize_method.append(f"let {name} = {field_type}::from_le_bytes(bytes);")
+			for_deserialize_method.append(f"payload = &payload[{size} as usize..];")
+			for_serialize_method.append(f'serialized.append(&mut self.{name}.to_le_bytes().to_vec());')
+		elif type(field_type) == catparser.ast.Array:
+			init_value = f"Vec::new()"
+			size = field_type.size
+			if size != 0:
+				for f in ast_model.fields:
+					if f.name == size:
+						my_fields[f.name]["is_member"] = False
+						my_fields[f.name]["size_of"] = name
+						break
+
+			for_deserialize_method = []
+			for_serialize_method = []
+			for_deserialize_method.append(f"let mut {name} = Vec::new();")
+			if size == "__FILL__":
+				for_deserialize_method.append(f"while payload.len() > 0 {{")
+			else:
+				for_deserialize_method.append(f"for _ in 0..{size} {{")
+
+			element_type = field_type.element_type
+
+			for_serialize_method.append(f"serialized.append(&mut self.{name}.iter().fold(")
+			for_serialize_method.append(f"\tVec::new(), |mut a, b| {{")
+			if type(element_type) == str:
+				# element_type must have size method
+				for_size_method = f'self.{name}.iter().map(|x| x.size()).sum::<usize>()'
+				for_deserialize_method.append(f"\tlet element;")
+				for_deserialize_method.append(f"\t(element, payload) = {element_type}::deserialize(payload).unwrap();")
+				for_serialize_method.append(f"\t\ta.append(&mut b.serialize());")
 				
-	ret = ''
+			elif type(element_type) == catparser.ast.FixedSizeInteger:
+				element_size = element_type.size
+				for_size_method = f"{element_size} * self.{name}.len()"
+				for_deserialize_method.append(f"\tlet mut bytes = [0u8; {element_size}];")
+				for_deserialize_method.append(f"\tbytes.copy_from_slice(payload);")
+				for_deserialize_method.append(f"\tlet element = {element_type}::from_le_bytes(bytes);")
+				for_deserialize_method.append(f"\tpayload = &payload[{size} as usize..];")
+				for_serialize_method.append(f"a.append(&mut b.to_le_bytes().to_vec());")
+			else:
+				raise "unexpected"
+			
+			for_deserialize_method.append(f"\t{name}.push(element);")
+			for_deserialize_method.append(f"}}")
+			for_serialize_method.append(f"\t\ta")
+			for_serialize_method.append(f"\t}}")
+			for_serialize_method.append(f"));")
+
+		else:
+			raise "unexpected"
+		
+		my_field["disposition"] = disposition
+		my_field["field_type"] = field_type
+		my_field["init_value"] = init_value
+		my_field["is_member"] = is_member
+		my_field["for_size_method"] = for_size_method
+		my_field["for_deserialize_method"] = for_deserialize_method
+		my_field["for_serialize_method"] = for_serialize_method
+
+	# for f in ast_model.fields:
+	# 	name = f.name
+	# 	my_field = my_fields[name]	
+	# 	print()
+	# 	print("name:         ", name)
+	# 	print("disposition:  ", my_field["disposition"])
+	# 	print("field_type:   ", my_field["field_type"])
+	# 	print("init_value:   ", my_field["init_value"])
+	# 	print("is_member:    ", my_field["is_member"])
+	# 	print("for_size_method:    ", my_field["for_size_method"])
+	# 	print("for_deserialize_method:    ", my_field["for_deserialize_method"])
+	# 	print("for_serialize_method:    ", my_field["for_serialize_method"])
+
 
 	# anotation
-	print("\n\nname: size == ", len(ast_model.fields))
+	ret = ""
 	ret += '/// ast_model.display_type == DisplayType.STRUCT\n'
-	
-	print("class", ast_model.name)
-	for field in ast_model.fields:
-		print("name", field.name)
-		print("field_type", field.field_type)
-		print("value", field.value)
-		print("disposition", field.disposition)
-	print()
 
 	# structure
 	ret += '#[derive(Debug)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
-	for field in ast_model.fields:
-		if field.disposition == 'const':
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		field_type = my_field['field_type']
+		if disposition == 'const':
 			continue
-		if field.name in count_list_for_skip:
+		if not my_field["is_member"]:
 			continue
-		if field.name == 'size':
-			continue
-		ret += f'\tpub {field.name}: {field.field_type},\n'
+		if type(field_type) == catparser.ast.Array:
+			ret += f'\tpub {name}: Vec<{field_type.element_type}>,\n'
+		else:
+			ret += f'\tpub {name}: {field_type},\n'
 	ret += '}\n'
 
 	# implement
 	ret += 'impl ' + ast_model.name + ' {\n'
-	for field in ast_model.fields:
-		if field.disposition != 'const':
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		field_type = my_field['field_type']
+		init_value = my_field["init_value"]
+		if disposition != 'const':
 			continue
-		if field.value is None:
-			value = field.field_type + "::default()"
-		elif is_int(str(field.value)):
-			value = field.field_type
-		else:
-			# value = 
-			pass
-		if field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
-			ret += f'\tconst {field.name}: {field.field_type} = {field.value};\n'
-		else:
-			ret += f'\tconst {field.name}: {field.field_type} = {field.field_type}::{field.value};\n'
+		ret += f'\tconst {name}: {field_type} = {init_value};\n'
+			
 	## constructor
 	ret += '\tpub fn new() -> Self {\n'
 	ret += '\t\tSelf {\n'
-	for field in ast_model.fields:
-		if field.disposition == 'const':
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		field_type = my_field['field_type']
+		init_value = my_field["init_value"]
+		if disposition == 'const':
 			continue
-		if field.value is None:
+		if not my_field["is_member"]:
 			continue
-		if field.name in count_list_for_skip:
-			continue
-		if field.name == 'size':
-			continue
-		ret += f'\t\t\t{field.name}: {field.value},\n'
+		ret += f'\t\t\t{name}: {init_value},\n'
 	ret += '\t\t}\n'
 	ret += '\t}\n'
 
@@ -173,41 +267,74 @@ def generate_struct(ast_model):
 	## size
 	ret += '\tpub fn size(&self) -> usize {\n'
 	ret += '\t\tlet mut size = 0;\n'
-	for field in ast_model.fields:
-		if field.disposition == 'const':
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		for_size_method = my_field["for_size_method"]
+		if disposition == 'const':
 			continue
-		if field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
-			size = int(field.field_type[1:]) // 8
-		elif field.field_type.startswith("Vec"):
-			size = f'self.{field.name}.len()'
-		else:
-			size = f'{field.field_type}::SIZE'
-		ret += f'\t\tsize += {size};\n'
+		ret += f'\t\tsize += {for_size_method};\n'
 	ret += '\t\tsize\n'
 	ret += '\t}\n'
 
 	## deserialize
-	ret += '\tpub fn deserialize(payload: &[u8]) -> Self {\n'
-	ret += '\t\tlet size = u32::from_le_bytes(payload[..4].clone());\n'
-	ret += '\t\tassert_eq!(size, payload.len());\n'
-	ret += '\t\tlet payload = &payload[4..];'
-	for field in ast_model.fields:
-		if field.disposition == 'const':
+	ret += '\tpub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {\n'
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		for_deserialize_method = my_field["for_deserialize_method"]
+		if disposition == 'const':
 			continue
-		if field.field_type in ("i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64"):
-			size = int(field.field_type[1:]) // 8
-		elif field.field_type.startswith("Vec"):
-			size = f'self.{field.name}.len()'
-		else:
-			size = f'{field.field_type}::SIZE'
-		if field.disposition == 'reserved':
-			pass
+		for line in for_deserialize_method:
+			ret += f"\t\t{line}\n"
+		if name == "size":
+			ret += f'\t\tif size as usize > payload.len() {{ return None; }}\n'
+		if disposition == "reserved":
+			ret += f"\t\tif {name} != 0 {{ return None; }}\n"
+
+	ret += f"\t\tlet self_ = Self {{\n"
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		for_deserialize_method = my_field["for_deserialize_method"]
+		if disposition == 'const':
+			continue
+		if not my_field["is_member"]:
+			continue
+		ret += f"\t\t\t{name}: {name},\n"
+	ret += "\t\t};\n"
+	ret += '\t\tSome((self_, payload))\n'
 	ret += '\t}\n'
 
-	# ## serialize
-	# ret += f'\tpub fn serialize(&self) -> [u8; ] {{\n'
-	# ret += '\t\tself.value.to_le_bytes()\n'
-	# ret += '\t}\n'
+	## serialize
+	ret += f'\tpub fn serialize(&self) -> Vec<u8> {{\n'
+	ret += '\t\tlet mut serialized = Vec::new();\n'
+	for f in ast_model.fields:
+		name = f.name
+		my_field = my_fields[name]	
+		disposition = my_field["disposition"]
+		field_type = my_field['field_type']
+		init_value = my_field["init_value"]
+		for_serialize_method = my_field["for_serialize_method"]
+		if disposition == 'const':
+			continue
+		if name == "size":
+			ret += f'\t\tserialized.append(&mut self.size().to_le_bytes().to_vec());\n'
+			
+			
+		elif "size_of" in my_field.keys():
+			size_of = my_field["size_of"]
+			ret += f'\t\tserialized.append(&mut self.{size_of}.len().to_le_bytes().to_vec());\n'
+		else:
+			for line in for_serialize_method:
+				ret += f"\t\t{line}\n"
+
+
+	ret += "\t\tserialized\n"
+	ret += '\t}\n'
 
 	# ## to_string
 	# ret += f'\tpub fn to_string(&self) -> String {{\n'
@@ -260,12 +387,15 @@ def generate_enum(ast_model):
 	ret += '\t}\n'
 
 	## deserialize
-	ret += f'\tpub fn deserialize(payload: &[u8; {ast_model.size}]) -> Option<Self> {{\n'
-	ret += f'\t\tmatch {value_type}::from_le_bytes(payload.clone()) {{\n'
+	ret += f'\tpub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {{\n'
+	ret += f'\t\tif payload.len() < {ast_model.size} {{ return None; }}\n'
+	ret += f'\t\tlet mut bytes = [0u8; {ast_model.size}];\n'
+	ret += f'\t\tbytes.copy_from_slice(payload);\n'
+	ret += f'\t\tmatch {value_type}::from_le_bytes(bytes) {{\n'
 	ret += ''.join(
 		list(
 			map(
-				lambda e: f'\t\t\t{e.value} => Some({ast_model.name}::{e.name}),\n',
+				lambda e: f'\t\t\t{e.value} => Some(({ast_model.name}::{e.name}, &payload[{ast_model.size}..])),\n',
 				ast_model.values,
 			)
 		)
@@ -275,8 +405,8 @@ def generate_enum(ast_model):
 	ret += '\t}\n'
 
 	## serialize
-	ret += f'\tpub fn serialize(&self) -> [u8; {ast_model.size}] {{\n'
-	ret += f'\t\t(self.clone() as {value_type}).to_le_bytes()\n'
+	ret += f'\tpub fn serialize(&self) -> Vec<u8> {{\n'
+	ret += f'\t\t(self.clone() as {value_type}).to_le_bytes().to_vec()\n'
 	ret += '\t}\n'
 
 	## to_string
@@ -325,13 +455,16 @@ def generate_bytearray(ast_model):
 	ret += '\t}\n'
 
 	## deserialize
-	ret += f'\tpub fn deserialize({name_lower}: &{value_type}) -> Self {{\n'
-	ret += f'\t\tSelf::new({name_lower}.clone())\n'
+	ret += f'\tpub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {{\n'
+	ret += f'\t\tif payload.len() < {ast_model.size} {{ return None; }}\n'
+	ret += f'\t\tlet mut bytes = [0u8; {ast_model.size}];\n'
+	ret += f'\t\tbytes.copy_from_slice(payload);\n'
+	ret += f'\t\tSome((Self::new(bytes), &payload[..{ast_model.size}]))\n'
 	ret += '\t}\n'
 
 	## serialize
-	ret += f'\tpub fn serialize(&self) -> [u8; {ast_model.size}] {{\n'
-	ret += '\t\tself.bytes\n'
+	ret += f'\tpub fn serialize(&self) -> Vec<u8> {{\n'
+	ret += '\t\tself.bytes.to_vec()\n'
 	ret += '\t}\n'
 
 	## to_string
@@ -352,7 +485,10 @@ def generate_integer(ast_model):
 	value_bit_width = ast_model.size * 8
 	if value_bit_width not in (8, 16, 32, 64):
 		raise 'unexpected'
-	value_type = 'u' + str(value_bit_width)
+	if ast_model.is_unsigned:
+		value_type = 'u' + str(value_bit_width)
+	else:
+		raise 'unexpected'
 
 	# anotation
 	ret += '/// ast_model.display_type == DisplayType.INTEGER\n'
@@ -384,13 +520,17 @@ def generate_integer(ast_model):
 	ret += '\t}\n'
 
 	## deserialize
-	ret += f'\tpub fn deserialize(payload: &[u8; {ast_model.size}]) -> Self {{\n'
-	ret += f'\t\tSelf::new({value_type}::from_le_bytes(payload.clone()))\n'
+	ret += f'\tpub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {{\n'
+	ret += f'\t\tif payload.len() < {ast_model.size} {{ return None; }}\n'
+	ret += f'\t\tlet mut bytes = [0u8; {ast_model.size}];\n'
+	ret += f'\t\tbytes.copy_from_slice(payload);\n'
+	ret += f'\t\tlet value = {value_type}::from_le_bytes(bytes);\n'
+	ret += f'\t\tSome((Self::new(value), &payload[..{ast_model.size}]))\n'
 	ret += '\t}\n'
 
 	## serialize
-	ret += f'\tpub fn serialize(&self) -> [u8; {ast_model.size}] {{\n'
-	ret += '\t\tself.value.to_le_bytes()\n'
+	ret += f'\tpub fn serialize(&self) -> Vec<u8> {{\n'
+	ret += '\t\tself.value.to_le_bytes().to_vec()\n'
 	ret += '\t}\n'
 
 	## to_string
