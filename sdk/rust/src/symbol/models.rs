@@ -2,7 +2,7 @@
 use hex;
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Amount {
 	value: u64
 }
@@ -35,7 +35,7 @@ impl Amount {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct BlockDuration {
 	value: u64
 }
@@ -68,7 +68,7 @@ impl BlockDuration {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct BlockFeeMultiplier {
 	value: u32
 }
@@ -101,7 +101,7 @@ impl BlockFeeMultiplier {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Difficulty {
 	value: u64
 }
@@ -134,7 +134,7 @@ impl Difficulty {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct FinalizationEpoch {
 	value: u32
 }
@@ -167,7 +167,7 @@ impl FinalizationEpoch {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct FinalizationPoint {
 	value: u32
 }
@@ -200,7 +200,7 @@ impl FinalizationPoint {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Height {
 	value: u64
 }
@@ -233,7 +233,7 @@ impl Height {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Importance {
 	value: u64
 }
@@ -266,7 +266,7 @@ impl Importance {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct ImportanceHeight {
 	value: u64
 }
@@ -299,7 +299,7 @@ impl ImportanceHeight {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct UnresolvedMosaicId {
 	value: u64
 }
@@ -332,7 +332,7 @@ impl UnresolvedMosaicId {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct MosaicId {
 	value: u64
 }
@@ -365,7 +365,7 @@ impl MosaicId {
 }
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Timestamp {
 	value: u64
 }
@@ -398,7 +398,7 @@ impl Timestamp {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct UnresolvedAddress {
 	bytes: [u8; 24]
 }
@@ -430,7 +430,7 @@ impl UnresolvedAddress {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Address {
 	bytes: [u8; 24]
 }
@@ -462,7 +462,7 @@ impl Address {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Hash256 {
 	bytes: [u8; 32]
 }
@@ -494,7 +494,7 @@ impl Hash256 {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Hash512 {
 	bytes: [u8; 64]
 }
@@ -526,7 +526,7 @@ impl Hash512 {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct PublicKey {
 	bytes: [u8; 32]
 }
@@ -558,7 +558,7 @@ impl PublicKey {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct VotingPublicKey {
 	bytes: [u8; 32]
 }
@@ -590,7 +590,7 @@ impl VotingPublicKey {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Signature {
 	bytes: [u8; 64]
 }
@@ -622,7 +622,7 @@ impl Signature {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Mosaic {
 	pub mosaic_id: MosaicId,
 	pub amount: Amount,
@@ -664,7 +664,7 @@ impl Mosaic {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct UnresolvedMosaic {
 	pub mosaic_id: UnresolvedMosaicId,
 	pub amount: Amount,
@@ -706,7 +706,7 @@ impl UnresolvedMosaic {
 
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum LinkAction {
 	UNLINK = 0,
@@ -739,7 +739,7 @@ impl LinkAction {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum NetworkType {
 	MAINNET = 104,
@@ -772,7 +772,7 @@ impl NetworkType {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum TransactionType {
 	ACCOUNT_KEY_LINK = 16716,
@@ -851,7 +851,7 @@ impl TransactionType {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Transaction {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -957,7 +957,7 @@ impl Transaction {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedTransaction {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -1042,7 +1042,7 @@ impl EmbeddedTransaction {
 
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ProofGamma {
 	bytes: [u8; 32]
 }
@@ -1074,7 +1074,7 @@ impl ProofGamma {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ProofVerificationHash {
 	bytes: [u8; 16]
 }
@@ -1106,7 +1106,7 @@ impl ProofVerificationHash {
 }
 
 /// ast_model.display_type == DisplayType.BYTE_ARRAY
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ProofScalar {
 	bytes: [u8; 32]
 }
@@ -1138,7 +1138,7 @@ impl ProofScalar {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum BlockType {
 	NEMESIS = 32835,
@@ -1173,7 +1173,7 @@ impl BlockType {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct VrfProof {
 	pub gamma: ProofGamma,
 	pub verification_hash: ProofVerificationHash,
@@ -1222,7 +1222,7 @@ impl VrfProof {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Block {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -1384,7 +1384,7 @@ impl Block {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NemesisBlockV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -1596,7 +1596,7 @@ impl NemesisBlockV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NormalBlockV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -1786,7 +1786,7 @@ impl NormalBlockV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ImportanceBlockV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -1998,7 +1998,7 @@ impl ImportanceBlockV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct FinalizationRound {
 	pub epoch: FinalizationEpoch,
 	pub point: FinalizationPoint,
@@ -2040,7 +2040,7 @@ impl FinalizationRound {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct FinalizedBlockHeader {
 	pub round: FinalizationRound,
 	pub height: Height,
@@ -2089,7 +2089,7 @@ impl FinalizedBlockHeader {
 
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum ReceiptType {
 	MOSAIC_RENTAL_FEE = 4685,
@@ -2150,7 +2150,7 @@ impl ReceiptType {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Receipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2201,7 +2201,7 @@ impl Receipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct HarvestFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2267,7 +2267,7 @@ impl HarvestFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct InflationReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2326,7 +2326,7 @@ impl InflationReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct LockHashCreatedFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2392,7 +2392,7 @@ impl LockHashCreatedFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct LockHashCompletedFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2458,7 +2458,7 @@ impl LockHashCompletedFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct LockHashExpiredFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2524,7 +2524,7 @@ impl LockHashExpiredFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct LockSecretCreatedFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2590,7 +2590,7 @@ impl LockSecretCreatedFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct LockSecretCompletedFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2656,7 +2656,7 @@ impl LockSecretCompletedFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct LockSecretExpiredFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2722,7 +2722,7 @@ impl LockSecretExpiredFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicExpiredReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2781,7 +2781,7 @@ impl MosaicExpiredReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicRentalFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -2854,7 +2854,7 @@ impl MosaicRentalFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct NamespaceId {
 	value: u64
 }
@@ -2887,7 +2887,7 @@ impl NamespaceId {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum NamespaceRegistrationType {
 	ROOT = 0,
@@ -2920,7 +2920,7 @@ impl NamespaceRegistrationType {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum AliasAction {
 	UNLINK = 0,
@@ -2953,7 +2953,7 @@ impl AliasAction {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NamespaceExpiredReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -3012,7 +3012,7 @@ impl NamespaceExpiredReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NamespaceDeletedReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -3071,7 +3071,7 @@ impl NamespaceDeletedReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NamespaceRentalFeeReceipt {
 	pub version: u16,
 	pub type_: ReceiptType,
@@ -3144,7 +3144,7 @@ impl NamespaceRentalFeeReceipt {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ReceiptSource {
 	pub primary_id: u32,
 	pub secondary_id: u32,
@@ -3190,7 +3190,7 @@ impl ReceiptSource {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AddressResolutionEntry {
 	pub source: ReceiptSource,
 	pub resolved_value: Address,
@@ -3232,7 +3232,7 @@ impl AddressResolutionEntry {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AddressResolutionStatement {
 	pub unresolved: UnresolvedAddress,
 	pub resolution_entries: Vec<AddressResolutionEntry>,
@@ -3289,7 +3289,7 @@ impl AddressResolutionStatement {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicResolutionEntry {
 	pub source: ReceiptSource,
 	pub resolved_value: MosaicId,
@@ -3331,7 +3331,7 @@ impl MosaicResolutionEntry {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicResolutionStatement {
 	pub unresolved: UnresolvedMosaicId,
 	pub resolution_entries: Vec<MosaicResolutionEntry>,
@@ -3388,7 +3388,7 @@ impl MosaicResolutionStatement {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct TransactionStatement {
 	pub primary_id: u32,
 	pub secondary_id: u32,
@@ -3456,7 +3456,7 @@ impl TransactionStatement {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct BlockStatement {
 	pub transaction_statements: Vec<TransactionStatement>,
 	pub address_resolution_statements: Vec<AddressResolutionStatement>,
@@ -3550,7 +3550,7 @@ impl BlockStatement {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AccountKeyLinkTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -3672,7 +3672,7 @@ impl AccountKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedAccountKeyLinkTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -3773,7 +3773,7 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NodeKeyLinkTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -3895,7 +3895,7 @@ impl NodeKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedNodeKeyLinkTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -3996,7 +3996,7 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Cosignature {
 	pub version: u64,
 	pub signer_public_key: PublicKey,
@@ -4047,7 +4047,7 @@ impl Cosignature {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct DetachedCosignature {
 	pub version: u64,
 	pub signer_public_key: PublicKey,
@@ -4105,7 +4105,7 @@ impl DetachedCosignature {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AggregateCompleteTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -4268,7 +4268,7 @@ impl AggregateCompleteTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AggregateCompleteTransactionV2 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -4431,7 +4431,7 @@ impl AggregateCompleteTransactionV2 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AggregateBondedTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -4594,7 +4594,7 @@ impl AggregateBondedTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AggregateBondedTransactionV2 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -4757,7 +4757,7 @@ impl AggregateBondedTransactionV2 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct VotingKeyLinkTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -4893,7 +4893,7 @@ impl VotingKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedVotingKeyLinkTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -5008,7 +5008,7 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct VrfKeyLinkTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -5130,7 +5130,7 @@ impl VrfKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedVrfKeyLinkTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -5231,7 +5231,7 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct HashLockTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -5360,7 +5360,7 @@ impl HashLockTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedHashLockTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -5468,7 +5468,7 @@ impl EmbeddedHashLockTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum LockHashAlgorithm {
 	SHA3_256 = 0,
@@ -5503,7 +5503,7 @@ impl LockHashAlgorithm {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct SecretLockTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -5646,7 +5646,7 @@ impl SecretLockTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedSecretLockTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -5768,7 +5768,7 @@ impl EmbeddedSecretLockTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct SecretProofTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -5921,7 +5921,7 @@ impl SecretProofTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedSecretProofTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -6053,7 +6053,7 @@ impl EmbeddedSecretProofTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AccountMetadataTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -6210,7 +6210,7 @@ impl AccountMetadataTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedAccountMetadataTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -6346,7 +6346,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicMetadataTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -6510,7 +6510,7 @@ impl MosaicMetadataTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicMetadataTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -6653,7 +6653,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NamespaceMetadataTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -6817,7 +6817,7 @@ impl NamespaceMetadataTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedNamespaceMetadataTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -6960,7 +6960,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct MosaicNonce {
 	value: u32
 }
@@ -6993,7 +6993,7 @@ impl MosaicNonce {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum MosaicFlags {
 	NONE = 0,
@@ -7032,7 +7032,7 @@ impl MosaicFlags {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum MosaicSupplyChangeAction {
 	DECREASE = 0,
@@ -7065,7 +7065,7 @@ impl MosaicSupplyChangeAction {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicDefinitionTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -7210,7 +7210,7 @@ impl MosaicDefinitionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicDefinitionTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -7334,7 +7334,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicSupplyChangeTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -7463,7 +7463,7 @@ impl MosaicSupplyChangeTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicSupplyChangeTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -7571,7 +7571,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicSupplyRevocationTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -7693,7 +7693,7 @@ impl MosaicSupplyRevocationTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicSupplyRevocationTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -7794,7 +7794,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MultisigAccountModificationTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -7974,7 +7974,7 @@ impl MultisigAccountModificationTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMultisigAccountModificationTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -8133,7 +8133,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AddressAliasTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -8262,7 +8262,7 @@ impl AddressAliasTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedAddressAliasTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -8370,7 +8370,7 @@ impl EmbeddedAddressAliasTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicAliasTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -8499,7 +8499,7 @@ impl MosaicAliasTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicAliasTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -8607,7 +8607,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NamespaceRegistrationTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -8767,7 +8767,7 @@ impl NamespaceRegistrationTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedNamespaceRegistrationTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -8906,7 +8906,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum AccountRestrictionFlags {
 	ADDRESS = 1,
@@ -8945,7 +8945,7 @@ impl AccountRestrictionFlags {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AccountAddressRestrictionTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -9114,7 +9114,7 @@ impl AccountAddressRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedAccountAddressRestrictionTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -9262,7 +9262,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AccountMosaicRestrictionTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -9431,7 +9431,7 @@ impl AccountMosaicRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedAccountMosaicRestrictionTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -9579,7 +9579,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AccountOperationRestrictionTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -9748,7 +9748,7 @@ impl AccountOperationRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedAccountOperationRestrictionTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -9896,7 +9896,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicAddressRestrictionTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -10045,7 +10045,7 @@ impl MosaicAddressRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -10173,7 +10173,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.INTEGER
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct MosaicRestrictionKey {
 	value: u64
 }
@@ -10206,7 +10206,7 @@ impl MosaicRestrictionKey {
 }
 
 /// ast_model.display_type == DisplayType.ENUM
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum MosaicRestrictionType {
 	NONE = 0,
@@ -10249,7 +10249,7 @@ impl MosaicRestrictionType {
 }
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct MosaicGlobalRestrictionTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -10412,7 +10412,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,
@@ -10554,7 +10554,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct TransferTransactionV1 {
 	pub verifiable_entity_header_reserved_1: u32,
 	pub signature: Signature,
@@ -10735,7 +10735,7 @@ impl TransferTransactionV1 {
 
 
 /// ast_model.display_type == DisplayType.STRUCT
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct EmbeddedTransferTransactionV1 {
 	pub embedded_transaction_header_reserved_1: u32,
 	pub signer_public_key: PublicKey,

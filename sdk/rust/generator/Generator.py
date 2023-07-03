@@ -5,14 +5,17 @@
 # new(args): requires an argument
 # default(): no argument required, default value is set
 
+# todo: to_string()
+# todo: factory
+
 from pathlib import Path
 import catparser
 import lark
 from catparser.DisplayType import DisplayType
-from catparser.generators.util import build_factory_map
-from .FactoryFormatter import FactoryClassFormatter, FactoryFormatter
+# from catparser.generators.util import build_factory_map
+# from .FactoryFormatter import FactoryClassFormatter, FactoryFormatter
 
-from .format import indent
+# from .format import indent
 
 class Generator:
 	@staticmethod
@@ -22,7 +25,7 @@ class Generator:
 
 
 def generate_files(ast_models, output_directory: Path):
-	factory_map = build_factory_map(ast_models)
+	# factory_map = build_factory_map(ast_models)
 
 	output_directory.mkdir(exist_ok=True)
 
@@ -50,6 +53,12 @@ use hex;
 
 		# for ast_model in ast_models:
 		# 	if DisplayType.STRUCT == ast_model.display_type and ast_model.is_abstract:
+		# 		struct_name = ast_model.name
+		# 		fields = ast_model.fields
+		# 		print("\n\n##" + struct_name)
+		# 		print(ast_model)
+		# 		for f in fields:
+		# 			print(f.name)
 		# 		factory_generator = FactoryClassFormatter(FactoryFormatter(factory_map, ast_model))
 		# 		output += str(factory_generator)
 
@@ -214,7 +223,7 @@ def generate_struct(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.STRUCT\n'
 
 	# structure
-	ret += '#[derive(Debug)]\n'
+	ret += '#[derive(Debug, PartialEq)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
 	for f in ast_model.fields:
 		name = f.name
@@ -358,7 +367,7 @@ def generate_enum(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.ENUM\n'
 
 	# structure
-	ret += '#[derive(Debug, Clone)]\n'
+	ret += '#[derive(Debug, Clone, PartialEq)]\n'
 	ret += '#[allow(non_camel_case_types)]\n'
 	ret += f'pub enum {ast_model.name} {{\n'
 	ret += ''.join(
@@ -429,7 +438,7 @@ def generate_bytearray(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.BYTE_ARRAY\n'
 
 	# structure
-	ret += '#[derive(Debug, Clone)]\n'
+	ret += '#[derive(Debug, Clone, PartialEq)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
 	ret += f'\tbytes: {value_type}\n'
 	ret += '}\n'
@@ -494,7 +503,7 @@ def generate_integer(ast_model):
 	ret += '/// ast_model.display_type == DisplayType.INTEGER\n'
 
 	# structure
-	ret += '#[derive(Debug, Clone)]\n'
+	ret += '#[derive(Debug, Clone, PartialEq, PartialOrd)]\n'
 	ret += f'pub struct {ast_model.name} {{\n'
 	ret += f'\tvalue: {value_type}\n'
 	ret += '}\n'

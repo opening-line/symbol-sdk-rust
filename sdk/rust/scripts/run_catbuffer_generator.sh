@@ -19,8 +19,8 @@ function generate_code() {
 
 if [[ $# -eq 0 ]]; then
 	echo "updating generated code in git"
-	generate_code "nem" "nem/catbuffer"
-	generate_code "symbol" "symbol/catbuffer"
+	# generate_code "nem" "nem"
+	generate_code "symbol" "symbol"
 # elif [[ "$1" = "dryrun" ]]; then
 # 	echo "running dryrun diff"
 # 	generate_code "nem" "nc2"
