@@ -19,7 +19,7 @@ void call(Closure body) {
 				choices: ['release-private', 'release-public'],
 				description: 'build configuration'
 			choice name: 'ARCHITECTURE',
-				choices: ['amd64', 'arm64'],
+				choices: ['arm64', 'amd64'],
 				description: 'Computer architecture'
 			choice name: 'TEST_MODE',
 				choices: ['code-coverage', 'test'],
@@ -29,15 +29,19 @@ void call(Closure body) {
 				description: 'ci environment'
 			booleanParam name: 'SHOULD_PUBLISH_IMAGE', description: 'true to publish image', defaultValue: false
 			booleanParam name: 'SHOULD_PUBLISH_FAIL_JOB_STATUS', description: 'true to publish job status if failed', defaultValue: false
+			booleanParam name: 'SHOULD_RUN_ALL_TEST', description: 'true to run all the test stage', defaultValue: false
 		}
 
 		agent {
-			// ARCHITECTURE can be null on first job due to https://issues.jenkins.io/browse/JENKINS-41929
-			label """${
-				env.OPERATING_SYSTEM = env.OPERATING_SYSTEM ?: "${jenkinsfileParams.operatingSystem[0]}"
-				env.ARCHITECTURE = env.ARCHITECTURE ?: 'amd64'
-				return helper.resolveAgentName(env.OPERATING_SYSTEM, env.ARCHITECTURE, jenkinsfileParams.instanceSize ?: 'medium')
-			}"""
+			node {
+				// ARCHITECTURE can be null on first job due to https://issues.jenkins.io/browse/JENKINS-41929
+				label """${
+					env.OPERATING_SYSTEM = env.OPERATING_SYSTEM ?: "${jenkinsfileParams.operatingSystem[0]}"
+					env.ARCHITECTURE = env.ARCHITECTURE ?: 'arm64'
+					return helper.resolveAgentName(env.OPERATING_SYSTEM, env.ARCHITECTURE, jenkinsfileParams.instanceSize ?: 'medium')
+				}"""
+				customWorkspace "${helper.resolveWorkspacePath(env.OPERATING_SYSTEM)}"
+			}
 		}
 
 		options {
@@ -91,6 +95,13 @@ void call(Closure body) {
 						steps {
 							println("Jenkinsfile parameters: ${jenkinsfileParams}")
 							runScript(isUnix() ? 'printenv' : 'set')
+						}
+					}
+					stage('setup docker environment') {
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								configureArtifactRepository(jobHelper.resolveCiEnvironmentName(jenkinsfileParams))
+							}
 						}
 					}
 					stage('checkout') {
@@ -185,8 +196,13 @@ void call(Closure body) {
 					}
 					stage('run tests (examples)') {
 						when {
-							expression {
-								return fileExists(resolvePath(packageRootPath, env.TEST_EXAMPLES_SCRIPT_FILEPATH))
+							allOf {
+								expression {
+									return params.SHOULD_RUN_ALL_TEST?.toBoolean()
+								}
+								expression {
+									return fileExists(resolvePath(packageRootPath, env.TEST_EXAMPLES_SCRIPT_FILEPATH))
+								}
 							}
 						}
 						steps {
@@ -197,8 +213,13 @@ void call(Closure body) {
 					}
 					stage('run tests (vectors)') {
 						when {
-							expression {
-								return fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))
+							allOf {
+								expression {
+									return params.SHOULD_RUN_ALL_TEST?.toBoolean()
+								}
+								expression {
+									return fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))
+								}
 							}
 						}
 						steps {
@@ -216,6 +237,13 @@ void call(Closure body) {
 								}
 								expression {
 									return  null != jenkinsfileParams.codeCoverageTool
+								}
+								expression {
+									// If all the tests are not run then code coverage will fail to meet the required minimum
+									// Nightly builds will run all tests.
+									return (params.SHOULD_RUN_ALL_TEST?.toBoolean()
+										|| (!fileExists(resolvePath(packageRootPath, env.TEST_EXAMPLES_SCRIPT_FILEPATH))
+										&& !fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))))
 								}
 							}
 						}

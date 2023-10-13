@@ -15,15 +15,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "axios": "^1.5.0",
-    "chai": "^4.3.8",
-    "eslint": "^8.49.0",
+    "axios": "^1.5.1",
+    "chai": "^4.3.10",
+    "eslint": "^8.50.0",
     "eslint-config-airbnb": "^19.0.4",
     "minimist": "^1.2.8",
     "mocha": "^10.2.0",
     "mocha-jenkins-reporter": "^0.4.8",
     "nyc": "^15.1.0",
-    "sinon": "^15.2.0",
+    "sinon": "^16.0.0",
     "tmp": "^0.2.1"
   },
   "dependencies": {
@@ -36,7 +36,7 @@
     "ripemd160": "^2.0.2",
     "sshpk": "^1.17.0",
     "winston": "^3.10.0",
-    "ws": "^8.14.1",
+    "ws": "^8.14.2",
     "zeromq": "^5.3.1"
   }
 }
