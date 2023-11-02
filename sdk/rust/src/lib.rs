@@ -1,5 +1,4 @@
 mod facade;
 mod nem;
-mod symbol;
+pub mod symbol;
 mod utils;
-

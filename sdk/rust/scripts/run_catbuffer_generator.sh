@@ -35,3 +35,6 @@ if [[ $# -eq 0 ]]; then
 # 	echo "unknown options"
 # 	exit 1
 fi
+
+cargo fmt
+cargo build
