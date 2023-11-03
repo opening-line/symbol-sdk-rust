@@ -1,7 +1,7 @@
 const NAMESPACE_FLAG: u64 = 1 << 63;
 
 use crate::symbol::models::*;
-use binascii::b32decode;
+// use binascii::b32decode;
 use sha3::{Digest, Sha3_256};
 
 pub struct Address {
@@ -16,9 +16,10 @@ impl Address {
     pub fn from_str(address: &str) -> Self {
         let mut output_buffer = [0u8; 200];
         Self {
-            value: b32decode(&address.as_bytes(), &mut output_buffer)
-                .unwrap()
-                .to_vec(),
+            // value: b32decode(&address.as_bytes(), &mut output_buffer)
+            //     .unwrap()
+            //     .to_vec(),
+            value: Vec::new(),
         }
     }
 }

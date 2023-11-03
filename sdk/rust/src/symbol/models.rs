@@ -1,4 +1,35 @@
+use data_encoding::DecodeError;
 use hex;
+use hex::FromHexError;
+use std::array::TryFromSliceError;
+
+#[derive(Debug)]
+pub enum SymbolError {
+    FromHexError(FromHexError),
+    Base32DecodeError(DecodeError),
+    TryFromSliceError(TryFromSliceError),
+    SizeError { expect: usize, real: usize },
+    ReservedIsNotZeroError(u32),
+    EnumDecodeError(u32),
+}
+
+impl From<FromHexError> for SymbolError {
+    fn from(err: FromHexError) -> Self {
+        SymbolError::FromHexError(err)
+    }
+}
+
+impl From<DecodeError> for SymbolError {
+    fn from(err: DecodeError) -> Self {
+        SymbolError::Base32DecodeError(err)
+    }
+}
+
+impl From<TryFromSliceError> for SymbolError {
+    fn from(err: TryFromSliceError) -> SymbolError {
+        SymbolError::TryFromSliceError(err)
+    }
+}
 ///name: Amount
 ///linked_type: <class 'catparser.ast.FixedSizeInteger'>
 ///    short_name: uint64
@@ -22,14 +53,16 @@ impl Amount {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -61,14 +94,16 @@ impl BlockDuration {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -100,14 +135,16 @@ impl BlockFeeMultiplier {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 4 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 4];
-        bytes.copy_from_slice(payload);
-        let value = u32::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..4]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u32::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -139,14 +176,16 @@ impl Difficulty {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -178,14 +217,16 @@ impl FinalizationEpoch {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 4 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 4];
-        bytes.copy_from_slice(payload);
-        let value = u32::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..4]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u32::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -217,14 +258,16 @@ impl FinalizationPoint {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 4 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 4];
-        bytes.copy_from_slice(payload);
-        let value = u32::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..4]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u32::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -256,14 +299,16 @@ impl Height {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -295,14 +340,16 @@ impl Importance {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -334,14 +381,16 @@ impl ImportanceHeight {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -373,14 +422,16 @@ impl UnresolvedMosaicId {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -412,14 +463,16 @@ impl MosaicId {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -451,14 +504,16 @@ impl Timestamp {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -485,24 +540,18 @@ impl UnresolvedAddress {
     pub fn default() -> Self {
         Self([0; 24])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 24];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 24 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 24];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..24]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -529,24 +578,18 @@ impl Address {
     pub fn default() -> Self {
         Self([0; 24])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 24];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 24 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 24];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..24]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -573,24 +616,18 @@ impl Hash256 {
     pub fn default() -> Self {
         Self([0; 32])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 32];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 32 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 32];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..32]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -617,24 +654,18 @@ impl Hash512 {
     pub fn default() -> Self {
         Self([0; 64])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 64];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 64 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 64];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..64]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -661,24 +692,18 @@ impl PublicKey {
     pub fn default() -> Self {
         Self([0; 32])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 32];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 32 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 32];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..32]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -705,24 +730,18 @@ impl VotingPublicKey {
     pub fn default() -> Self {
         Self([0; 32])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 32];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 32 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 32];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..32]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -749,24 +768,18 @@ impl Signature {
     pub fn default() -> Self {
         Self([0; 64])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 64];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 64 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 64];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..64]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -835,13 +848,13 @@ impl Mosaic {
         size += self.amount.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let mosaic_id;
         (mosaic_id, payload) = MosaicId::deserialize(payload)?;
         let amount;
         (amount, payload) = Amount::deserialize(payload)?;
         let self_ = Self { mosaic_id, amount };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let mosaic_id = self.mosaic_id.serialize();
@@ -913,13 +926,13 @@ impl UnresolvedMosaic {
         size += self.amount.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let mosaic_id;
         (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
         let amount;
         (amount, payload) = Amount::deserialize(payload)?;
         let self_ = Self { mosaic_id, amount };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let mosaic_id = self.mosaic_id.serialize();
@@ -965,16 +978,18 @@ impl LinkAction {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((LinkAction::UNLINK, &payload[1..])),
-            1 => Some((LinkAction::LINK, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((LinkAction::UNLINK, rest)),
+            1 => Ok((LinkAction::LINK, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -1018,16 +1033,18 @@ impl NetworkType {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            104 => Some((NetworkType::MAINNET, &payload[1..])),
-            152 => Some((NetworkType::TESTNET, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            104 => Ok((NetworkType::MAINNET, rest)),
+            152 => Ok((NetworkType::TESTNET, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -1163,45 +1180,41 @@ impl TransactionType {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 2 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 2];
-        bytes.copy_from_slice(payload);
-        match u16::from_le_bytes(bytes) {
-            16716 => Some((TransactionType::ACCOUNT_KEY_LINK, &payload[2..])),
-            16972 => Some((TransactionType::NODE_KEY_LINK, &payload[2..])),
-            16705 => Some((TransactionType::AGGREGATE_COMPLETE, &payload[2..])),
-            16961 => Some((TransactionType::AGGREGATE_BONDED, &payload[2..])),
-            16707 => Some((TransactionType::VOTING_KEY_LINK, &payload[2..])),
-            16963 => Some((TransactionType::VRF_KEY_LINK, &payload[2..])),
-            16712 => Some((TransactionType::HASH_LOCK, &payload[2..])),
-            16722 => Some((TransactionType::SECRET_LOCK, &payload[2..])),
-            16978 => Some((TransactionType::SECRET_PROOF, &payload[2..])),
-            16708 => Some((TransactionType::ACCOUNT_METADATA, &payload[2..])),
-            16964 => Some((TransactionType::MOSAIC_METADATA, &payload[2..])),
-            17220 => Some((TransactionType::NAMESPACE_METADATA, &payload[2..])),
-            16717 => Some((TransactionType::MOSAIC_DEFINITION, &payload[2..])),
-            16973 => Some((TransactionType::MOSAIC_SUPPLY_CHANGE, &payload[2..])),
-            17229 => Some((TransactionType::MOSAIC_SUPPLY_REVOCATION, &payload[2..])),
-            16725 => Some((
-                TransactionType::MULTISIG_ACCOUNT_MODIFICATION,
-                &payload[2..],
-            )),
-            16974 => Some((TransactionType::ADDRESS_ALIAS, &payload[2..])),
-            17230 => Some((TransactionType::MOSAIC_ALIAS, &payload[2..])),
-            16718 => Some((TransactionType::NAMESPACE_REGISTRATION, &payload[2..])),
-            16720 => Some((TransactionType::ACCOUNT_ADDRESS_RESTRICTION, &payload[2..])),
-            16976 => Some((TransactionType::ACCOUNT_MOSAIC_RESTRICTION, &payload[2..])),
-            17232 => Some((
-                TransactionType::ACCOUNT_OPERATION_RESTRICTION,
-                &payload[2..],
-            )),
-            16977 => Some((TransactionType::MOSAIC_ADDRESS_RESTRICTION, &payload[2..])),
-            16721 => Some((TransactionType::MOSAIC_GLOBAL_RESTRICTION, &payload[2..])),
-            16724 => Some((TransactionType::TRANSFER, &payload[2..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u16::from_le_bytes(bytes.try_into()?) {
+            16716 => Ok((TransactionType::ACCOUNT_KEY_LINK, rest)),
+            16972 => Ok((TransactionType::NODE_KEY_LINK, rest)),
+            16705 => Ok((TransactionType::AGGREGATE_COMPLETE, rest)),
+            16961 => Ok((TransactionType::AGGREGATE_BONDED, rest)),
+            16707 => Ok((TransactionType::VOTING_KEY_LINK, rest)),
+            16963 => Ok((TransactionType::VRF_KEY_LINK, rest)),
+            16712 => Ok((TransactionType::HASH_LOCK, rest)),
+            16722 => Ok((TransactionType::SECRET_LOCK, rest)),
+            16978 => Ok((TransactionType::SECRET_PROOF, rest)),
+            16708 => Ok((TransactionType::ACCOUNT_METADATA, rest)),
+            16964 => Ok((TransactionType::MOSAIC_METADATA, rest)),
+            17220 => Ok((TransactionType::NAMESPACE_METADATA, rest)),
+            16717 => Ok((TransactionType::MOSAIC_DEFINITION, rest)),
+            16973 => Ok((TransactionType::MOSAIC_SUPPLY_CHANGE, rest)),
+            17229 => Ok((TransactionType::MOSAIC_SUPPLY_REVOCATION, rest)),
+            16725 => Ok((TransactionType::MULTISIG_ACCOUNT_MODIFICATION, rest)),
+            16974 => Ok((TransactionType::ADDRESS_ALIAS, rest)),
+            17230 => Ok((TransactionType::MOSAIC_ALIAS, rest)),
+            16718 => Ok((TransactionType::NAMESPACE_REGISTRATION, rest)),
+            16720 => Ok((TransactionType::ACCOUNT_ADDRESS_RESTRICTION, rest)),
+            16976 => Ok((TransactionType::ACCOUNT_MOSAIC_RESTRICTION, rest)),
+            17232 => Ok((TransactionType::ACCOUNT_OPERATION_RESTRICTION, rest)),
+            16977 => Ok((TransactionType::MOSAIC_ADDRESS_RESTRICTION, rest)),
+            16721 => Ok((TransactionType::MOSAIC_GLOBAL_RESTRICTION, rest)),
+            16724 => Ok((TransactionType::TRANSFER, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -1455,27 +1468,40 @@ impl Transaction {
         size += self.deadline.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -1492,7 +1518,7 @@ impl Transaction {
             fee,
             deadline,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -1713,26 +1739,38 @@ impl EmbeddedTransaction {
         size += self.type_().size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -1742,7 +1780,7 @@ impl EmbeddedTransaction {
             signer_public_key,
             network,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -1785,24 +1823,18 @@ impl ProofGamma {
     pub fn default() -> Self {
         Self([0; 32])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 32];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 32 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 32];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..32]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -1829,24 +1861,18 @@ impl ProofVerificationHash {
     pub fn default() -> Self {
         Self([0; 16])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 16];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 16 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 16];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..16]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -1873,24 +1899,18 @@ impl ProofScalar {
     pub fn default() -> Self {
         Self([0; 32])
     }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 32];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 32 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 32];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..32]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((Self::new(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -1937,17 +1957,19 @@ impl BlockType {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 2 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 2];
-        bytes.copy_from_slice(payload);
-        match u16::from_le_bytes(bytes) {
-            32835 => Some((BlockType::NEMESIS, &payload[2..])),
-            33091 => Some((BlockType::NORMAL, &payload[2..])),
-            33347 => Some((BlockType::IMPORTANCE, &payload[2..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u16::from_le_bytes(bytes.try_into()?) {
+            32835 => Ok((BlockType::NEMESIS, rest)),
+            33091 => Ok((BlockType::NORMAL, rest)),
+            33347 => Ok((BlockType::IMPORTANCE, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -2040,7 +2062,7 @@ impl VrfProof {
         size += self.scalar.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let gamma;
         (gamma, payload) = ProofGamma::deserialize(payload)?;
         let verification_hash;
@@ -2052,7 +2074,7 @@ impl VrfProof {
             verification_hash,
             scalar,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let gamma = self.gamma.serialize();
@@ -2444,27 +2466,40 @@ impl Block {
         size += self.fee_multiplier.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -2505,7 +2540,7 @@ impl Block {
             beneficiary_address,
             fee_multiplier,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -3076,27 +3111,40 @@ impl NemesisBlockV1 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -3122,9 +3170,9 @@ impl NemesisBlockV1 {
         (beneficiary_address, payload) = Address::deserialize(payload)?;
         let fee_multiplier;
         (fee_multiplier, payload) = BlockFeeMultiplier::deserialize(payload)?;
-        let voting_eligible_accounts_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let voting_eligible_accounts_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let harvesting_eligible_accounts_count = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let harvesting_eligible_accounts_count = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let total_voting_balance;
         (total_voting_balance, payload) = Amount::deserialize(payload)?;
@@ -3156,7 +3204,7 @@ impl NemesisBlockV1 {
             previous_importance_block_hash,
             transactions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -3681,27 +3729,40 @@ impl NormalBlockV1 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -3727,10 +3788,12 @@ impl NormalBlockV1 {
         (beneficiary_address, payload) = Address::deserialize(payload)?;
         let fee_multiplier;
         (fee_multiplier, payload) = BlockFeeMultiplier::deserialize(payload)?;
-        let block_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let block_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if block_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                block_header_reserved_1 as u32,
+            ));
         }
         let mut transactions = Vec::new();
         for _ in 0..0 {
@@ -3754,7 +3817,7 @@ impl NormalBlockV1 {
             fee_multiplier,
             transactions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -4333,27 +4396,40 @@ impl ImportanceBlockV1 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -4379,9 +4455,9 @@ impl ImportanceBlockV1 {
         (beneficiary_address, payload) = Address::deserialize(payload)?;
         let fee_multiplier;
         (fee_multiplier, payload) = BlockFeeMultiplier::deserialize(payload)?;
-        let voting_eligible_accounts_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let voting_eligible_accounts_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let harvesting_eligible_accounts_count = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let harvesting_eligible_accounts_count = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let total_voting_balance;
         (total_voting_balance, payload) = Amount::deserialize(payload)?;
@@ -4413,7 +4489,7 @@ impl ImportanceBlockV1 {
             previous_importance_block_hash,
             transactions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -4535,13 +4611,13 @@ impl FinalizationRound {
         size += self.point.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let epoch;
         (epoch, payload) = FinalizationEpoch::deserialize(payload)?;
         let point;
         (point, payload) = FinalizationPoint::deserialize(payload)?;
         let self_ = Self { epoch, point };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let epoch = self.epoch.serialize();
@@ -4632,7 +4708,7 @@ impl FinalizedBlockHeader {
         size += self.hash.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let round;
         (round, payload) = FinalizationRound::deserialize(payload)?;
         let height;
@@ -4644,7 +4720,7 @@ impl FinalizedBlockHeader {
             height,
             hash,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let round = self.round.serialize();
@@ -4747,30 +4823,32 @@ impl ReceiptType {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 2 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 2];
-        bytes.copy_from_slice(payload);
-        match u16::from_le_bytes(bytes) {
-            4685 => Some((ReceiptType::MOSAIC_RENTAL_FEE, &payload[2..])),
-            4942 => Some((ReceiptType::NAMESPACE_RENTAL_FEE, &payload[2..])),
-            8515 => Some((ReceiptType::HARVEST_FEE, &payload[2..])),
-            8776 => Some((ReceiptType::LOCK_HASH_COMPLETED, &payload[2..])),
-            9032 => Some((ReceiptType::LOCK_HASH_EXPIRED, &payload[2..])),
-            8786 => Some((ReceiptType::LOCK_SECRET_COMPLETED, &payload[2..])),
-            9042 => Some((ReceiptType::LOCK_SECRET_EXPIRED, &payload[2..])),
-            12616 => Some((ReceiptType::LOCK_HASH_CREATED, &payload[2..])),
-            12626 => Some((ReceiptType::LOCK_SECRET_CREATED, &payload[2..])),
-            16717 => Some((ReceiptType::MOSAIC_EXPIRED, &payload[2..])),
-            16718 => Some((ReceiptType::NAMESPACE_EXPIRED, &payload[2..])),
-            16974 => Some((ReceiptType::NAMESPACE_DELETED, &payload[2..])),
-            20803 => Some((ReceiptType::INFLATION, &payload[2..])),
-            57667 => Some((ReceiptType::TRANSACTION_GROUP, &payload[2..])),
-            61763 => Some((ReceiptType::ADDRESS_ALIAS_RESOLUTION, &payload[2..])),
-            62019 => Some((ReceiptType::MOSAIC_ALIAS_RESOLUTION, &payload[2..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u16::from_le_bytes(bytes.try_into()?) {
+            4685 => Ok((ReceiptType::MOSAIC_RENTAL_FEE, rest)),
+            4942 => Ok((ReceiptType::NAMESPACE_RENTAL_FEE, rest)),
+            8515 => Ok((ReceiptType::HARVEST_FEE, rest)),
+            8776 => Ok((ReceiptType::LOCK_HASH_COMPLETED, rest)),
+            9032 => Ok((ReceiptType::LOCK_HASH_EXPIRED, rest)),
+            8786 => Ok((ReceiptType::LOCK_SECRET_COMPLETED, rest)),
+            9042 => Ok((ReceiptType::LOCK_SECRET_EXPIRED, rest)),
+            12616 => Ok((ReceiptType::LOCK_HASH_CREATED, rest)),
+            12626 => Ok((ReceiptType::LOCK_SECRET_CREATED, rest)),
+            16717 => Ok((ReceiptType::MOSAIC_EXPIRED, rest)),
+            16718 => Ok((ReceiptType::NAMESPACE_EXPIRED, rest)),
+            16974 => Ok((ReceiptType::NAMESPACE_DELETED, rest)),
+            20803 => Ok((ReceiptType::INFLATION, rest)),
+            57667 => Ok((ReceiptType::TRANSACTION_GROUP, rest)),
+            61763 => Ok((ReceiptType::ADDRESS_ALIAS_RESOLUTION, rest)),
+            62019 => Ok((ReceiptType::MOSAIC_ALIAS_RESOLUTION, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -4890,18 +4968,27 @@ impl Receipt {
         size += self.type_().size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
         let self_ = Self { version };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -5071,13 +5158,22 @@ impl HarvestFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -5090,7 +5186,7 @@ impl HarvestFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -5249,20 +5345,29 @@ impl InflationReceipt {
         size += self.mosaic.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
         let mosaic;
         (mosaic, payload) = Mosaic::deserialize(payload)?;
         let self_ = Self { version, mosaic };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -5433,13 +5538,22 @@ impl LockHashCreatedFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -5452,7 +5566,7 @@ impl LockHashCreatedFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -5630,13 +5744,22 @@ impl LockHashCompletedFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -5649,7 +5772,7 @@ impl LockHashCompletedFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -5827,13 +5950,22 @@ impl LockHashExpiredFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -5846,7 +5978,7 @@ impl LockHashExpiredFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -6024,13 +6156,22 @@ impl LockSecretCreatedFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -6043,7 +6184,7 @@ impl LockSecretCreatedFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -6221,13 +6362,22 @@ impl LockSecretCompletedFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -6240,7 +6390,7 @@ impl LockSecretCompletedFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -6418,13 +6568,22 @@ impl LockSecretExpiredFeeReceipt {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -6437,7 +6596,7 @@ impl LockSecretExpiredFeeReceipt {
             mosaic,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -6599,13 +6758,22 @@ impl MosaicExpiredReceipt {
         size += self.artifact_id.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -6615,7 +6783,7 @@ impl MosaicExpiredReceipt {
             version,
             artifact_id,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -6812,13 +6980,22 @@ impl MosaicRentalFeeReceipt {
         size += self.recipient_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -6834,7 +7011,7 @@ impl MosaicRentalFeeReceipt {
             sender_address,
             recipient_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -6880,14 +7057,16 @@ impl NamespaceId {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -6930,16 +7109,18 @@ impl NamespaceRegistrationType {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((NamespaceRegistrationType::ROOT, &payload[1..])),
-            1 => Some((NamespaceRegistrationType::CHILD, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((NamespaceRegistrationType::ROOT, rest)),
+            1 => Ok((NamespaceRegistrationType::CHILD, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -6983,16 +7164,18 @@ impl AliasAction {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((AliasAction::UNLINK, &payload[1..])),
-            1 => Some((AliasAction::LINK, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((AliasAction::UNLINK, rest)),
+            1 => Ok((AliasAction::LINK, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -7143,13 +7326,22 @@ impl NamespaceExpiredReceipt {
         size += self.artifact_id.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -7159,7 +7351,7 @@ impl NamespaceExpiredReceipt {
             version,
             artifact_id,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -7319,13 +7511,22 @@ impl NamespaceDeletedReceipt {
         size += self.artifact_id.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -7335,7 +7536,7 @@ impl NamespaceDeletedReceipt {
             version,
             artifact_id,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -7532,13 +7733,22 @@ impl NamespaceRentalFeeReceipt {
         size += self.recipient_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let version = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let _type_;
         (_type_, payload) = ReceiptType::deserialize(payload)?;
@@ -7554,7 +7764,7 @@ impl NamespaceRentalFeeReceipt {
             sender_address,
             recipient_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -7652,16 +7862,16 @@ impl ReceiptSource {
         size += 4;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let primary_id = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        let primary_id = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let secondary_id = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let secondary_id = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let self_ = Self {
             primary_id,
             secondary_id,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let primary_id = self.primary_id.to_le_bytes();
@@ -7736,7 +7946,7 @@ impl AddressResolutionEntry {
         size += self.resolved_value.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let source;
         (source, payload) = ReceiptSource::deserialize(payload)?;
         let resolved_value;
@@ -7745,7 +7955,7 @@ impl AddressResolutionEntry {
             source,
             resolved_value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let source = self.source.serialize();
@@ -7854,10 +8064,10 @@ impl AddressResolutionStatement {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let unresolved;
         (unresolved, payload) = UnresolvedAddress::deserialize(payload)?;
-        let resolution_entries_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let resolution_entries_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let mut resolution_entries = Vec::new();
         for _ in 0..resolution_entries_count {
@@ -7869,7 +8079,7 @@ impl AddressResolutionStatement {
             unresolved,
             resolution_entries,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let unresolved = self.unresolved.serialize();
@@ -7953,7 +8163,7 @@ impl MosaicResolutionEntry {
         size += self.resolved_value.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let source;
         (source, payload) = ReceiptSource::deserialize(payload)?;
         let resolved_value;
@@ -7962,7 +8172,7 @@ impl MosaicResolutionEntry {
             source,
             resolved_value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let source = self.source.serialize();
@@ -8071,10 +8281,10 @@ impl MosaicResolutionStatement {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let unresolved;
         (unresolved, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let resolution_entries_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let resolution_entries_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let mut resolution_entries = Vec::new();
         for _ in 0..resolution_entries_count {
@@ -8086,7 +8296,7 @@ impl MosaicResolutionStatement {
             unresolved,
             resolution_entries,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let unresolved = self.unresolved.serialize();
@@ -8225,12 +8435,12 @@ impl TransactionStatement {
         size += self.receipts.iter().map(|x| x.size()).sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let primary_id = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        let primary_id = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let secondary_id = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let secondary_id = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let receipt_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let receipt_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let mut receipts = Vec::new();
         for _ in 0..receipt_count {
@@ -8243,7 +8453,7 @@ impl TransactionStatement {
             secondary_id,
             receipts,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let primary_id = self.primary_id.to_le_bytes();
@@ -8438,8 +8648,8 @@ impl BlockStatement {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let transaction_statement_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        let transaction_statement_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let mut transaction_statements = Vec::new();
         for _ in 0..transaction_statement_count {
@@ -8447,7 +8657,7 @@ impl BlockStatement {
             (element, payload) = TransactionStatement::deserialize(payload)?;
             transaction_statements.push(element);
         }
-        let address_resolution_statement_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let address_resolution_statement_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let mut address_resolution_statements = Vec::new();
         for _ in 0..address_resolution_statement_count {
@@ -8455,7 +8665,7 @@ impl BlockStatement {
             (element, payload) = AddressResolutionStatement::deserialize(payload)?;
             address_resolution_statements.push(element);
         }
-        let mosaic_resolution_statement_count = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let mosaic_resolution_statement_count = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         let mut mosaic_resolution_statements = Vec::new();
         for _ in 0..mosaic_resolution_statement_count {
@@ -8468,7 +8678,7 @@ impl BlockStatement {
             address_resolution_statements,
             mosaic_resolution_statements,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let transaction_statement_count = self.transaction_statements.len().to_le_bytes();
@@ -8815,27 +9025,40 @@ impl AccountKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -8858,7 +9081,7 @@ impl AccountKeyLinkTransactionV1 {
             linked_public_key,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -9152,26 +9375,38 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -9187,7 +9422,7 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
             linked_public_key,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -9526,27 +9761,40 @@ impl NodeKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -9569,7 +9817,7 @@ impl NodeKeyLinkTransactionV1 {
             linked_public_key,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -9863,26 +10111,38 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -9898,7 +10158,7 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
             linked_public_key,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -10017,8 +10277,8 @@ impl Cosignature {
         size += self.signature.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let version = u64::from_le_bytes(payload[..8].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        let version = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
@@ -10029,7 +10289,7 @@ impl Cosignature {
             signer_public_key,
             signature,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let version = self.version.to_le_bytes();
@@ -10158,8 +10418,8 @@ impl DetachedCosignature {
         size += self.parent_hash.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let version = u64::from_le_bytes(payload[..8].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        let version = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
@@ -10173,7 +10433,7 @@ impl DetachedCosignature {
             signature,
             parent_hash,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let version = self.version.to_le_bytes();
@@ -10586,27 +10846,40 @@ impl AggregateCompleteTransactionV1 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -10618,13 +10891,14 @@ impl AggregateCompleteTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let transactions_hash;
         (transactions_hash, payload) = Hash256::deserialize(payload)?;
-        let payload_size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let aggregate_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let aggregate_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if aggregate_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                aggregate_transaction_header_reserved_1 as u32,
+            ));
         }
         let mut transactions = Vec::new();
         for _ in 0..payload_size {
@@ -10648,7 +10922,7 @@ impl AggregateCompleteTransactionV1 {
             transactions,
             cosignatures,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -11091,27 +11365,40 @@ impl AggregateCompleteTransactionV2 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -11123,13 +11410,14 @@ impl AggregateCompleteTransactionV2 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let transactions_hash;
         (transactions_hash, payload) = Hash256::deserialize(payload)?;
-        let payload_size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let aggregate_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let aggregate_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if aggregate_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                aggregate_transaction_header_reserved_1 as u32,
+            ));
         }
         let mut transactions = Vec::new();
         for _ in 0..payload_size {
@@ -11153,7 +11441,7 @@ impl AggregateCompleteTransactionV2 {
             transactions,
             cosignatures,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -11596,27 +11884,40 @@ impl AggregateBondedTransactionV1 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -11628,13 +11929,14 @@ impl AggregateBondedTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let transactions_hash;
         (transactions_hash, payload) = Hash256::deserialize(payload)?;
-        let payload_size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let aggregate_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let aggregate_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if aggregate_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                aggregate_transaction_header_reserved_1 as u32,
+            ));
         }
         let mut transactions = Vec::new();
         for _ in 0..payload_size {
@@ -11658,7 +11960,7 @@ impl AggregateBondedTransactionV1 {
             transactions,
             cosignatures,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -12101,27 +12403,40 @@ impl AggregateBondedTransactionV2 {
         size += 0;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -12133,13 +12448,14 @@ impl AggregateBondedTransactionV2 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let transactions_hash;
         (transactions_hash, payload) = Hash256::deserialize(payload)?;
-        let payload_size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
-        let aggregate_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let aggregate_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if aggregate_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                aggregate_transaction_header_reserved_1 as u32,
+            ));
         }
         let mut transactions = Vec::new();
         for _ in 0..payload_size {
@@ -12163,7 +12479,7 @@ impl AggregateBondedTransactionV2 {
             transactions,
             cosignatures,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -12556,27 +12872,40 @@ impl VotingKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -12605,7 +12934,7 @@ impl VotingKeyLinkTransactionV1 {
             end_epoch,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -12937,26 +13266,38 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -12978,7 +13319,7 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
             end_epoch,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -13321,27 +13662,40 @@ impl VrfKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -13364,7 +13718,7 @@ impl VrfKeyLinkTransactionV1 {
             linked_public_key,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -13658,26 +14012,38 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         size += self.link_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -13693,7 +14059,7 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
             linked_public_key,
             link_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -14049,27 +14415,40 @@ impl HashLockTransactionV1 {
         size += self.hash.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -14095,7 +14474,7 @@ impl HashLockTransactionV1 {
             duration,
             hash,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -14408,26 +14787,38 @@ impl EmbeddedHashLockTransactionV1 {
         size += self.hash.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -14446,7 +14837,7 @@ impl EmbeddedHashLockTransactionV1 {
             duration,
             hash,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -14515,17 +14906,19 @@ impl LockHashAlgorithm {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((LockHashAlgorithm::SHA3_256, &payload[1..])),
-            1 => Some((LockHashAlgorithm::HASH_160, &payload[1..])),
-            2 => Some((LockHashAlgorithm::HASH_256, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((LockHashAlgorithm::SHA3_256, rest)),
+            1 => Ok((LockHashAlgorithm::HASH_160, rest)),
+            2 => Ok((LockHashAlgorithm::HASH_256, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -14896,27 +15289,40 @@ impl SecretLockTransactionV1 {
         size += self.hash_algorithm.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -14948,7 +15354,7 @@ impl SecretLockTransactionV1 {
             duration,
             hash_algorithm,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -15299,26 +15705,38 @@ impl EmbeddedSecretLockTransactionV1 {
         size += self.hash_algorithm.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -15343,7 +15761,7 @@ impl EmbeddedSecretLockTransactionV1 {
             duration,
             hash_algorithm,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -15755,27 +16173,40 @@ impl SecretProofTransactionV1 {
         size += 1 * self.proof.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -15789,7 +16220,7 @@ impl SecretProofTransactionV1 {
         (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
         let secret;
         (secret, payload) = Hash256::deserialize(payload)?;
-        let proof_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let proof_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let hash_algorithm;
         (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
@@ -15812,7 +16243,7 @@ impl SecretProofTransactionV1 {
             hash_algorithm,
             proof,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -16179,26 +16610,38 @@ impl EmbeddedSecretProofTransactionV1 {
         size += 1 * self.proof.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -16208,7 +16651,7 @@ impl EmbeddedSecretProofTransactionV1 {
         (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
         let secret;
         (secret, payload) = Hash256::deserialize(payload)?;
-        let proof_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let proof_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let hash_algorithm;
         (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
@@ -16228,7 +16671,7 @@ impl EmbeddedSecretProofTransactionV1 {
             hash_algorithm,
             proof,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -16652,27 +17095,40 @@ impl AccountMetadataTransactionV1 {
         size += 1 * self.value.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -16684,11 +17140,11 @@ impl AccountMetadataTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let value_size_delta = i16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let value_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let mut value = Vec::new();
         for _ in 0..value_size {
@@ -16709,7 +17165,7 @@ impl AccountMetadataTransactionV1 {
             value_size_delta,
             value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -17088,26 +17544,38 @@ impl EmbeddedAccountMetadataTransactionV1 {
         size += 1 * self.value.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -17115,11 +17583,11 @@ impl EmbeddedAccountMetadataTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let value_size_delta = i16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let value_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let mut value = Vec::new();
         for _ in 0..value_size {
@@ -17137,7 +17605,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
             value_size_delta,
             value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -17578,27 +18046,40 @@ impl MosaicMetadataTransactionV1 {
         size += 1 * self.value.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -17610,13 +18091,13 @@ impl MosaicMetadataTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let target_mosaic_id;
         (target_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let value_size_delta = i16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let value_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let mut value = Vec::new();
         for _ in 0..value_size {
@@ -17638,7 +18119,7 @@ impl MosaicMetadataTransactionV1 {
             value_size_delta,
             value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -18036,26 +18517,38 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         size += 1 * self.value.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -18063,13 +18556,13 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let target_mosaic_id;
         (target_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let value_size_delta = i16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let value_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let mut value = Vec::new();
         for _ in 0..value_size {
@@ -18088,7 +18581,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
             value_size_delta,
             value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -18531,27 +19024,40 @@ impl NamespaceMetadataTransactionV1 {
         size += 1 * self.value.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -18563,13 +19069,13 @@ impl NamespaceMetadataTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let target_namespace_id;
         (target_namespace_id, payload) = NamespaceId::deserialize(payload)?;
-        let value_size_delta = i16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let value_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let mut value = Vec::new();
         for _ in 0..value_size {
@@ -18591,7 +19097,7 @@ impl NamespaceMetadataTransactionV1 {
             value_size_delta,
             value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -18989,26 +19495,38 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         size += 1 * self.value.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -19016,13 +19534,13 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let target_namespace_id;
         (target_namespace_id, payload) = NamespaceId::deserialize(payload)?;
-        let value_size_delta = i16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let value_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let value_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
         let mut value = Vec::new();
         for _ in 0..value_size {
@@ -19041,7 +19559,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
             value_size_delta,
             value,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -19101,14 +19619,16 @@ impl MosaicNonce {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 4 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 4];
-        bytes.copy_from_slice(payload);
-        let value = u32::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..4]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u32::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -19168,19 +19688,21 @@ impl MosaicFlags {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((MosaicFlags::NONE, &payload[1..])),
-            1 => Some((MosaicFlags::SUPPLY_MUTABLE, &payload[1..])),
-            2 => Some((MosaicFlags::TRANSFERABLE, &payload[1..])),
-            4 => Some((MosaicFlags::RESTRICTABLE, &payload[1..])),
-            8 => Some((MosaicFlags::REVOKABLE, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((MosaicFlags::NONE, rest)),
+            1 => Ok((MosaicFlags::SUPPLY_MUTABLE, rest)),
+            2 => Ok((MosaicFlags::TRANSFERABLE, rest)),
+            4 => Ok((MosaicFlags::RESTRICTABLE, rest)),
+            8 => Ok((MosaicFlags::REVOKABLE, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -19224,16 +19746,18 @@ impl MosaicSupplyChangeAction {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((MosaicSupplyChangeAction::DECREASE, &payload[1..])),
-            1 => Some((MosaicSupplyChangeAction::INCREASE, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((MosaicSupplyChangeAction::DECREASE, rest)),
+            1 => Ok((MosaicSupplyChangeAction::INCREASE, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -19610,27 +20134,40 @@ impl MosaicDefinitionTransactionV1 {
         size += 1;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -19648,7 +20185,7 @@ impl MosaicDefinitionTransactionV1 {
         (nonce, payload) = MosaicNonce::deserialize(payload)?;
         let flags;
         (flags, payload) = MosaicFlags::deserialize(payload)?;
-        let divisibility = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let divisibility = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let self_ = Self {
             signature,
@@ -19662,7 +20199,7 @@ impl MosaicDefinitionTransactionV1 {
             flags,
             divisibility,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -20019,26 +20556,38 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         size += 1;
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -20052,7 +20601,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         (nonce, payload) = MosaicNonce::deserialize(payload)?;
         let flags;
         (flags, payload) = MosaicFlags::deserialize(payload)?;
-        let divisibility = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let divisibility = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let self_ = Self {
             signer_public_key,
@@ -20063,7 +20612,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
             flags,
             divisibility,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -20425,27 +20974,40 @@ impl MosaicSupplyChangeTransactionV1 {
         size += self.action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -20471,7 +21033,7 @@ impl MosaicSupplyChangeTransactionV1 {
             delta,
             action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -20784,26 +21346,38 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         size += self.action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -20822,7 +21396,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
             delta,
             action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -21163,27 +21737,40 @@ impl MosaicSupplyRevocationTransactionV1 {
         size += self.mosaic.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -21206,7 +21793,7 @@ impl MosaicSupplyRevocationTransactionV1 {
             source_address,
             mosaic,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -21500,26 +22087,38 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         size += self.mosaic.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -21535,7 +22134,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
             source_address,
             mosaic,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -22001,27 +22600,40 @@ impl MultisigAccountModificationTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -22031,19 +22643,21 @@ impl MultisigAccountModificationTransactionV1 {
         (fee, payload) = Amount::deserialize(payload)?;
         let deadline;
         (deadline, payload) = Timestamp::deserialize(payload)?;
-        let min_removal_delta = i8::from_le_bytes(payload[..1].try_into().ok()?);
+        let min_removal_delta = i8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let min_approval_delta = i8::from_le_bytes(payload[..1].try_into().ok()?);
+        let min_approval_delta = i8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let address_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let address_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let address_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let address_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let multisig_account_modification_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if multisig_account_modification_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                multisig_account_modification_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut address_additions = Vec::new();
         for _ in 0..address_additions_count {
@@ -22068,7 +22682,7 @@ impl MultisigAccountModificationTransactionV1 {
             address_additions,
             address_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -22507,44 +23121,58 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
         let _type_;
         (_type_, payload) = TransactionType::deserialize(payload)?;
-        let min_removal_delta = i8::from_le_bytes(payload[..1].try_into().ok()?);
+        let min_removal_delta = i8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let min_approval_delta = i8::from_le_bytes(payload[..1].try_into().ok()?);
+        let min_approval_delta = i8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let address_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let address_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let address_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let address_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let multisig_account_modification_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if multisig_account_modification_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                multisig_account_modification_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut address_additions = Vec::new();
         for _ in 0..address_additions_count {
@@ -22566,7 +23194,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
             address_additions,
             address_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -22940,27 +23568,40 @@ impl AddressAliasTransactionV1 {
         size += self.alias_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -22986,7 +23627,7 @@ impl AddressAliasTransactionV1 {
             address,
             alias_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -23299,26 +23940,38 @@ impl EmbeddedAddressAliasTransactionV1 {
         size += self.alias_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -23337,7 +23990,7 @@ impl EmbeddedAddressAliasTransactionV1 {
             address,
             alias_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -23695,27 +24348,40 @@ impl MosaicAliasTransactionV1 {
         size += self.alias_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -23741,7 +24407,7 @@ impl MosaicAliasTransactionV1 {
             mosaic_id,
             alias_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -24054,26 +24720,38 @@ impl EmbeddedMosaicAliasTransactionV1 {
         size += self.alias_action.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -24092,7 +24770,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
             mosaic_id,
             alias_action,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -24523,27 +25201,40 @@ impl NamespaceRegistrationTransactionV1 {
         size += 1 * self.name.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -24561,7 +25252,7 @@ impl NamespaceRegistrationTransactionV1 {
         (id, payload) = NamespaceId::deserialize(payload)?;
         let registration_type_;
         (registration_type_, payload) = NamespaceRegistrationType::deserialize(payload)?;
-        let name_size = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let name_size = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let mut name = Vec::new();
         for _ in 0..name_size {
@@ -24583,7 +25274,7 @@ impl NamespaceRegistrationTransactionV1 {
             registration_type_,
             name,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -24975,26 +25666,38 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         size += 1 * self.name.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -25008,7 +25711,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         (id, payload) = NamespaceId::deserialize(payload)?;
         let registration_type_;
         (registration_type_, payload) = NamespaceRegistrationType::deserialize(payload)?;
-        let name_size = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let name_size = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let mut name = Vec::new();
         for _ in 0..name_size {
@@ -25027,7 +25730,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
             registration_type_,
             name,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -25115,19 +25818,21 @@ impl AccountRestrictionFlags {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 2 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 2];
-        bytes.copy_from_slice(payload);
-        match u16::from_le_bytes(bytes) {
-            1 => Some((AccountRestrictionFlags::ADDRESS, &payload[2..])),
-            2 => Some((AccountRestrictionFlags::MOSAIC_ID, &payload[2..])),
-            4 => Some((AccountRestrictionFlags::TRANSACTION_TYPE, &payload[2..])),
-            16384 => Some((AccountRestrictionFlags::OUTGOING, &payload[2..])),
-            32768 => Some((AccountRestrictionFlags::BLOCK, &payload[2..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u16::from_le_bytes(bytes.try_into()?) {
+            1 => Ok((AccountRestrictionFlags::ADDRESS, rest)),
+            2 => Ok((AccountRestrictionFlags::MOSAIC_ID, rest)),
+            4 => Ok((AccountRestrictionFlags::TRANSACTION_TYPE, rest)),
+            16384 => Ok((AccountRestrictionFlags::OUTGOING, rest)),
+            32768 => Ok((AccountRestrictionFlags::BLOCK, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -25545,27 +26250,40 @@ impl AccountAddressRestrictionTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -25577,15 +26295,17 @@ impl AccountAddressRestrictionTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let restriction_flags;
         (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
-        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let account_restriction_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if account_restriction_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                account_restriction_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut restriction_additions = Vec::new();
         for _ in 0..restriction_additions_count {
@@ -25609,7 +26329,7 @@ impl AccountAddressRestrictionTransactionV1 {
             restriction_additions,
             restriction_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -26017,26 +26737,38 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -26044,15 +26776,17 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let restriction_flags;
         (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
-        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let account_restriction_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if account_restriction_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                account_restriction_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut restriction_additions = Vec::new();
         for _ in 0..restriction_additions_count {
@@ -26073,7 +26807,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
             restriction_additions,
             restriction_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -26526,27 +27260,40 @@ impl AccountMosaicRestrictionTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -26558,15 +27305,17 @@ impl AccountMosaicRestrictionTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let restriction_flags;
         (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
-        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let account_restriction_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if account_restriction_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                account_restriction_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut restriction_additions = Vec::new();
         for _ in 0..restriction_additions_count {
@@ -26590,7 +27339,7 @@ impl AccountMosaicRestrictionTransactionV1 {
             restriction_additions,
             restriction_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -26998,26 +27747,38 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -27025,15 +27786,17 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let restriction_flags;
         (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
-        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let account_restriction_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if account_restriction_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                account_restriction_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut restriction_additions = Vec::new();
         for _ in 0..restriction_additions_count {
@@ -27054,7 +27817,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
             restriction_additions,
             restriction_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -27507,27 +28270,40 @@ impl AccountOperationRestrictionTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -27539,15 +28315,17 @@ impl AccountOperationRestrictionTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let restriction_flags;
         (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
-        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let account_restriction_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if account_restriction_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                account_restriction_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut restriction_additions = Vec::new();
         for _ in 0..restriction_additions_count {
@@ -27571,7 +28349,7 @@ impl AccountOperationRestrictionTransactionV1 {
             restriction_additions,
             restriction_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -27979,26 +28757,38 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
             .sum::<usize>();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -28006,15 +28796,17 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let restriction_flags;
         (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
-        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let account_restriction_transaction_body_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+            u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if account_restriction_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                account_restriction_transaction_body_reserved_1 as u32,
+            ));
         }
         let mut restriction_additions = Vec::new();
         for _ in 0..restriction_additions_count {
@@ -28035,7 +28827,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
             restriction_additions,
             restriction_deletions,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -28459,27 +29251,40 @@ impl MosaicAddressRestrictionTransactionV1 {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -28491,11 +29296,11 @@ impl MosaicAddressRestrictionTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let mosaic_id;
         (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let restriction_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
@@ -28511,7 +29316,7 @@ impl MosaicAddressRestrictionTransactionV1 {
             new_restriction_value,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -28880,26 +29685,38 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         size += self.target_address.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -28907,11 +29724,11 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let mosaic_id;
         (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let restriction_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
@@ -28924,7 +29741,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
             new_restriction_value,
             target_address,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -28982,14 +29799,16 @@ impl MosaicRestrictionKey {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 8 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(payload);
-        let value = u64::from_le_bytes(bytes);
-        Some((Self::new(value), &payload[..8]))
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        let value = u64::from_le_bytes(bytes.try_into()?);
+        Ok((Self::new(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -29052,21 +29871,23 @@ impl MosaicRestrictionType {
     pub fn size(&self) -> usize {
         Self::SIZE
     }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 1 {
-            return None;
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
         }
-        let mut bytes = [0u8; 1];
-        bytes.copy_from_slice(payload);
-        match u8::from_le_bytes(bytes) {
-            0 => Some((MosaicRestrictionType::NONE, &payload[1..])),
-            1 => Some((MosaicRestrictionType::EQ, &payload[1..])),
-            2 => Some((MosaicRestrictionType::NE, &payload[1..])),
-            3 => Some((MosaicRestrictionType::LT, &payload[1..])),
-            4 => Some((MosaicRestrictionType::LE, &payload[1..])),
-            5 => Some((MosaicRestrictionType::GT, &payload[1..])),
-            6 => Some((MosaicRestrictionType::GE, &payload[1..])),
-            _ => None,
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        match u8::from_le_bytes(bytes.try_into()?) {
+            0 => Ok((MosaicRestrictionType::NONE, rest)),
+            1 => Ok((MosaicRestrictionType::EQ, rest)),
+            2 => Ok((MosaicRestrictionType::NE, rest)),
+            3 => Ok((MosaicRestrictionType::LT, rest)),
+            4 => Ok((MosaicRestrictionType::LE, rest)),
+            5 => Ok((MosaicRestrictionType::GT, rest)),
+            6 => Ok((MosaicRestrictionType::GE, rest)),
+            other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -29489,27 +30310,40 @@ impl MosaicGlobalRestrictionTransactionV1 {
         size += self.new_restriction_type_.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -29523,11 +30357,11 @@ impl MosaicGlobalRestrictionTransactionV1 {
         (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
         let reference_mosaic_id;
         (reference_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let restriction_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let previous_restriction_type_;
         (previous_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
@@ -29547,7 +30381,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
             previous_restriction_type_,
             new_restriction_type_,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -29954,26 +30788,38 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         size += self.new_restriction_type_.size();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -29983,11 +30829,11 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
         let reference_mosaic_id;
         (reference_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
-        let restriction_key = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into().ok()?);
+        let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
         let previous_restriction_type_;
         (previous_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
@@ -30004,7 +30850,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
             previous_restriction_type_,
             new_restriction_type_,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -30474,27 +31320,40 @@ impl TransferTransactionV1 {
         size += 1 * self.message.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let verifiable_entity_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if verifiable_entity_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                verifiable_entity_header_reserved_1 as u32,
+            ));
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -30506,20 +31365,23 @@ impl TransferTransactionV1 {
         (deadline, payload) = Timestamp::deserialize(payload)?;
         let recipient_address;
         (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let message_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let message_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let mosaics_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let mosaics_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let transfer_transaction_body_reserved_1 = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let transfer_transaction_body_reserved_1 = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         if transfer_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                transfer_transaction_body_reserved_1 as u32,
+            ));
         }
-        let transfer_transaction_body_reserved_2 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let transfer_transaction_body_reserved_2 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if transfer_transaction_body_reserved_2 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                transfer_transaction_body_reserved_2 as u32,
+            ));
         }
         let mut mosaics = Vec::new();
         for _ in 0..mosaics_count {
@@ -30545,7 +31407,7 @@ impl TransferTransactionV1 {
             mosaics,
             message,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
@@ -30970,26 +31832,38 @@ impl EmbeddedTransferTransactionV1 {
         size += 1 * self.message.len();
         size
     }
-    pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {
-        let size = u32::from_le_bytes(payload[..4].try_into().ok()?);
+    pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < 4 {
+            return Err(SymbolError::SizeError {
+                expect: 4,
+                real: payload.len(),
+            });
+        }
+        let size = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
-            return None;
+            return Err(SymbolError::SizeError {
+                expect: size as usize,
+                real: payload.len() + 4,
+            });
         }
-        let embedded_transaction_header_reserved_1 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let embedded_transaction_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if embedded_transaction_header_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                embedded_transaction_header_reserved_1 as u32,
+            ));
         }
         let signer_public_key;
         (signer_public_key, payload) = PublicKey::deserialize(payload)?;
-        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                entity_body_reserved_1 as u32,
+            ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let _version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
@@ -30997,20 +31871,23 @@ impl EmbeddedTransferTransactionV1 {
         (_type_, payload) = TransactionType::deserialize(payload)?;
         let recipient_address;
         (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
-        let message_size = u16::from_le_bytes(payload[..2].try_into().ok()?);
+        let message_size = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let mosaics_count = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let mosaics_count = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
-        let transfer_transaction_body_reserved_1 = u8::from_le_bytes(payload[..1].try_into().ok()?);
+        let transfer_transaction_body_reserved_1 = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         if transfer_transaction_body_reserved_1 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                transfer_transaction_body_reserved_1 as u32,
+            ));
         }
-        let transfer_transaction_body_reserved_2 =
-            u32::from_le_bytes(payload[..4].try_into().ok()?);
+        let transfer_transaction_body_reserved_2 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if transfer_transaction_body_reserved_2 != 0 {
-            return None;
+            return Err(SymbolError::ReservedIsNotZeroError(
+                transfer_transaction_body_reserved_2 as u32,
+            ));
         }
         let mut mosaics = Vec::new();
         for _ in 0..mosaics_count {
@@ -31033,7 +31910,7 @@ impl EmbeddedTransferTransactionV1 {
             mosaics,
             message,
         };
-        Some((self_, payload))
+        Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();

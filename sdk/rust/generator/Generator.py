@@ -216,7 +216,7 @@ def generate_struct2(ast_model):
     ret += '}'
 
     ## deserialize
-    ret += 'pub fn deserialize(mut payload: &[u8]) -> Option<(Self, &[u8])> {'
+    ret += 'pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {'
     for f in ast_model.fields:
         if f.is_const:
             continue
@@ -226,8 +226,10 @@ def generate_struct2(ast_model):
         
         ft = f.field_type
         fs = f.size
+        if f.name == 'size':
+            ret += f'if payload.len() < {fs} {{ return Err(SymbolError::SizeError{{expect: {fs}, real: payload.len()}}) }}'
         if type(ft) == catparser.ast.FixedSizeInteger:
-            ret += f'let {fn} = {ft}::from_le_bytes(payload[..{fs}].try_into().ok()?);'
+            ret += f'let {fn} = {ft}::from_le_bytes(payload[..{fs}].try_into()?);'
             ret += f'payload = &payload[{fs}..];'
         elif type(ft) == catparser.ast.Array:
             ret += f'let mut {fn} = Vec::new();'
@@ -255,13 +257,9 @@ def generate_struct2(ast_model):
 
         
         if f.name == 'size':
-            ret += f'if size as usize >= payload.len() + {fs} {{'
-            ret += 'return None;'
-            ret += '}'
+            ret += f'if size as usize >= payload.len() + {fs} {{ return Err(SymbolError::SizeError{{expect: size as usize, real: payload.len() + {fs} }}); }}'
         if f.is_reserved:
-            ret += f'if {f.name} != 0 {{'
-            ret += 'return None;'
-            ret += '}'
+            ret += f'if {f.name} != 0 {{ return Err(SymbolError::ReservedIsNotZeroError({f.name} as u32)); }}'
         if is_constantized(f):
             pass
     
@@ -272,7 +270,7 @@ def generate_struct2(ast_model):
         ret += f'{f.name},'
     ret += '};'
         
-    ret += 'Some((self_, payload))'
+    ret += 'Ok((self_, payload))'
         
     ret += '}'
     
@@ -361,22 +359,22 @@ def generate_enum(ast_model):
     ret += '}'
 
     ## deserialize
-    ret += f'pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {{'
-    ret += f'if payload.len() < {ast_model.size} {{ return None; }}'
-    ret += f'let mut bytes = [0u8; {ast_model.size}];'
-    ret += f'bytes.copy_from_slice(payload);'
-    ret += f'match {value_type}::from_le_bytes(bytes) {{'
+    ret += f'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {{'
+    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
+    ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
+    ret += f'match {value_type}::from_le_bytes(bytes.try_into()?) {{'
     ret += ''.join(
         list(
             map(
-                lambda e: f'{e.value} => Some(({ast_model.name}::{e.name}, &payload[{ast_model.size}..])),',
+                lambda e: f'{e.value} => Ok(({ast_model.name}::{e.name}, rest)),',
                 ast_model.values,
             )
         )
     )
-    ret += '_ => None,'
+    ret += 'other => Err(SymbolError::EnumDecodeError(other as u32)),'
     ret += '}'
     ret += '}'
+
 
     ## serialize
     ret += f'pub fn serialize(&self) -> Vec<u8> {{'
@@ -415,15 +413,6 @@ def generate_bytearray(ast_model):
     ret += 'pub fn default() -> Self {'
     ret += f'Self([0; {ast_model.size}])'
     ret += '}'
-    
-    ret += 'pub fn from_str(hex_str: &str) -> Option<Self> {'
-    ret += f'let mut bytes = [0; {ast_model.size}];'
-    ret += 'if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {'
-    ret += 'None'
-    ret += '} else {'
-    ret += 'Some(Self::new(bytes))'
-    ret += '}'
-    ret += '}'
 
     ## size
     ret += 'pub fn size(&self) -> usize {'
@@ -431,11 +420,10 @@ def generate_bytearray(ast_model):
     ret += '}'
 
     ## deserialize
-    ret += f'pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {{'
-    ret += f'if payload.len() < {ast_model.size} {{ return None; }}'
-    ret += f'let mut bytes = [0u8; {ast_model.size}];'
-    ret += f'bytes.copy_from_slice(payload);'
-    ret += f'Some((Self::new(bytes), &payload[..{ast_model.size}]))'
+    ret += f'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {{'
+    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
+    ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
+    ret += 'Ok((Self::new(bytes.try_into()?), rest))'
     ret += '}'
 
     ## serialize
@@ -489,12 +477,11 @@ def generate_integer(ast_model):
     ret += '}'
 
     ## deserialize
-    ret += f'pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {{'
-    ret += f'if payload.len() < {ast_model.size} {{ return None; }}'
-    ret += f'let mut bytes = [0u8; {ast_model.size}];'
-    ret += f'bytes.copy_from_slice(payload);'
-    ret += f'let value = {value_type}::from_le_bytes(bytes);'
-    ret += f'Some((Self::new(value), &payload[..{ast_model.size}]))'
+    ret += f'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {{'
+    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
+    ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
+    ret += f'let value = {value_type}::from_le_bytes(bytes.try_into()?);'
+    ret += 'Ok((Self::new(value), rest))'
     ret += '}'
 
     ## serialize

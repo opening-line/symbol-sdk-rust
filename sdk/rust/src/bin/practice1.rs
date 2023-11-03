@@ -1,44 +1,38 @@
-use ed25519_dalek::Signer;
+// use ed25519_dalek::Signer;
 use symbol::symbol::models::*;
 
-fn main() {
-    let a = Address::default();
-    println!("{}", a.to_string());
+// signatureやその同類はnewでは要らない(defaultでよい)。インターフェースに現れる必要が無い。
+// 強力なnewを作成すべきかどうか
+
+fn main() -> Result<(), SymbolError> {
+
+    let a = TransferTransactionV1::new(
+        Signature::default(),
+        PublicKey::new(
+            hex::decode("A59277D56E9F4FA46854F5EFAAA253B09F8AE69A473565E01FD9E6A738E4AB74")?
+                .as_slice()
+                .try_into()?,
+        ),
+        NetworkType::TESTNET,
+        Amount(0x186A0),
+        Timestamp(41998024783),
+        UnresolvedAddress::new(
+            base32_decode("TCHBDENCLKEBILBPWP3JPB2XNY64OE7PYHHE32I")?
+                .as_slice()
+                .try_into()?,
+        ),
+        vec![UnresolvedMosaic::new(
+            UnresolvedMosaicId(0x7CDF3B117A3C40CC),
+            Amount(1000000),
+        )],
+        vec![],
+    );
+    println!("{:#?}", a);
+    Ok(())
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
-pub struct Address(pub [u8; 24]);
-impl Address {
-    const SIZE: usize = 24;
-    pub fn new(address: [u8; 24]) -> Self {
-        Self(address)
-    }
-    pub fn default() -> Self {
-        Self([0; 24])
-    }
-    pub fn from_str(hex_str: &str) -> Option<Self> {
-        let mut bytes = [0; 24];
-        if let Err(_) = hex::decode_to_slice(hex_str, &mut bytes) {
-            None
-        } else {
-            Some(Self::new(bytes))
-        }
-    }
-    pub fn size(&self) -> usize {
-        Self::SIZE
-    }
-    pub fn deserialize(payload: &[u8]) -> Option<(Self, &[u8])> {
-        if payload.len() < 24 {
-            return None;
-        }
-        let mut bytes = [0u8; 24];
-        bytes.copy_from_slice(payload);
-        Some((Self::new(bytes), &payload[..24]))
-    }
-    pub fn serialize(&self) -> Vec<u8> {
-        self.0.to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
+fn base32_decode(input: &str) -> Result<Vec<u8>, data_encoding::DecodeError> {
+    use data_encoding::BASE32;
+    let input = input.to_string() + &"=".repeat(8 - (input.len() % 8));
+    BASE32.decode(&input.as_bytes())
 }
