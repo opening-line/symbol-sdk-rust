@@ -2,21 +2,16 @@
 
 # Since the Rust language does not support default arguments,
 # the new(args) and default() functions are provided as constructors.
-# new(args): requires an argument
+# new(args): requires arguments
 # default(): no argument required, default value is set
-
-# todo: to_string()
-# todo: factory
 
 from pathlib import Path
 from enum import Enum
 import catparser
 import lark
 from catparser.DisplayType import DisplayType
-# from catparser.generators.util import build_factory_map
-# from .FactoryFormatter import FactoryClassFormatter, FactoryFormatter
 
-# from .format import indent
+TRAITS = ("signature", "signer_public_key", "message")
 
 class Generator:
     @staticmethod
@@ -24,22 +19,33 @@ class Generator:
         print(f'python catbuffer generator called with output: {output}')
         generate_files(ast_models, Path(output))
 
+def snake_to_camel(word):
+    return ''.join(x.capitalize() or '_' for x in word.split('_'))
 
 def generate_files(ast_models, output_directory: Path):
-    # factory_map = build_factory_map(ast_models)
 
     output_directory.mkdir(exist_ok=True)
 
     with open(output_directory / 'models.rs', 'w', encoding='utf8', newline='') as output_file:
         import copy
         output = ''
-        with open("generator/models_header.rs", "r") as f:
-            output += f.read()
+        output += 'use hex;'
+        output += 'pub use crate::symbol::models_header::*;'
+
+        for trait in TRAITS:
+            output += f'pub trait Trait{snake_to_camel(trait)} {{'
+            output += 'type T;'
+            output += f'fn get_{trait}(&self) -> &Self::T;'
+            output += f'fn set_{trait}(&mut self, {trait}: Self::T);'
+            output += '}'
+
         for ast_model in ast_models:
+            if ast_model.name in ('Signature', 'PublicKey'):
+                continue
             ast_model = copy.deepcopy(ast_model)
             output += header_for_each_ast_model(ast_model)
             if ast_model.display_type == DisplayType.STRUCT:
-                output += generate_struct2(ast_model)
+                output += generate_struct(ast_model)
             elif ast_model.display_type == DisplayType.ENUM:
                 output += generate_enum(ast_model)
             elif ast_model.display_type == DisplayType.BYTE_ARRAY:
@@ -62,7 +68,7 @@ def generate_files(ast_models, output_directory: Path):
 
         output_file.write(output)
 
-def generate_struct2(ast_model):
+def generate_struct(ast_model):
     struct_name = ast_model.name
     
     if struct_name == "EmbeddedTransferTransactionV1":
@@ -98,6 +104,11 @@ def generate_struct2(ast_model):
                 return other_field
         return None
     
+    def skip_in_constructor(field):
+        if field.name in ("signature"):
+            return True
+        return False
+    
     def is_member(field):
         if is_constantized(field):
             return False
@@ -114,7 +125,6 @@ def generate_struct2(ast_model):
     def is_method(field):
         method_list = ["version", "type"]
         return field.name in method_list
-        
     
     # prepare
     for f in ast_model.fields:
@@ -161,6 +171,8 @@ def generate_struct2(ast_model):
     for f in ast_model.fields:
         if not is_member(f):
             continue
+        if skip_in_constructor(f):
+            continue
         if type(f.field_type) == catparser.ast.Array:
             ret += f'{f.name}: Vec<{f.field_type.element_type}>,'
         else:
@@ -169,6 +181,9 @@ def generate_struct2(ast_model):
     ret += 'Self {'
     for f in ast_model.fields:
         if not is_member(f):
+            continue
+        if skip_in_constructor(f):
+            ret += f'{f.name}: {f.field_type}::default(),'
             continue
         ret += f'{f.name},'
     ret += '}'
@@ -309,17 +324,31 @@ def generate_struct2(ast_model):
     for f in ast_model.fields:
         if f.is_const:
             continue
-        # elif is_size_of_other(f):
-        #     continue
         fn = f.name
         ret += f'{fn}.iter(),'
     ret += '].into_iter().flat_map(|a| a).map(|x| *x).collect()'
         
     ret += '}'
-    
-    
     ret += '}'
-    return ret.replace('type', 'type_')
+    
+    ret = ret.replace('type', 'type_')
+    
+    for f in ast_model.fields:
+        fn = f.name
+        if fn not in TRAITS:
+            continue
+        if type(f.field_type) == catparser.ast.Array:
+            ft = f'Vec<{f.field_type.element_type}>'
+        else:
+            ft = f.field_type
+        
+        ret += f'impl Trait{snake_to_camel(fn)} for {struct_name} {{'
+        ret += f'type T = {ft};'
+        ret += f'fn get_{fn}(&self) -> &Self::T {{ &self.{fn} }}'
+        ret += f'fn set_{fn}(&mut self, {fn}: Self::T) {{ self.{fn} = {fn}; }}'
+        ret += f'}}'
+        
+    return ret
 
 def generate_enum(ast_model):
     # common (i.e. prepare)
@@ -423,7 +452,7 @@ def generate_bytearray(ast_model):
     ret += f'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {{'
     ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
     ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
-    ret += 'Ok((Self::new(bytes.try_into()?), rest))'
+    ret += 'Ok((Self(bytes.try_into()?), rest))'
     ret += '}'
 
     ## serialize
@@ -481,7 +510,7 @@ def generate_integer(ast_model):
     ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
     ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
     ret += f'let value = {value_type}::from_le_bytes(bytes.try_into()?);'
-    ret += 'Ok((Self::new(value), rest))'
+    ret += 'Ok((Self(value), rest))'
     ret += '}'
 
     ## serialize
@@ -502,7 +531,7 @@ def generate_integer(ast_model):
 def header_for_each_ast_model(ast_model):
     ret = ""
     ret += display_ast_model(ast_model)
-    ret += '#[derive(Debug, Clone, PartialEq, PartialOrd)]\n'
+    ret += '#[derive(Debug, Clone, PartialEq, Eq)]\n'
     return ret
 def display_ast_model(obj, indent: int = 0):
     ret = ""

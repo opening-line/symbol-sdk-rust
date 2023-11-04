@@ -1,34 +1,19 @@
-use data_encoding::DecodeError;
+pub use crate::symbol::models_header::*;
 use hex;
-use hex::FromHexError;
-use std::array::TryFromSliceError;
-
-#[derive(Debug)]
-pub enum SymbolError {
-    FromHexError(FromHexError),
-    Base32DecodeError(DecodeError),
-    TryFromSliceError(TryFromSliceError),
-    SizeError { expect: usize, real: usize },
-    ReservedIsNotZeroError(u32),
-    EnumDecodeError(u32),
+pub trait TraitSignature {
+    type T;
+    fn get_signature(&self) -> &Self::T;
+    fn set_signature(&mut self, signature: Self::T);
 }
-
-impl From<FromHexError> for SymbolError {
-    fn from(err: FromHexError) -> Self {
-        SymbolError::FromHexError(err)
-    }
+pub trait TraitSignerPublicKey {
+    type T;
+    fn get_signer_public_key(&self) -> &Self::T;
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T);
 }
-
-impl From<DecodeError> for SymbolError {
-    fn from(err: DecodeError) -> Self {
-        SymbolError::Base32DecodeError(err)
-    }
-}
-
-impl From<TryFromSliceError> for SymbolError {
-    fn from(err: TryFromSliceError) -> SymbolError {
-        SymbolError::TryFromSliceError(err)
-    }
+pub trait TraitMessage {
+    type T;
+    fn get_message(&self) -> &Self::T;
+    fn set_message(&mut self, message: Self::T);
 }
 ///name: Amount
 ///linked_type: <class 'catparser.ast.FixedSizeInteger'>
@@ -40,7 +25,7 @@ impl From<TryFromSliceError> for SymbolError {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Amount(pub u64);
 impl Amount {
     const SIZE: usize = 8;
@@ -62,7 +47,7 @@ impl Amount {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -81,7 +66,7 @@ impl Amount {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockDuration(pub u64);
 impl BlockDuration {
     const SIZE: usize = 8;
@@ -103,7 +88,7 @@ impl BlockDuration {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -122,7 +107,7 @@ impl BlockDuration {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 4
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockFeeMultiplier(pub u32);
 impl BlockFeeMultiplier {
     const SIZE: usize = 4;
@@ -144,7 +129,7 @@ impl BlockFeeMultiplier {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u32::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -163,7 +148,7 @@ impl BlockFeeMultiplier {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Difficulty(pub u64);
 impl Difficulty {
     const SIZE: usize = 8;
@@ -185,7 +170,7 @@ impl Difficulty {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -204,7 +189,7 @@ impl Difficulty {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 4
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FinalizationEpoch(pub u32);
 impl FinalizationEpoch {
     const SIZE: usize = 4;
@@ -226,7 +211,7 @@ impl FinalizationEpoch {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u32::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -245,7 +230,7 @@ impl FinalizationEpoch {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 4
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FinalizationPoint(pub u32);
 impl FinalizationPoint {
     const SIZE: usize = 4;
@@ -267,7 +252,7 @@ impl FinalizationPoint {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u32::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -286,7 +271,7 @@ impl FinalizationPoint {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Height(pub u64);
 impl Height {
     const SIZE: usize = 8;
@@ -308,7 +293,7 @@ impl Height {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -327,7 +312,7 @@ impl Height {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Importance(pub u64);
 impl Importance {
     const SIZE: usize = 8;
@@ -349,7 +334,7 @@ impl Importance {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -368,7 +353,7 @@ impl Importance {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ImportanceHeight(pub u64);
 impl ImportanceHeight {
     const SIZE: usize = 8;
@@ -390,7 +375,7 @@ impl ImportanceHeight {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -409,7 +394,7 @@ impl ImportanceHeight {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnresolvedMosaicId(pub u64);
 impl UnresolvedMosaicId {
     const SIZE: usize = 8;
@@ -431,7 +416,7 @@ impl UnresolvedMosaicId {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -450,7 +435,7 @@ impl UnresolvedMosaicId {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicId(pub u64);
 impl MosaicId {
     const SIZE: usize = 8;
@@ -472,7 +457,7 @@ impl MosaicId {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -491,7 +476,7 @@ impl MosaicId {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Timestamp(pub u64);
 impl Timestamp {
     const SIZE: usize = 8;
@@ -513,7 +498,7 @@ impl Timestamp {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -530,7 +515,7 @@ impl Timestamp {
 ///    *name: binary_fixed(24)
 ///*is_unsigned: True
 ///*size: 24
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnresolvedAddress(pub [u8; 24]);
 impl UnresolvedAddress {
     const SIZE: usize = 24;
@@ -551,7 +536,7 @@ impl UnresolvedAddress {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -568,7 +553,7 @@ impl UnresolvedAddress {
 ///    *name: binary_fixed(24)
 ///*is_unsigned: True
 ///*size: 24
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Address(pub [u8; 24]);
 impl Address {
     const SIZE: usize = 24;
@@ -589,7 +574,7 @@ impl Address {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -606,7 +591,7 @@ impl Address {
 ///    *name: binary_fixed(32)
 ///*is_unsigned: True
 ///*size: 32
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Hash256(pub [u8; 32]);
 impl Hash256 {
     const SIZE: usize = 32;
@@ -627,7 +612,7 @@ impl Hash256 {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -644,7 +629,7 @@ impl Hash256 {
 ///    *name: binary_fixed(64)
 ///*is_unsigned: True
 ///*size: 64
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Hash512(pub [u8; 64]);
 impl Hash512 {
     const SIZE: usize = 64;
@@ -665,45 +650,7 @@ impl Hash512 {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
-    }
-    pub fn serialize(&self) -> Vec<u8> {
-        self.0.to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
-}
-///name: PublicKey
-///linked_type: <class 'catparser.ast.FixedSizeBuffer'>
-///    size: 32
-///    is_unsigned: True
-///    display_type: DisplayType.BYTE_ARRAY
-///    *name: binary_fixed(32)
-///*is_unsigned: True
-///*size: 32
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
-pub struct PublicKey(pub [u8; 32]);
-impl PublicKey {
-    const SIZE: usize = 32;
-    pub fn new(publickey: [u8; 32]) -> Self {
-        Self(publickey)
-    }
-    pub fn default() -> Self {
-        Self([0; 32])
-    }
-    pub fn size(&self) -> usize {
-        Self::SIZE
-    }
-    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
-        if payload.len() < Self::SIZE {
-            return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
-                real: payload.len(),
-            });
-        }
-        let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -720,7 +667,7 @@ impl PublicKey {
 ///    *name: binary_fixed(32)
 ///*is_unsigned: True
 ///*size: 32
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VotingPublicKey(pub [u8; 32]);
 impl VotingPublicKey {
     const SIZE: usize = 32;
@@ -741,45 +688,7 @@ impl VotingPublicKey {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
-    }
-    pub fn serialize(&self) -> Vec<u8> {
-        self.0.to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
-}
-///name: Signature
-///linked_type: <class 'catparser.ast.FixedSizeBuffer'>
-///    size: 64
-///    is_unsigned: True
-///    display_type: DisplayType.BYTE_ARRAY
-///    *name: binary_fixed(64)
-///*is_unsigned: True
-///*size: 64
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
-pub struct Signature(pub [u8; 64]);
-impl Signature {
-    const SIZE: usize = 64;
-    pub fn new(signature: [u8; 64]) -> Self {
-        Self(signature)
-    }
-    pub fn default() -> Self {
-        Self([0; 64])
-    }
-    pub fn size(&self) -> usize {
-        Self::SIZE
-    }
-    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
-        if payload.len() < Self::SIZE {
-            return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
-                real: payload.len(),
-            });
-        }
-        let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -827,7 +736,7 @@ impl Signature {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Mosaic {
     pub mosaic_id: MosaicId,
     pub amount: Amount,
@@ -905,7 +814,7 @@ impl Mosaic {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnresolvedMosaic {
     pub mosaic_id: UnresolvedMosaicId,
     pub amount: Amount,
@@ -964,7 +873,7 @@ impl UnresolvedMosaic {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum LinkAction {
     UNLINK = 0,
@@ -1019,7 +928,7 @@ impl LinkAction {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum NetworkType {
     MAINNET = 104,
@@ -1143,7 +1052,7 @@ impl NetworkType {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 2
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum TransactionType {
     ACCOUNT_KEY_LINK = 16716,
@@ -1415,7 +1324,7 @@ impl TransactionType {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Transaction {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -1431,14 +1340,13 @@ impl Transaction {
         TransactionType::default()
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -1547,6 +1455,24 @@ impl Transaction {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for Transaction {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for Transaction {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedTransaction
@@ -1704,7 +1630,7 @@ impl Transaction {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedTransaction {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -1805,6 +1731,15 @@ impl EmbeddedTransaction {
         .collect()
     }
 }
+impl TraitSignerPublicKey for EmbeddedTransaction {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: ProofGamma
 ///linked_type: <class 'catparser.ast.FixedSizeBuffer'>
 ///    size: 32
@@ -1813,7 +1748,7 @@ impl EmbeddedTransaction {
 ///    *name: binary_fixed(32)
 ///*is_unsigned: True
 ///*size: 32
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProofGamma(pub [u8; 32]);
 impl ProofGamma {
     const SIZE: usize = 32;
@@ -1834,7 +1769,7 @@ impl ProofGamma {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -1851,7 +1786,7 @@ impl ProofGamma {
 ///    *name: binary_fixed(16)
 ///*is_unsigned: True
 ///*size: 16
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProofVerificationHash(pub [u8; 16]);
 impl ProofVerificationHash {
     const SIZE: usize = 16;
@@ -1872,7 +1807,7 @@ impl ProofVerificationHash {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -1889,7 +1824,7 @@ impl ProofVerificationHash {
 ///    *name: binary_fixed(32)
 ///*is_unsigned: True
 ///*size: 32
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProofScalar(pub [u8; 32]);
 impl ProofScalar {
     const SIZE: usize = 32;
@@ -1910,7 +1845,7 @@ impl ProofScalar {
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::new(bytes.try_into()?), rest))
+        Ok((Self(bytes.try_into()?), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
@@ -1942,7 +1877,7 @@ impl ProofScalar {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 2
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum BlockType {
     NEMESIS = 32835,
@@ -2030,7 +1965,7 @@ impl BlockType {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VrfProof {
     pub gamma: ProofGamma,
     pub verification_hash: ProofVerificationHash,
@@ -2373,7 +2308,7 @@ impl VrfProof {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Block {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -2397,7 +2332,6 @@ impl Block {
         BlockType::default()
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
@@ -2412,7 +2346,7 @@ impl Block {
         fee_multiplier: BlockFeeMultiplier,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             height,
@@ -2585,6 +2519,24 @@ impl Block {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for Block {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for Block {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: NemesisBlockV1
@@ -2991,7 +2943,7 @@ impl Block {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NemesisBlockV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -3022,7 +2974,6 @@ impl NemesisBlockV1 {
         Self::BLOCK_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
@@ -3042,7 +2993,7 @@ impl NemesisBlockV1 {
         transactions: Vec<Transaction>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             height,
@@ -3264,6 +3215,24 @@ impl NemesisBlockV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for NemesisBlockV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for NemesisBlockV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: NormalBlockV1
@@ -3628,7 +3597,7 @@ impl NemesisBlockV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NormalBlockV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -3655,7 +3624,6 @@ impl NormalBlockV1 {
         Self::BLOCK_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
@@ -3671,7 +3639,7 @@ impl NormalBlockV1 {
         transactions: Vec<Transaction>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             height,
@@ -3870,6 +3838,24 @@ impl NormalBlockV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for NormalBlockV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for NormalBlockV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: ImportanceBlockV1
@@ -4276,7 +4262,7 @@ impl NormalBlockV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ImportanceBlockV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -4307,7 +4293,6 @@ impl ImportanceBlockV1 {
         Self::BLOCK_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
@@ -4327,7 +4312,7 @@ impl ImportanceBlockV1 {
         transactions: Vec<Transaction>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             height,
@@ -4551,6 +4536,24 @@ impl ImportanceBlockV1 {
         .collect()
     }
 }
+impl TraitSignature for ImportanceBlockV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for ImportanceBlockV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: FinalizationRound
 ///disposition: None
 ///fields: <class 'list'>
@@ -4590,7 +4593,7 @@ impl ImportanceBlockV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FinalizationRound {
     pub epoch: FinalizationEpoch,
     pub point: FinalizationPoint,
@@ -4680,7 +4683,7 @@ impl FinalizationRound {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FinalizedBlockHeader {
     pub round: FinalizationRound,
     pub height: Height,
@@ -4795,7 +4798,7 @@ impl FinalizedBlockHeader {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 2
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum ReceiptType {
     MOSAIC_RENTAL_FEE = 4685,
@@ -4945,7 +4948,7 @@ impl ReceiptType {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Receipt {
     pub version: u16,
 }
@@ -5124,7 +5127,7 @@ impl Receipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HarvestFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -5318,7 +5321,7 @@ impl HarvestFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct InflationReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -5504,7 +5507,7 @@ impl InflationReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LockHashCreatedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -5710,7 +5713,7 @@ impl LockHashCreatedFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LockHashCompletedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -5916,7 +5919,7 @@ impl LockHashCompletedFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LockHashExpiredFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -6122,7 +6125,7 @@ impl LockHashExpiredFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LockSecretCreatedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -6328,7 +6331,7 @@ impl LockSecretCreatedFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LockSecretCompletedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -6534,7 +6537,7 @@ impl LockSecretCompletedFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LockSecretExpiredFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -6728,7 +6731,7 @@ impl LockSecretExpiredFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicExpiredReceipt {
     pub version: u16,
     pub artifact_id: MosaicId,
@@ -6937,7 +6940,7 @@ impl MosaicExpiredReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicRentalFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -7044,7 +7047,7 @@ impl MosaicRentalFeeReceipt {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceId(pub u64);
 impl NamespaceId {
     const SIZE: usize = 8;
@@ -7066,7 +7069,7 @@ impl NamespaceId {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -7095,7 +7098,7 @@ impl NamespaceId {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum NamespaceRegistrationType {
     ROOT = 0,
@@ -7150,7 +7153,7 @@ impl NamespaceRegistrationType {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum AliasAction {
     UNLINK = 0,
@@ -7296,7 +7299,7 @@ impl AliasAction {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceExpiredReceipt {
     pub version: u16,
     pub artifact_id: NamespaceId,
@@ -7481,7 +7484,7 @@ impl NamespaceExpiredReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceDeletedReceipt {
     pub version: u16,
     pub artifact_id: NamespaceId,
@@ -7690,7 +7693,7 @@ impl NamespaceDeletedReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceRentalFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -7838,7 +7841,7 @@ impl NamespaceRentalFeeReceipt {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ReceiptSource {
     pub primary_id: u32,
     pub secondary_id: u32,
@@ -7922,7 +7925,7 @@ impl ReceiptSource {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AddressResolutionEntry {
     pub source: ReceiptSource,
     pub resolved_value: Address,
@@ -8032,7 +8035,7 @@ impl AddressResolutionEntry {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AddressResolutionStatement {
     pub unresolved: UnresolvedAddress,
     pub resolution_entries: Vec<AddressResolutionEntry>,
@@ -8139,7 +8142,7 @@ impl AddressResolutionStatement {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicResolutionEntry {
     pub source: ReceiptSource,
     pub resolved_value: MosaicId,
@@ -8249,7 +8252,7 @@ impl MosaicResolutionEntry {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicResolutionStatement {
     pub unresolved: UnresolvedMosaicId,
     pub resolution_entries: Vec<MosaicResolutionEntry>,
@@ -8406,7 +8409,7 @@ impl MosaicResolutionStatement {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TransactionStatement {
     pub primary_id: u32,
     pub secondary_id: u32,
@@ -8601,7 +8604,7 @@ impl TransactionStatement {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockStatement {
     pub transaction_statements: Vec<TransactionStatement>,
     pub address_resolution_statements: Vec<AddressResolutionStatement>,
@@ -8960,7 +8963,7 @@ impl BlockStatement {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -8980,7 +8983,6 @@ impl AccountKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -8989,7 +8991,7 @@ impl AccountKeyLinkTransactionV1 {
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -9114,6 +9116,24 @@ impl AccountKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AccountKeyLinkTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AccountKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedAccountKeyLinkTransactionV1
@@ -9325,7 +9345,7 @@ impl AccountKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -9449,6 +9469,15 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedAccountKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: NodeKeyLinkTransactionV1
@@ -9696,7 +9725,7 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NodeKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -9716,7 +9745,6 @@ impl NodeKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -9725,7 +9753,7 @@ impl NodeKeyLinkTransactionV1 {
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -9850,6 +9878,24 @@ impl NodeKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for NodeKeyLinkTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for NodeKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedNodeKeyLinkTransactionV1
@@ -10061,7 +10107,7 @@ impl NodeKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedNodeKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -10187,6 +10233,15 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         .collect()
     }
 }
+impl TraitSignerPublicKey for EmbeddedNodeKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: Cosignature
 ///disposition: None
 ///fields: <class 'list'>
@@ -10249,18 +10304,18 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Cosignature {
     pub version: u64,
     pub signer_public_key: PublicKey,
     pub signature: Signature,
 }
 impl Cosignature {
-    pub fn new(version: u64, signer_public_key: PublicKey, signature: Signature) -> Self {
+    pub fn new(version: u64, signer_public_key: PublicKey) -> Self {
         Self {
             version,
             signer_public_key,
-            signature,
+            signature: Signature::default(),
         }
     }
     pub fn default() -> Self {
@@ -10300,6 +10355,24 @@ impl Cosignature {
             .flat_map(|a| a)
             .map(|x| *x)
             .collect()
+    }
+}
+impl TraitSignerPublicKey for Cosignature {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
+impl TraitSignature for Cosignature {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
     }
 }
 ///name: DetachedCosignature
@@ -10381,7 +10454,7 @@ impl Cosignature {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: None
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DetachedCosignature {
     pub version: u64,
     pub signer_public_key: PublicKey,
@@ -10389,16 +10462,11 @@ pub struct DetachedCosignature {
     pub parent_hash: Hash256,
 }
 impl DetachedCosignature {
-    pub fn new(
-        version: u64,
-        signer_public_key: PublicKey,
-        signature: Signature,
-        parent_hash: Hash256,
-    ) -> Self {
+    pub fn new(version: u64, signer_public_key: PublicKey, parent_hash: Hash256) -> Self {
         Self {
             version,
             signer_public_key,
-            signature,
+            signature: Signature::default(),
             parent_hash,
         }
     }
@@ -10450,6 +10518,24 @@ impl DetachedCosignature {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for DetachedCosignature {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
+impl TraitSignature for DetachedCosignature {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
     }
 }
 ///name: AggregateCompleteTransactionV1
@@ -10774,7 +10860,7 @@ impl DetachedCosignature {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateCompleteTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -10795,7 +10881,6 @@ impl AggregateCompleteTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -10805,7 +10890,7 @@ impl AggregateCompleteTransactionV1 {
         cosignatures: Vec<Cosignature>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -10969,6 +11054,24 @@ impl AggregateCompleteTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AggregateCompleteTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AggregateCompleteTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AggregateCompleteTransactionV2
@@ -11293,7 +11396,7 @@ impl AggregateCompleteTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateCompleteTransactionV2 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -11314,7 +11417,6 @@ impl AggregateCompleteTransactionV2 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -11324,7 +11426,7 @@ impl AggregateCompleteTransactionV2 {
         cosignatures: Vec<Cosignature>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -11488,6 +11590,24 @@ impl AggregateCompleteTransactionV2 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AggregateCompleteTransactionV2 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AggregateCompleteTransactionV2 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AggregateBondedTransactionV1
@@ -11812,7 +11932,7 @@ impl AggregateCompleteTransactionV2 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateBondedTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -11833,7 +11953,6 @@ impl AggregateBondedTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -11843,7 +11962,7 @@ impl AggregateBondedTransactionV1 {
         cosignatures: Vec<Cosignature>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -12007,6 +12126,24 @@ impl AggregateBondedTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AggregateBondedTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AggregateBondedTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AggregateBondedTransactionV2
@@ -12331,7 +12468,7 @@ impl AggregateBondedTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateBondedTransactionV2 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -12352,7 +12489,6 @@ impl AggregateBondedTransactionV2 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -12362,7 +12498,7 @@ impl AggregateBondedTransactionV2 {
         cosignatures: Vec<Cosignature>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -12526,6 +12662,24 @@ impl AggregateBondedTransactionV2 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AggregateBondedTransactionV2 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AggregateBondedTransactionV2 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: VotingKeyLinkTransactionV1
@@ -12797,7 +12951,7 @@ impl AggregateBondedTransactionV2 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VotingKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -12819,7 +12973,6 @@ impl VotingKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -12830,7 +12983,7 @@ impl VotingKeyLinkTransactionV1 {
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -12971,6 +13124,24 @@ impl VotingKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for VotingKeyLinkTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for VotingKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedVotingKeyLinkTransactionV1
@@ -13206,7 +13377,7 @@ impl VotingKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedVotingKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -13350,6 +13521,15 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedVotingKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: VrfKeyLinkTransactionV1
@@ -13597,7 +13777,7 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VrfKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -13617,7 +13797,6 @@ impl VrfKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -13626,7 +13805,7 @@ impl VrfKeyLinkTransactionV1 {
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -13751,6 +13930,24 @@ impl VrfKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for VrfKeyLinkTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for VrfKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedVrfKeyLinkTransactionV1
@@ -13962,7 +14159,7 @@ impl VrfKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedVrfKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -14086,6 +14283,15 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedVrfKeyLinkTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: HashLockTransactionV1
@@ -14345,7 +14551,7 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HashLockTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -14366,7 +14572,6 @@ impl HashLockTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -14376,7 +14581,7 @@ impl HashLockTransactionV1 {
         hash: Hash256,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -14509,6 +14714,24 @@ impl HashLockTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for HashLockTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for HashLockTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedHashLockTransactionV1
@@ -14732,7 +14955,7 @@ impl HashLockTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedHashLockTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -14868,6 +15091,15 @@ impl EmbeddedHashLockTransactionV1 {
         .collect()
     }
 }
+impl TraitSignerPublicKey for EmbeddedHashLockTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: LockHashAlgorithm
 ///base: <class 'catparser.ast.FixedSizeInteger'>
 ///    short_name: uint8
@@ -14891,7 +15123,7 @@ impl EmbeddedHashLockTransactionV1 {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum LockHashAlgorithm {
     SHA3_256 = 0,
@@ -15209,7 +15441,7 @@ impl LockHashAlgorithm {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SecretLockTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -15232,7 +15464,6 @@ impl SecretLockTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -15244,7 +15475,7 @@ impl SecretLockTransactionV1 {
         hash_algorithm: LockHashAlgorithm,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -15393,6 +15624,24 @@ impl SecretLockTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for SecretLockTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for SecretLockTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedSecretLockTransactionV1
@@ -15640,7 +15889,7 @@ impl SecretLockTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedSecretLockTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -15794,6 +16043,15 @@ impl EmbeddedSecretLockTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedSecretLockTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: SecretProofTransactionV1
@@ -16097,7 +16355,7 @@ impl EmbeddedSecretLockTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SecretProofTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -16119,7 +16377,6 @@ impl SecretProofTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -16130,7 +16387,7 @@ impl SecretProofTransactionV1 {
         proof: Vec<u8>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -16282,6 +16539,24 @@ impl SecretProofTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for SecretProofTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for SecretProofTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedSecretProofTransactionV1
@@ -16549,7 +16824,7 @@ impl SecretProofTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedSecretProofTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -16704,6 +16979,15 @@ impl EmbeddedSecretProofTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedSecretProofTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AccountMetadataTransactionV1
@@ -17019,7 +17303,7 @@ impl EmbeddedSecretProofTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountMetadataTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -17041,7 +17325,6 @@ impl AccountMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -17052,7 +17335,7 @@ impl AccountMetadataTransactionV1 {
         value: Vec<u8>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -17204,6 +17487,24 @@ impl AccountMetadataTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AccountMetadataTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AccountMetadataTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedAccountMetadataTransactionV1
@@ -17483,7 +17784,7 @@ impl AccountMetadataTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountMetadataTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -17638,6 +17939,15 @@ impl EmbeddedAccountMetadataTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedAccountMetadataTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: MosaicMetadataTransactionV1
@@ -17965,7 +18275,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicMetadataTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -17988,7 +18298,6 @@ impl MosaicMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -18000,7 +18309,7 @@ impl MosaicMetadataTransactionV1 {
         value: Vec<u8>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -18160,6 +18469,24 @@ impl MosaicMetadataTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicMetadataTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicMetadataTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicMetadataTransactionV1
@@ -18451,7 +18778,7 @@ impl MosaicMetadataTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicMetadataTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -18616,6 +18943,15 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMosaicMetadataTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: NamespaceMetadataTransactionV1
@@ -18943,7 +19279,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceMetadataTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -18966,7 +19302,6 @@ impl NamespaceMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -18978,7 +19313,7 @@ impl NamespaceMetadataTransactionV1 {
         value: Vec<u8>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -19138,6 +19473,24 @@ impl NamespaceMetadataTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for NamespaceMetadataTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for NamespaceMetadataTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedNamespaceMetadataTransactionV1
@@ -19429,7 +19782,7 @@ impl NamespaceMetadataTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedNamespaceMetadataTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -19596,6 +19949,15 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         .collect()
     }
 }
+impl TraitSignerPublicKey for EmbeddedNamespaceMetadataTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: MosaicNonce
 ///linked_type: <class 'catparser.ast.FixedSizeInteger'>
 ///    short_name: uint32
@@ -19606,7 +19968,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 4
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicNonce(pub u32);
 impl MosaicNonce {
     const SIZE: usize = 4;
@@ -19628,7 +19990,7 @@ impl MosaicNonce {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u32::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -19671,7 +20033,7 @@ impl MosaicNonce {
 ///*is_bitwise: True
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum MosaicFlags {
     NONE = 0,
@@ -19732,7 +20094,7 @@ impl MosaicFlags {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum MosaicSupplyChangeAction {
     DECREASE = 0,
@@ -20054,7 +20416,7 @@ impl MosaicSupplyChangeAction {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicDefinitionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -20077,7 +20439,6 @@ impl MosaicDefinitionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -20089,7 +20450,7 @@ impl MosaicDefinitionTransactionV1 {
         divisibility: u8,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -20238,6 +20599,24 @@ impl MosaicDefinitionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicDefinitionTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicDefinitionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicDefinitionTransactionV1
@@ -20491,7 +20870,7 @@ impl MosaicDefinitionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicDefinitionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -20645,6 +21024,15 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMosaicDefinitionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: MosaicSupplyChangeTransactionV1
@@ -20904,7 +21292,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicSupplyChangeTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -20925,7 +21313,6 @@ impl MosaicSupplyChangeTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -20935,7 +21322,7 @@ impl MosaicSupplyChangeTransactionV1 {
         action: MosaicSupplyChangeAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -21068,6 +21455,24 @@ impl MosaicSupplyChangeTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicSupplyChangeTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicSupplyChangeTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicSupplyChangeTransactionV1
@@ -21291,7 +21696,7 @@ impl MosaicSupplyChangeTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicSupplyChangeTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -21425,6 +21830,15 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMosaicSupplyChangeTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: MosaicSupplyRevocationTransactionV1
@@ -21672,7 +22086,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicSupplyRevocationTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -21692,7 +22106,6 @@ impl MosaicSupplyRevocationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -21701,7 +22114,7 @@ impl MosaicSupplyRevocationTransactionV1 {
         mosaic: UnresolvedMosaic,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -21826,6 +22239,24 @@ impl MosaicSupplyRevocationTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicSupplyRevocationTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicSupplyRevocationTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicSupplyRevocationTransactionV1
@@ -22037,7 +22468,7 @@ impl MosaicSupplyRevocationTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicSupplyRevocationTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -22161,6 +22592,15 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: MultisigAccountModificationTransactionV1
@@ -22514,7 +22954,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MultisigAccountModificationTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -22536,7 +22976,6 @@ impl MultisigAccountModificationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -22547,7 +22986,7 @@ impl MultisigAccountModificationTransactionV1 {
         address_deletions: Vec<UnresolvedAddress>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -22733,6 +23172,24 @@ impl MultisigAccountModificationTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MultisigAccountModificationTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MultisigAccountModificationTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMultisigAccountModificationTransactionV1
@@ -23050,7 +23507,7 @@ impl MultisigAccountModificationTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMultisigAccountModificationTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -23239,6 +23696,15 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMultisigAccountModificationTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AddressAliasTransactionV1
@@ -23498,7 +23964,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AddressAliasTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -23519,7 +23985,6 @@ impl AddressAliasTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -23529,7 +23994,7 @@ impl AddressAliasTransactionV1 {
         alias_action: AliasAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -23662,6 +24127,24 @@ impl AddressAliasTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AddressAliasTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AddressAliasTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedAddressAliasTransactionV1
@@ -23885,7 +24368,7 @@ impl AddressAliasTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAddressAliasTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -24019,6 +24502,15 @@ impl EmbeddedAddressAliasTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedAddressAliasTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: MosaicAliasTransactionV1
@@ -24278,7 +24770,7 @@ impl EmbeddedAddressAliasTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicAliasTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -24299,7 +24791,6 @@ impl MosaicAliasTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -24309,7 +24800,7 @@ impl MosaicAliasTransactionV1 {
         alias_action: AliasAction,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -24442,6 +24933,24 @@ impl MosaicAliasTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicAliasTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicAliasTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicAliasTransactionV1
@@ -24665,7 +25174,7 @@ impl MosaicAliasTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicAliasTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -24799,6 +25308,15 @@ impl EmbeddedMosaicAliasTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMosaicAliasTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: NamespaceRegistrationTransactionV1
@@ -25120,7 +25638,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceRegistrationTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -25143,7 +25661,6 @@ impl NamespaceRegistrationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -25155,7 +25672,7 @@ impl NamespaceRegistrationTransactionV1 {
         name: Vec<u8>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -25315,6 +25832,24 @@ impl NamespaceRegistrationTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for NamespaceRegistrationTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for NamespaceRegistrationTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedNamespaceRegistrationTransactionV1
@@ -25600,7 +26135,7 @@ impl NamespaceRegistrationTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedNamespaceRegistrationTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -25767,6 +26302,15 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         .collect()
     }
 }
+impl TraitSignerPublicKey for EmbeddedNamespaceRegistrationTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: AccountRestrictionFlags
 ///base: <class 'catparser.ast.FixedSizeInteger'>
 ///    short_name: uint16
@@ -25801,7 +26345,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
 ///*is_bitwise: True
 ///*is_unsigned: True
 ///*size: 2
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum AccountRestrictionFlags {
     ADDRESS = 1,
@@ -26169,7 +26713,7 @@ impl AccountRestrictionFlags {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountAddressRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -26190,7 +26734,6 @@ impl AccountAddressRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -26200,7 +26743,7 @@ impl AccountAddressRestrictionTransactionV1 {
         restriction_deletions: Vec<UnresolvedAddress>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -26378,6 +26921,24 @@ impl AccountAddressRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AccountAddressRestrictionTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AccountAddressRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedAccountAddressRestrictionTransactionV1
@@ -26671,7 +27232,7 @@ impl AccountAddressRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountAddressRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -26850,6 +27411,15 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedAccountAddressRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AccountMosaicRestrictionTransactionV1
@@ -27179,7 +27749,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountMosaicRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -27200,7 +27770,6 @@ impl AccountMosaicRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -27210,7 +27779,7 @@ impl AccountMosaicRestrictionTransactionV1 {
         restriction_deletions: Vec<UnresolvedMosaicId>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -27388,6 +27957,24 @@ impl AccountMosaicRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AccountMosaicRestrictionTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AccountMosaicRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedAccountMosaicRestrictionTransactionV1
@@ -27681,7 +28268,7 @@ impl AccountMosaicRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountMosaicRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -27860,6 +28447,15 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: AccountOperationRestrictionTransactionV1
@@ -28189,7 +28785,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountOperationRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -28210,7 +28806,6 @@ impl AccountOperationRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -28220,7 +28815,7 @@ impl AccountOperationRestrictionTransactionV1 {
         restriction_deletions: Vec<TransactionType>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -28398,6 +28993,24 @@ impl AccountOperationRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for AccountOperationRestrictionTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for AccountOperationRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedAccountOperationRestrictionTransactionV1
@@ -28691,7 +29304,7 @@ impl AccountOperationRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountOperationRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -28870,6 +29483,15 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedAccountOperationRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: MosaicAddressRestrictionTransactionV1
@@ -29171,7 +29793,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicAddressRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -29194,7 +29816,6 @@ impl MosaicAddressRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -29206,7 +29827,7 @@ impl MosaicAddressRestrictionTransactionV1 {
         target_address: UnresolvedAddress,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -29355,6 +29976,24 @@ impl MosaicAddressRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicAddressRestrictionTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicAddressRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicAddressRestrictionTransactionV1
@@ -29620,7 +30259,7 @@ impl MosaicAddressRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -29776,6 +30415,15 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         .collect()
     }
 }
+impl TraitSignerPublicKey for EmbeddedMosaicAddressRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
 ///name: MosaicRestrictionKey
 ///linked_type: <class 'catparser.ast.FixedSizeInteger'>
 ///    short_name: uint64
@@ -29786,7 +30434,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
 ///    *sizeref: None
 ///*is_unsigned: True
 ///*size: 8
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicRestrictionKey(pub u64);
 impl MosaicRestrictionKey {
     const SIZE: usize = 8;
@@ -29808,7 +30456,7 @@ impl MosaicRestrictionKey {
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
         let value = u64::from_le_bytes(bytes.try_into()?);
-        Ok((Self::new(value), rest))
+        Ok((Self(value), rest))
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
@@ -29852,7 +30500,7 @@ impl MosaicRestrictionKey {
 ///*is_bitwise: None
 ///*is_unsigned: True
 ///*size: 1
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 pub enum MosaicRestrictionType {
     NONE = 0,
@@ -30220,7 +30868,7 @@ impl MosaicRestrictionType {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicGlobalRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -30245,7 +30893,6 @@ impl MosaicGlobalRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -30259,7 +30906,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
         new_restriction_type_: MosaicRestrictionType,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -30424,6 +31071,24 @@ impl MosaicGlobalRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for MosaicGlobalRestrictionTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for MosaicGlobalRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: EmbeddedMosaicGlobalRestrictionTransactionV1
@@ -30713,7 +31378,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -30887,6 +31552,15 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///name: TransferTransactionV1
@@ -31246,7 +31920,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TransferTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -31267,7 +31941,6 @@ impl TransferTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signature: Signature,
         signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
@@ -31277,7 +31950,7 @@ impl TransferTransactionV1 {
         message: Vec<u8>,
     ) -> Self {
         Self {
-            signature,
+            signature: Signature::default(),
             signer_public_key,
             network,
             fee,
@@ -31450,6 +32123,33 @@ impl TransferTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignature for TransferTransactionV1 {
+    type T = Signature;
+    fn get_signature(&self) -> &Self::T {
+        &self.signature
+    }
+    fn set_signature(&mut self, signature: Self::T) {
+        self.signature = signature;
+    }
+}
+impl TraitSignerPublicKey for TransferTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
+impl TraitMessage for TransferTransactionV1 {
+    type T = Vec<u8>;
+    fn get_message(&self) -> &Self::T {
+        &self.message
+    }
+    fn set_message(&mut self, message: Self::T) {
+        self.message = message;
     }
 }
 ///name: EmbeddedTransferTransactionV1
@@ -31773,7 +32473,7 @@ impl TransferTransactionV1 {
 ///*is_inline: False
 ///*is_size_implicit: None
 ///*size: size
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedTransferTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -31947,5 +32647,23 @@ impl EmbeddedTransferTransactionV1 {
         .flat_map(|a| a)
         .map(|x| *x)
         .collect()
+    }
+}
+impl TraitSignerPublicKey for EmbeddedTransferTransactionV1 {
+    type T = PublicKey;
+    fn get_signer_public_key(&self) -> &Self::T {
+        &self.signer_public_key
+    }
+    fn set_signer_public_key(&mut self, signer_public_key: Self::T) {
+        self.signer_public_key = signer_public_key;
+    }
+}
+impl TraitMessage for EmbeddedTransferTransactionV1 {
+    type T = Vec<u8>;
+    fn get_message(&self) -> &Self::T {
+        &self.message
+    }
+    fn set_message(&mut self, message: Self::T) {
+        self.message = message;
     }
 }

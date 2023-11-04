@@ -1,13 +1,13 @@
 // use ed25519_dalek::Signer;
-use symbol::symbol::models::*;
-
+use symbol::symbol::models_extensions::*;
 // signatureやその同類はnewでは要らない(defaultでよい)。インターフェースに現れる必要が無い。
 // 強力なnewを作成すべきかどうか
 
 fn main() -> Result<(), SymbolError> {
+    let a = Signature::from_bytes(&[0; 64]);
+    println!("{}", a);
 
     let a = TransferTransactionV1::new(
-        Signature::default(),
         PublicKey::new(
             hex::decode("A59277D56E9F4FA46854F5EFAAA253B09F8AE69A473565E01FD9E6A738E4AB74")?
                 .as_slice()
