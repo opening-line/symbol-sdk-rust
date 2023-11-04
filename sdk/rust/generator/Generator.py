@@ -22,6 +22,18 @@ class Generator:
 def snake_to_camel(word):
     return ''.join(x.capitalize() or '_' for x in word.split('_'))
 
+def get_type_of_trait(trait, ast_models):
+    for ast_model in ast_models:
+        if ast_model.display_type != DisplayType.STRUCT:
+            continue
+        for f in ast_model.fields:
+            if f.name != trait:
+                continue
+            if type(f.field_type) == catparser.ast.Array:
+                return f'Vec<{f.field_type.element_type.short_name.replace("uint", "u").replace("int", "i")}>'
+            else:
+                return f.field_type
+
 def generate_files(ast_models, output_directory: Path):
 
     output_directory.mkdir(exist_ok=True)
@@ -33,10 +45,10 @@ def generate_files(ast_models, output_directory: Path):
         output += 'pub use crate::symbol::models_header::*;'
 
         for trait in TRAITS:
+            type = get_type_of_trait(trait, ast_models)
             output += f'pub trait Trait{snake_to_camel(trait)} {{'
-            output += 'type T;'
-            output += f'fn get_{trait}(&self) -> &Self::T;'
-            output += f'fn set_{trait}(&mut self, {trait}: Self::T);'
+            output += f'fn get_{trait}(&self) -> &{type};'
+            output += f'fn set_{trait}(&mut self, {trait}: {type});'
             output += '}'
 
         for ast_model in ast_models:
@@ -343,9 +355,8 @@ def generate_struct(ast_model):
             ft = f.field_type
         
         ret += f'impl Trait{snake_to_camel(fn)} for {struct_name} {{'
-        ret += f'type T = {ft};'
-        ret += f'fn get_{fn}(&self) -> &Self::T {{ &self.{fn} }}'
-        ret += f'fn set_{fn}(&mut self, {fn}: Self::T) {{ self.{fn} = {fn}; }}'
+        ret += f'fn get_{fn}(&self) -> &{ft} {{ &self.{fn} }}'
+        ret += f'fn set_{fn}(&mut self, {fn}: {ft}) {{ self.{fn} = {fn}; }}'
         ret += f'}}'
         
     return ret
@@ -533,12 +544,17 @@ def header_for_each_ast_model(ast_model):
     ret += display_ast_model(ast_model)
     ret += '#[derive(Debug, Clone, PartialEq, Eq)]\n'
     return ret
+
 def display_ast_model(obj, indent: int = 0):
     ret = ""
-    prefix = '///' + '  ' * indent
+    prefix = '//' + '  ' * indent
     if hasattr(obj, '__dict__'):
         for key, value in vars(obj).items():
             if key == 'comment':
+                if indent != 0:
+                    continue
+                value = str(value).replace("\n", "\n///")
+                ret += f'\n///{value}\n'
                 continue
             if key.startswith("_"):
                 continue

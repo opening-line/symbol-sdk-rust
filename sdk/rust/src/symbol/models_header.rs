@@ -1,4 +1,5 @@
 use data_encoding::DecodeError;
+use ed25519_dalek::ed25519;
 use hex::FromHexError;
 use std::array::TryFromSliceError;
 
@@ -10,6 +11,7 @@ pub enum SymbolError {
     SizeError { expect: usize, real: usize },
     ReservedIsNotZeroError(u32),
     EnumDecodeError(u32),
+    Ed25519Error(ed25519::Error),
 }
 
 impl From<FromHexError> for SymbolError {
@@ -29,11 +31,16 @@ impl From<TryFromSliceError> for SymbolError {
         SymbolError::TryFromSliceError(err)
     }
 }
+impl From<ed25519::Error> for SymbolError {
+    fn from(err: ed25519::Error) -> SymbolError {
+        SymbolError::Ed25519Error(err)
+    }
+}
 
 pub use ed25519_dalek::Signature;
 pub use ed25519_dalek::SigningKey;
 
-pub trait ExtentionSignature
+pub trait ModelsSignature
 where
     Self: Sized,
 {
@@ -46,7 +53,7 @@ where
     fn to_string(&self) -> String;
 }
 
-impl ExtentionSignature for Signature {
+impl ModelsSignature for Signature {
     const SIZE: usize = 64;
     fn new(signature: [u8; 64]) -> Self {
         Self::from_bytes(&signature)
@@ -75,7 +82,7 @@ impl ExtentionSignature for Signature {
     }
 }
 
-pub trait ExtentionPublicKey
+pub trait ModelsPublicKey
 where
     Self: Sized,
 {
@@ -87,7 +94,7 @@ where
     fn to_string(&self) -> String;
 }
 pub type PublicKey = ed25519_dalek::VerifyingKey;
-impl ExtentionPublicKey for PublicKey {
+impl ModelsPublicKey for PublicKey {
     const SIZE: usize = 32;
     fn new(publickey: [u8; 32]) -> PublicKey {
         Self::from_bytes(&publickey).unwrap()
