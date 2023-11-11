@@ -1,4 +1,4 @@
-use ed25519_dalek::Signer;
+pub use ed25519_dalek::{Signer, Verifier};
 
 pub use crate::symbol::models::*;
 fn base32_decode(input: &str) -> Result<Vec<u8>, data_encoding::DecodeError> {
@@ -13,16 +13,26 @@ impl UnresolvedAddress {
     }
 }
 
-pub trait ExtentionPublicKey
+pub trait ExtentionVerifyingKey
 where
     Self: Sized,
 {
     fn from_str(str: &str) -> Result<Self, SymbolError>;
+    fn verify_transaction<T: TraitMessage + TraitSignature>(
+        &self,
+        transaction: &T,
+    ) -> Result<(), SymbolError>;
 }
 
-impl ExtentionPublicKey for PublicKey {
+impl ExtentionVerifyingKey for VerifyingKey {
     fn from_str(str: &str) -> Result<Self, SymbolError> {
         Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?)?)
+    }
+    fn verify_transaction<T: TraitMessage + TraitSignature>(
+        &self,
+        transaction: &T,
+    ) -> Result<(), SymbolError> {
+        Ok(self.verify(transaction.get_message(), transaction.get_signature())?)
     }
 }
 
@@ -45,22 +55,6 @@ where
         transaction
     }
     fn verify_transaction(&self, transaction: &T) -> Result<(), SymbolError> {
-        Ok(self.verify(transaction.get_message(), transaction.get_signature())?)
+        self.verifying_key().verify_transaction(transaction)
     }
 }
-
-// fn tmp() {
-
-//     let init32 = [0; 32];
-//     let init64 = [0; 64];
-//     let signing_key = SigningKey::from_bytes(&init32);
-//     let verifying_key = signing_key.verifying_key();
-//     let signature = Signature::from_bytes(&init64);
-//     let a = signature.to_bytes();
-
-//     let a = verifying_key.verify("msg".as_bytes(), &signature).is_ok();
-
-//     impl SignTrait for SigningKey {
-
-//     }
-// }

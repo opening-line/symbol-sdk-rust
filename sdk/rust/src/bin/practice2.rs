@@ -1,7 +1,7 @@
 use symbol::symbol::models_extensions::*;
 fn main() {
-    let a = AggregateCompleteTransactionV1::new(
-        PublicKey::default(),
+    AggregateCompleteTransactionV1::new(
+        VerifyingKey::default(),
         NetworkType::TESTNET,
         Amount(3),
         Timestamp(3),
@@ -9,6 +9,4 @@ fn main() {
         vec![EmbeddedAccountKeyLinkTransactionV1::default().into()],
         vec![Cosignature::default()],
     );
-
-    println!("{:#?}", a);
 }
