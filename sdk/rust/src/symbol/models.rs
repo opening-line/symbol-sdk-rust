@@ -906,6 +906,7 @@ impl UnresolvedMosaic {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum LinkAction {
     UNLINK = 0,
     LINK = 1,
@@ -962,6 +963,7 @@ impl LinkAction {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum NetworkType {
     MAINNET = 104,
     TESTNET = 152,
@@ -1087,6 +1089,7 @@ impl NetworkType {
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u16)]
 pub enum TransactionType {
     ACCOUNT_KEY_LINK = 16716,
     NODE_KEY_LINK = 16972,
@@ -1359,56 +1362,66 @@ impl TransactionType {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Transaction {
-    pub signature: Signature,
-    pub signer_public_key: PublicKey,
-    pub network: NetworkType,
-    pub fee: Amount,
-    pub deadline: Timestamp,
+pub enum Transaction {
+    AccountKeyLinkTransactionV1(AccountKeyLinkTransactionV1),
+    NodeKeyLinkTransactionV1(NodeKeyLinkTransactionV1),
+    AggregateCompleteTransactionV1(AggregateCompleteTransactionV1),
+    AggregateCompleteTransactionV2(AggregateCompleteTransactionV2),
+    AggregateBondedTransactionV1(AggregateBondedTransactionV1),
+    AggregateBondedTransactionV2(AggregateBondedTransactionV2),
+    VotingKeyLinkTransactionV1(VotingKeyLinkTransactionV1),
+    VrfKeyLinkTransactionV1(VrfKeyLinkTransactionV1),
+    HashLockTransactionV1(HashLockTransactionV1),
+    SecretLockTransactionV1(SecretLockTransactionV1),
+    SecretProofTransactionV1(SecretProofTransactionV1),
+    AccountMetadataTransactionV1(AccountMetadataTransactionV1),
+    MosaicMetadataTransactionV1(MosaicMetadataTransactionV1),
+    NamespaceMetadataTransactionV1(NamespaceMetadataTransactionV1),
+    MosaicDefinitionTransactionV1(MosaicDefinitionTransactionV1),
+    MosaicSupplyChangeTransactionV1(MosaicSupplyChangeTransactionV1),
+    MosaicSupplyRevocationTransactionV1(MosaicSupplyRevocationTransactionV1),
+    MultisigAccountModificationTransactionV1(MultisigAccountModificationTransactionV1),
+    AddressAliasTransactionV1(AddressAliasTransactionV1),
+    MosaicAliasTransactionV1(MosaicAliasTransactionV1),
+    NamespaceRegistrationTransactionV1(NamespaceRegistrationTransactionV1),
+    AccountAddressRestrictionTransactionV1(AccountAddressRestrictionTransactionV1),
+    AccountMosaicRestrictionTransactionV1(AccountMosaicRestrictionTransactionV1),
+    AccountOperationRestrictionTransactionV1(AccountOperationRestrictionTransactionV1),
+    MosaicAddressRestrictionTransactionV1(MosaicAddressRestrictionTransactionV1),
+    MosaicGlobalRestrictionTransactionV1(MosaicGlobalRestrictionTransactionV1),
+    TransferTransactionV1(TransferTransactionV1),
 }
 impl Transaction {
-    fn version(&self) -> u8 {
-        u8::default()
-    }
-    fn type_(&self) -> TransactionType {
-        TransactionType::default()
-    }
-    pub fn new(
-        signer_public_key: PublicKey,
-        network: NetworkType,
-        fee: Amount,
-        deadline: Timestamp,
-    ) -> Self {
-        Self {
-            signature: Signature::default(),
-            signer_public_key,
-            network,
-            fee,
-            deadline,
-        }
-    }
-    pub fn default() -> Self {
-        Self {
-            signature: Signature::default(),
-            signer_public_key: PublicKey::default(),
-            network: NetworkType::default(),
-            fee: Amount::default(),
-            deadline: Timestamp::default(),
-        }
-    }
     pub fn size(&self) -> usize {
-        let mut size = 0;
-        size += 4;
-        size += 4;
-        size += self.signature.size();
-        size += self.signer_public_key.size();
-        size += 4;
-        size += 1;
-        size += self.network.size();
-        size += self.type_().size();
-        size += self.fee.size();
-        size += self.deadline.size();
-        size
+        match self {
+            Self::AccountKeyLinkTransactionV1(x) => x.size(),
+            Self::NodeKeyLinkTransactionV1(x) => x.size(),
+            Self::AggregateCompleteTransactionV1(x) => x.size(),
+            Self::AggregateCompleteTransactionV2(x) => x.size(),
+            Self::AggregateBondedTransactionV1(x) => x.size(),
+            Self::AggregateBondedTransactionV2(x) => x.size(),
+            Self::VotingKeyLinkTransactionV1(x) => x.size(),
+            Self::VrfKeyLinkTransactionV1(x) => x.size(),
+            Self::HashLockTransactionV1(x) => x.size(),
+            Self::SecretLockTransactionV1(x) => x.size(),
+            Self::SecretProofTransactionV1(x) => x.size(),
+            Self::AccountMetadataTransactionV1(x) => x.size(),
+            Self::MosaicMetadataTransactionV1(x) => x.size(),
+            Self::NamespaceMetadataTransactionV1(x) => x.size(),
+            Self::MosaicDefinitionTransactionV1(x) => x.size(),
+            Self::MosaicSupplyChangeTransactionV1(x) => x.size(),
+            Self::MosaicSupplyRevocationTransactionV1(x) => x.size(),
+            Self::MultisigAccountModificationTransactionV1(x) => x.size(),
+            Self::AddressAliasTransactionV1(x) => x.size(),
+            Self::MosaicAliasTransactionV1(x) => x.size(),
+            Self::NamespaceRegistrationTransactionV1(x) => x.size(),
+            Self::AccountAddressRestrictionTransactionV1(x) => x.size(),
+            Self::AccountMosaicRestrictionTransactionV1(x) => x.size(),
+            Self::AccountOperationRestrictionTransactionV1(x) => x.size(),
+            Self::MosaicAddressRestrictionTransactionV1(x) => x.size(),
+            Self::MosaicGlobalRestrictionTransactionV1(x) => x.size(),
+            Self::TransferTransactionV1(x) => x.size(),
+        }
     }
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
@@ -1443,68 +1456,921 @@ impl Transaction {
                 entity_body_reserved_1 as u32,
             ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into()?);
+        let version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
-        let _type_;
-        (_type_, payload) = TransactionType::deserialize(payload)?;
+        let type_;
+        (type_, payload) = TransactionType::deserialize(payload)?;
         let fee;
         (fee, payload) = Amount::deserialize(payload)?;
         let deadline;
         (deadline, payload) = Timestamp::deserialize(payload)?;
-        let self_ = Self {
-            signature,
-            signer_public_key,
-            network,
-            fee,
-            deadline,
-        };
-        Ok((self_, payload))
+        match (type_, version) {
+            (
+                AccountKeyLinkTransactionV1::TRANSACTION_TYPE,
+                AccountKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = AccountKeyLinkTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    linked_public_key,
+                    link_action,
+                };
+                Ok((Self::AccountKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                NodeKeyLinkTransactionV1::TRANSACTION_TYPE,
+                NodeKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = NodeKeyLinkTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    linked_public_key,
+                    link_action,
+                };
+                Ok((Self::NodeKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                AggregateCompleteTransactionV1::TRANSACTION_TYPE,
+                AggregateCompleteTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let transactions_hash;
+                (transactions_hash, payload) = Hash256::deserialize(payload)?;
+                let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                let aggregate_transaction_header_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if aggregate_transaction_header_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        aggregate_transaction_header_reserved_1 as u32,
+                    ));
+                }
+                let mut transactions = Vec::new();
+                for _ in 0..payload_size {
+                    let element;
+                    (element, payload) = EmbeddedTransaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let mut cosignatures = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Cosignature::deserialize(payload)?;
+                    cosignatures.push(element);
+                }
+                let self_ = AggregateCompleteTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    transactions_hash,
+                    transactions,
+                    cosignatures,
+                };
+                Ok((Self::AggregateCompleteTransactionV1(self_), payload))
+            }
+            (
+                AggregateCompleteTransactionV2::TRANSACTION_TYPE,
+                AggregateCompleteTransactionV2::TRANSACTION_VERSION,
+            ) => {
+                let transactions_hash;
+                (transactions_hash, payload) = Hash256::deserialize(payload)?;
+                let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                let aggregate_transaction_header_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if aggregate_transaction_header_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        aggregate_transaction_header_reserved_1 as u32,
+                    ));
+                }
+                let mut transactions = Vec::new();
+                for _ in 0..payload_size {
+                    let element;
+                    (element, payload) = EmbeddedTransaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let mut cosignatures = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Cosignature::deserialize(payload)?;
+                    cosignatures.push(element);
+                }
+                let self_ = AggregateCompleteTransactionV2 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    transactions_hash,
+                    transactions,
+                    cosignatures,
+                };
+                Ok((Self::AggregateCompleteTransactionV2(self_), payload))
+            }
+            (
+                AggregateBondedTransactionV1::TRANSACTION_TYPE,
+                AggregateBondedTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let transactions_hash;
+                (transactions_hash, payload) = Hash256::deserialize(payload)?;
+                let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                let aggregate_transaction_header_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if aggregate_transaction_header_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        aggregate_transaction_header_reserved_1 as u32,
+                    ));
+                }
+                let mut transactions = Vec::new();
+                for _ in 0..payload_size {
+                    let element;
+                    (element, payload) = EmbeddedTransaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let mut cosignatures = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Cosignature::deserialize(payload)?;
+                    cosignatures.push(element);
+                }
+                let self_ = AggregateBondedTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    transactions_hash,
+                    transactions,
+                    cosignatures,
+                };
+                Ok((Self::AggregateBondedTransactionV1(self_), payload))
+            }
+            (
+                AggregateBondedTransactionV2::TRANSACTION_TYPE,
+                AggregateBondedTransactionV2::TRANSACTION_VERSION,
+            ) => {
+                let transactions_hash;
+                (transactions_hash, payload) = Hash256::deserialize(payload)?;
+                let payload_size = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                let aggregate_transaction_header_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if aggregate_transaction_header_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        aggregate_transaction_header_reserved_1 as u32,
+                    ));
+                }
+                let mut transactions = Vec::new();
+                for _ in 0..payload_size {
+                    let element;
+                    (element, payload) = EmbeddedTransaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let mut cosignatures = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Cosignature::deserialize(payload)?;
+                    cosignatures.push(element);
+                }
+                let self_ = AggregateBondedTransactionV2 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    transactions_hash,
+                    transactions,
+                    cosignatures,
+                };
+                Ok((Self::AggregateBondedTransactionV2(self_), payload))
+            }
+            (
+                VotingKeyLinkTransactionV1::TRANSACTION_TYPE,
+                VotingKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = VotingPublicKey::deserialize(payload)?;
+                let start_epoch;
+                (start_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
+                let end_epoch;
+                (end_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = VotingKeyLinkTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    linked_public_key,
+                    start_epoch,
+                    end_epoch,
+                    link_action,
+                };
+                Ok((Self::VotingKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                VrfKeyLinkTransactionV1::TRANSACTION_TYPE,
+                VrfKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = VrfKeyLinkTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    linked_public_key,
+                    link_action,
+                };
+                Ok((Self::VrfKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                HashLockTransactionV1::TRANSACTION_TYPE,
+                HashLockTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic;
+                (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let hash;
+                (hash, payload) = Hash256::deserialize(payload)?;
+                let self_ = HashLockTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    mosaic,
+                    duration,
+                    hash,
+                };
+                Ok((Self::HashLockTransactionV1(self_), payload))
+            }
+            (
+                SecretLockTransactionV1::TRANSACTION_TYPE,
+                SecretLockTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let recipient_address;
+                (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let secret;
+                (secret, payload) = Hash256::deserialize(payload)?;
+                let mosaic;
+                (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let hash_algorithm;
+                (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
+                let self_ = SecretLockTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    recipient_address,
+                    secret,
+                    mosaic,
+                    duration,
+                    hash_algorithm,
+                };
+                Ok((Self::SecretLockTransactionV1(self_), payload))
+            }
+            (
+                SecretProofTransactionV1::TRANSACTION_TYPE,
+                SecretProofTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let recipient_address;
+                (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let secret;
+                (secret, payload) = Hash256::deserialize(payload)?;
+                let proof_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let hash_algorithm;
+                (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
+                let mut proof = Vec::new();
+                for _ in 0..proof_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    proof.push(element);
+                }
+                let self_ = SecretProofTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    recipient_address,
+                    secret,
+                    hash_algorithm,
+                    proof,
+                };
+                Ok((Self::SecretProofTransactionV1(self_), payload))
+            }
+            (
+                AccountMetadataTransactionV1::TRANSACTION_TYPE,
+                AccountMetadataTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let value_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mut value = Vec::new();
+                for _ in 0..value_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    value.push(element);
+                }
+                let self_ = AccountMetadataTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    target_address,
+                    scoped_metadata_key,
+                    value_size_delta,
+                    value,
+                };
+                Ok((Self::AccountMetadataTransactionV1(self_), payload))
+            }
+            (
+                MosaicMetadataTransactionV1::TRANSACTION_TYPE,
+                MosaicMetadataTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let target_mosaic_id;
+                (target_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let value_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mut value = Vec::new();
+                for _ in 0..value_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    value.push(element);
+                }
+                let self_ = MosaicMetadataTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    target_address,
+                    scoped_metadata_key,
+                    target_mosaic_id,
+                    value_size_delta,
+                    value,
+                };
+                Ok((Self::MosaicMetadataTransactionV1(self_), payload))
+            }
+            (
+                NamespaceMetadataTransactionV1::TRANSACTION_TYPE,
+                NamespaceMetadataTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let target_namespace_id;
+                (target_namespace_id, payload) = NamespaceId::deserialize(payload)?;
+                let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let value_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mut value = Vec::new();
+                for _ in 0..value_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    value.push(element);
+                }
+                let self_ = NamespaceMetadataTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    target_address,
+                    scoped_metadata_key,
+                    target_namespace_id,
+                    value_size_delta,
+                    value,
+                };
+                Ok((Self::NamespaceMetadataTransactionV1(self_), payload))
+            }
+            (
+                MosaicDefinitionTransactionV1::TRANSACTION_TYPE,
+                MosaicDefinitionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let id;
+                (id, payload) = MosaicId::deserialize(payload)?;
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let nonce;
+                (nonce, payload) = MosaicNonce::deserialize(payload)?;
+                let flags;
+                (flags, payload) = MosaicFlags::deserialize(payload)?;
+                let divisibility = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let self_ = MosaicDefinitionTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    id,
+                    duration,
+                    nonce,
+                    flags,
+                    divisibility,
+                };
+                Ok((Self::MosaicDefinitionTransactionV1(self_), payload))
+            }
+            (
+                MosaicSupplyChangeTransactionV1::TRANSACTION_TYPE,
+                MosaicSupplyChangeTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic_id;
+                (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let delta;
+                (delta, payload) = Amount::deserialize(payload)?;
+                let action;
+                (action, payload) = MosaicSupplyChangeAction::deserialize(payload)?;
+                let self_ = MosaicSupplyChangeTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    mosaic_id,
+                    delta,
+                    action,
+                };
+                Ok((Self::MosaicSupplyChangeTransactionV1(self_), payload))
+            }
+            (
+                MosaicSupplyRevocationTransactionV1::TRANSACTION_TYPE,
+                MosaicSupplyRevocationTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let source_address;
+                (source_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let mosaic;
+                (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
+                let self_ = MosaicSupplyRevocationTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    source_address,
+                    mosaic,
+                };
+                Ok((Self::MosaicSupplyRevocationTransactionV1(self_), payload))
+            }
+            (
+                MultisigAccountModificationTransactionV1::TRANSACTION_TYPE,
+                MultisigAccountModificationTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let min_removal_delta = i8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let min_approval_delta = i8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let address_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let address_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let multisig_account_modification_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if multisig_account_modification_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        multisig_account_modification_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut address_additions = Vec::new();
+                for _ in 0..address_additions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    address_additions.push(element);
+                }
+                let mut address_deletions = Vec::new();
+                for _ in 0..address_deletions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    address_deletions.push(element);
+                }
+                let self_ = MultisigAccountModificationTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    min_removal_delta,
+                    min_approval_delta,
+                    address_additions,
+                    address_deletions,
+                };
+                Ok((
+                    Self::MultisigAccountModificationTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                AddressAliasTransactionV1::TRANSACTION_TYPE,
+                AddressAliasTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let namespace_id;
+                (namespace_id, payload) = NamespaceId::deserialize(payload)?;
+                let address;
+                (address, payload) = Address::deserialize(payload)?;
+                let alias_action;
+                (alias_action, payload) = AliasAction::deserialize(payload)?;
+                let self_ = AddressAliasTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    namespace_id,
+                    address,
+                    alias_action,
+                };
+                Ok((Self::AddressAliasTransactionV1(self_), payload))
+            }
+            (
+                MosaicAliasTransactionV1::TRANSACTION_TYPE,
+                MosaicAliasTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let namespace_id;
+                (namespace_id, payload) = NamespaceId::deserialize(payload)?;
+                let mosaic_id;
+                (mosaic_id, payload) = MosaicId::deserialize(payload)?;
+                let alias_action;
+                (alias_action, payload) = AliasAction::deserialize(payload)?;
+                let self_ = MosaicAliasTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    namespace_id,
+                    mosaic_id,
+                    alias_action,
+                };
+                Ok((Self::MosaicAliasTransactionV1(self_), payload))
+            }
+            (
+                NamespaceRegistrationTransactionV1::TRANSACTION_TYPE,
+                NamespaceRegistrationTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let parent_id;
+                (parent_id, payload) = NamespaceId::deserialize(payload)?;
+                let id;
+                (id, payload) = NamespaceId::deserialize(payload)?;
+                let registration_type_;
+                (registration_type_, payload) = NamespaceRegistrationType::deserialize(payload)?;
+                let name_size = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let mut name = Vec::new();
+                for _ in 0..name_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    name.push(element);
+                }
+                let self_ = NamespaceRegistrationTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    duration,
+                    parent_id,
+                    id,
+                    registration_type_,
+                    name,
+                };
+                Ok((Self::NamespaceRegistrationTransactionV1(self_), payload))
+            }
+            (
+                AccountAddressRestrictionTransactionV1::TRANSACTION_TYPE,
+                AccountAddressRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let restriction_flags;
+                (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
+                let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let account_restriction_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if account_restriction_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        account_restriction_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut restriction_additions = Vec::new();
+                for _ in 0..restriction_additions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    restriction_additions.push(element);
+                }
+                let mut restriction_deletions = Vec::new();
+                for _ in 0..restriction_deletions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    restriction_deletions.push(element);
+                }
+                let self_ = AccountAddressRestrictionTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    restriction_flags,
+                    restriction_additions,
+                    restriction_deletions,
+                };
+                Ok((Self::AccountAddressRestrictionTransactionV1(self_), payload))
+            }
+            (
+                AccountMosaicRestrictionTransactionV1::TRANSACTION_TYPE,
+                AccountMosaicRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let restriction_flags;
+                (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
+                let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let account_restriction_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if account_restriction_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        account_restriction_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut restriction_additions = Vec::new();
+                for _ in 0..restriction_additions_count {
+                    let element;
+                    (element, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                    restriction_additions.push(element);
+                }
+                let mut restriction_deletions = Vec::new();
+                for _ in 0..restriction_deletions_count {
+                    let element;
+                    (element, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                    restriction_deletions.push(element);
+                }
+                let self_ = AccountMosaicRestrictionTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    restriction_flags,
+                    restriction_additions,
+                    restriction_deletions,
+                };
+                Ok((Self::AccountMosaicRestrictionTransactionV1(self_), payload))
+            }
+            (
+                AccountOperationRestrictionTransactionV1::TRANSACTION_TYPE,
+                AccountOperationRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let restriction_flags;
+                (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
+                let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let account_restriction_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if account_restriction_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        account_restriction_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut restriction_additions = Vec::new();
+                for _ in 0..restriction_additions_count {
+                    let element;
+                    (element, payload) = TransactionType::deserialize(payload)?;
+                    restriction_additions.push(element);
+                }
+                let mut restriction_deletions = Vec::new();
+                for _ in 0..restriction_deletions_count {
+                    let element;
+                    (element, payload) = TransactionType::deserialize(payload)?;
+                    restriction_deletions.push(element);
+                }
+                let self_ = AccountOperationRestrictionTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    restriction_flags,
+                    restriction_additions,
+                    restriction_deletions,
+                };
+                Ok((
+                    Self::AccountOperationRestrictionTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                MosaicAddressRestrictionTransactionV1::TRANSACTION_TYPE,
+                MosaicAddressRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic_id;
+                (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let self_ = MosaicAddressRestrictionTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    mosaic_id,
+                    restriction_key,
+                    previous_restriction_value,
+                    new_restriction_value,
+                    target_address,
+                };
+                Ok((Self::MosaicAddressRestrictionTransactionV1(self_), payload))
+            }
+            (
+                MosaicGlobalRestrictionTransactionV1::TRANSACTION_TYPE,
+                MosaicGlobalRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic_id;
+                (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let reference_mosaic_id;
+                (reference_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let previous_restriction_type_;
+                (previous_restriction_type_, payload) =
+                    MosaicRestrictionType::deserialize(payload)?;
+                let new_restriction_type_;
+                (new_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
+                let self_ = MosaicGlobalRestrictionTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    mosaic_id,
+                    reference_mosaic_id,
+                    restriction_key,
+                    previous_restriction_value,
+                    new_restriction_value,
+                    previous_restriction_type_,
+                    new_restriction_type_,
+                };
+                Ok((Self::MosaicGlobalRestrictionTransactionV1(self_), payload))
+            }
+            (
+                TransferTransactionV1::TRANSACTION_TYPE,
+                TransferTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let recipient_address;
+                (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let message_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mosaics_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let transfer_transaction_body_reserved_1 =
+                    u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                if transfer_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        transfer_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let transfer_transaction_body_reserved_2 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if transfer_transaction_body_reserved_2 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        transfer_transaction_body_reserved_2 as u32,
+                    ));
+                }
+                let mut mosaics = Vec::new();
+                for _ in 0..mosaics_count {
+                    let element;
+                    (element, payload) = UnresolvedMosaic::deserialize(payload)?;
+                    mosaics.push(element);
+                }
+                let mut message = Vec::new();
+                for _ in 0..message_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    message.push(element);
+                }
+                let self_ = TransferTransactionV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    fee,
+                    deadline,
+                    recipient_address,
+                    mosaics,
+                    message,
+                };
+                Ok((Self::TransferTransactionV1(self_), payload))
+            }
+            (_other_type_, _other_version) => Err(SymbolError::EnumDecodeError(11 as u32)),
+        }
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
-        let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
-        let signature = self.signature.serialize();
-        let signer_public_key = self.signer_public_key.serialize();
-        let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
-        let network = self.network.serialize();
-        let type_ = self.type_().serialize();
-        let fee = self.fee.serialize();
-        let deadline = self.deadline.serialize();
-        [
-            size.iter(),
-            verifiable_entity_header_reserved_1.iter(),
-            signature.iter(),
-            signer_public_key.iter(),
-            entity_body_reserved_1.iter(),
-            version.iter(),
-            network.iter(),
-            type_.iter(),
-            fee.iter(),
-            deadline.iter(),
-        ]
-        .into_iter()
-        .flat_map(|a| a)
-        .map(|x| *x)
-        .collect()
-    }
-}
-impl TraitSignature for Transaction {
-    fn get_signature(&self) -> &Signature {
-        &self.signature
-    }
-    fn set_signature(&mut self, signature: Signature) {
-        self.signature = signature;
-    }
-}
-impl TraitSignerPublicKey for Transaction {
-    fn get_signer_public_key(&self) -> &PublicKey {
-        &self.signer_public_key
-    }
-    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
-        self.signer_public_key = signer_public_key;
+        match self {
+            Self::AccountKeyLinkTransactionV1(x) => x.serialize(),
+            Self::NodeKeyLinkTransactionV1(x) => x.serialize(),
+            Self::AggregateCompleteTransactionV1(x) => x.serialize(),
+            Self::AggregateCompleteTransactionV2(x) => x.serialize(),
+            Self::AggregateBondedTransactionV1(x) => x.serialize(),
+            Self::AggregateBondedTransactionV2(x) => x.serialize(),
+            Self::VotingKeyLinkTransactionV1(x) => x.serialize(),
+            Self::VrfKeyLinkTransactionV1(x) => x.serialize(),
+            Self::HashLockTransactionV1(x) => x.serialize(),
+            Self::SecretLockTransactionV1(x) => x.serialize(),
+            Self::SecretProofTransactionV1(x) => x.serialize(),
+            Self::AccountMetadataTransactionV1(x) => x.serialize(),
+            Self::MosaicMetadataTransactionV1(x) => x.serialize(),
+            Self::NamespaceMetadataTransactionV1(x) => x.serialize(),
+            Self::MosaicDefinitionTransactionV1(x) => x.serialize(),
+            Self::MosaicSupplyChangeTransactionV1(x) => x.serialize(),
+            Self::MosaicSupplyRevocationTransactionV1(x) => x.serialize(),
+            Self::MultisigAccountModificationTransactionV1(x) => x.serialize(),
+            Self::AddressAliasTransactionV1(x) => x.serialize(),
+            Self::MosaicAliasTransactionV1(x) => x.serialize(),
+            Self::NamespaceRegistrationTransactionV1(x) => x.serialize(),
+            Self::AccountAddressRestrictionTransactionV1(x) => x.serialize(),
+            Self::AccountMosaicRestrictionTransactionV1(x) => x.serialize(),
+            Self::AccountOperationRestrictionTransactionV1(x) => x.serialize(),
+            Self::MosaicAddressRestrictionTransactionV1(x) => x.serialize(),
+            Self::MosaicGlobalRestrictionTransactionV1(x) => x.serialize(),
+            Self::TransferTransactionV1(x) => x.serialize(),
+        }
     }
 }
 ///binary layout for an embedded transaction
@@ -1664,39 +2530,62 @@ impl TraitSignerPublicKey for Transaction {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct EmbeddedTransaction {
-    pub signer_public_key: PublicKey,
-    pub network: NetworkType,
+pub enum EmbeddedTransaction {
+    EmbeddedAccountKeyLinkTransactionV1(EmbeddedAccountKeyLinkTransactionV1),
+    EmbeddedNodeKeyLinkTransactionV1(EmbeddedNodeKeyLinkTransactionV1),
+    EmbeddedVotingKeyLinkTransactionV1(EmbeddedVotingKeyLinkTransactionV1),
+    EmbeddedVrfKeyLinkTransactionV1(EmbeddedVrfKeyLinkTransactionV1),
+    EmbeddedHashLockTransactionV1(EmbeddedHashLockTransactionV1),
+    EmbeddedSecretLockTransactionV1(EmbeddedSecretLockTransactionV1),
+    EmbeddedSecretProofTransactionV1(EmbeddedSecretProofTransactionV1),
+    EmbeddedAccountMetadataTransactionV1(EmbeddedAccountMetadataTransactionV1),
+    EmbeddedMosaicMetadataTransactionV1(EmbeddedMosaicMetadataTransactionV1),
+    EmbeddedNamespaceMetadataTransactionV1(EmbeddedNamespaceMetadataTransactionV1),
+    EmbeddedMosaicDefinitionTransactionV1(EmbeddedMosaicDefinitionTransactionV1),
+    EmbeddedMosaicSupplyChangeTransactionV1(EmbeddedMosaicSupplyChangeTransactionV1),
+    EmbeddedMosaicSupplyRevocationTransactionV1(EmbeddedMosaicSupplyRevocationTransactionV1),
+    EmbeddedMultisigAccountModificationTransactionV1(
+        EmbeddedMultisigAccountModificationTransactionV1,
+    ),
+    EmbeddedAddressAliasTransactionV1(EmbeddedAddressAliasTransactionV1),
+    EmbeddedMosaicAliasTransactionV1(EmbeddedMosaicAliasTransactionV1),
+    EmbeddedNamespaceRegistrationTransactionV1(EmbeddedNamespaceRegistrationTransactionV1),
+    EmbeddedAccountAddressRestrictionTransactionV1(EmbeddedAccountAddressRestrictionTransactionV1),
+    EmbeddedAccountMosaicRestrictionTransactionV1(EmbeddedAccountMosaicRestrictionTransactionV1),
+    EmbeddedAccountOperationRestrictionTransactionV1(
+        EmbeddedAccountOperationRestrictionTransactionV1,
+    ),
+    EmbeddedMosaicAddressRestrictionTransactionV1(EmbeddedMosaicAddressRestrictionTransactionV1),
+    EmbeddedMosaicGlobalRestrictionTransactionV1(EmbeddedMosaicGlobalRestrictionTransactionV1),
+    EmbeddedTransferTransactionV1(EmbeddedTransferTransactionV1),
 }
 impl EmbeddedTransaction {
-    fn version(&self) -> u8 {
-        u8::default()
-    }
-    fn type_(&self) -> TransactionType {
-        TransactionType::default()
-    }
-    pub fn new(signer_public_key: PublicKey, network: NetworkType) -> Self {
-        Self {
-            signer_public_key,
-            network,
-        }
-    }
-    pub fn default() -> Self {
-        Self {
-            signer_public_key: PublicKey::default(),
-            network: NetworkType::default(),
-        }
-    }
     pub fn size(&self) -> usize {
-        let mut size = 0;
-        size += 4;
-        size += 4;
-        size += self.signer_public_key.size();
-        size += 4;
-        size += 1;
-        size += self.network.size();
-        size += self.type_().size();
-        size
+        match self {
+            Self::EmbeddedAccountKeyLinkTransactionV1(x) => x.size(),
+            Self::EmbeddedNodeKeyLinkTransactionV1(x) => x.size(),
+            Self::EmbeddedVotingKeyLinkTransactionV1(x) => x.size(),
+            Self::EmbeddedVrfKeyLinkTransactionV1(x) => x.size(),
+            Self::EmbeddedHashLockTransactionV1(x) => x.size(),
+            Self::EmbeddedSecretLockTransactionV1(x) => x.size(),
+            Self::EmbeddedSecretProofTransactionV1(x) => x.size(),
+            Self::EmbeddedAccountMetadataTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicMetadataTransactionV1(x) => x.size(),
+            Self::EmbeddedNamespaceMetadataTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicDefinitionTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicSupplyChangeTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicSupplyRevocationTransactionV1(x) => x.size(),
+            Self::EmbeddedMultisigAccountModificationTransactionV1(x) => x.size(),
+            Self::EmbeddedAddressAliasTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicAliasTransactionV1(x) => x.size(),
+            Self::EmbeddedNamespaceRegistrationTransactionV1(x) => x.size(),
+            Self::EmbeddedAccountAddressRestrictionTransactionV1(x) => x.size(),
+            Self::EmbeddedAccountMosaicRestrictionTransactionV1(x) => x.size(),
+            Self::EmbeddedAccountOperationRestrictionTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicAddressRestrictionTransactionV1(x) => x.size(),
+            Self::EmbeddedMosaicGlobalRestrictionTransactionV1(x) => x.size(),
+            Self::EmbeddedTransferTransactionV1(x) => x.size(),
+        }
     }
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
@@ -1729,47 +2618,705 @@ impl EmbeddedTransaction {
                 entity_body_reserved_1 as u32,
             ));
         }
-        let _version = u8::from_le_bytes(payload[..1].try_into()?);
+        let version = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
-        let _type_;
-        (_type_, payload) = TransactionType::deserialize(payload)?;
-        let self_ = Self {
-            signer_public_key,
-            network,
-        };
-        Ok((self_, payload))
+        let type_;
+        (type_, payload) = TransactionType::deserialize(payload)?;
+        match (type_, version) {
+            (
+                EmbeddedAccountKeyLinkTransactionV1::TRANSACTION_TYPE,
+                EmbeddedAccountKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = EmbeddedAccountKeyLinkTransactionV1 {
+                    signer_public_key,
+                    network,
+                    linked_public_key,
+                    link_action,
+                };
+                Ok((Self::EmbeddedAccountKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedNodeKeyLinkTransactionV1::TRANSACTION_TYPE,
+                EmbeddedNodeKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = EmbeddedNodeKeyLinkTransactionV1 {
+                    signer_public_key,
+                    network,
+                    linked_public_key,
+                    link_action,
+                };
+                Ok((Self::EmbeddedNodeKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedVotingKeyLinkTransactionV1::TRANSACTION_TYPE,
+                EmbeddedVotingKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = VotingPublicKey::deserialize(payload)?;
+                let start_epoch;
+                (start_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
+                let end_epoch;
+                (end_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = EmbeddedVotingKeyLinkTransactionV1 {
+                    signer_public_key,
+                    network,
+                    linked_public_key,
+                    start_epoch,
+                    end_epoch,
+                    link_action,
+                };
+                Ok((Self::EmbeddedVotingKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedVrfKeyLinkTransactionV1::TRANSACTION_TYPE,
+                EmbeddedVrfKeyLinkTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
+                let link_action;
+                (link_action, payload) = LinkAction::deserialize(payload)?;
+                let self_ = EmbeddedVrfKeyLinkTransactionV1 {
+                    signer_public_key,
+                    network,
+                    linked_public_key,
+                    link_action,
+                };
+                Ok((Self::EmbeddedVrfKeyLinkTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedHashLockTransactionV1::TRANSACTION_TYPE,
+                EmbeddedHashLockTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic;
+                (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let hash;
+                (hash, payload) = Hash256::deserialize(payload)?;
+                let self_ = EmbeddedHashLockTransactionV1 {
+                    signer_public_key,
+                    network,
+                    mosaic,
+                    duration,
+                    hash,
+                };
+                Ok((Self::EmbeddedHashLockTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedSecretLockTransactionV1::TRANSACTION_TYPE,
+                EmbeddedSecretLockTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let recipient_address;
+                (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let secret;
+                (secret, payload) = Hash256::deserialize(payload)?;
+                let mosaic;
+                (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let hash_algorithm;
+                (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
+                let self_ = EmbeddedSecretLockTransactionV1 {
+                    signer_public_key,
+                    network,
+                    recipient_address,
+                    secret,
+                    mosaic,
+                    duration,
+                    hash_algorithm,
+                };
+                Ok((Self::EmbeddedSecretLockTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedSecretProofTransactionV1::TRANSACTION_TYPE,
+                EmbeddedSecretProofTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let recipient_address;
+                (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let secret;
+                (secret, payload) = Hash256::deserialize(payload)?;
+                let proof_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let hash_algorithm;
+                (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
+                let mut proof = Vec::new();
+                for _ in 0..proof_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    proof.push(element);
+                }
+                let self_ = EmbeddedSecretProofTransactionV1 {
+                    signer_public_key,
+                    network,
+                    recipient_address,
+                    secret,
+                    hash_algorithm,
+                    proof,
+                };
+                Ok((Self::EmbeddedSecretProofTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedAccountMetadataTransactionV1::TRANSACTION_TYPE,
+                EmbeddedAccountMetadataTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let value_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mut value = Vec::new();
+                for _ in 0..value_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    value.push(element);
+                }
+                let self_ = EmbeddedAccountMetadataTransactionV1 {
+                    signer_public_key,
+                    network,
+                    target_address,
+                    scoped_metadata_key,
+                    value_size_delta,
+                    value,
+                };
+                Ok((Self::EmbeddedAccountMetadataTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedMosaicMetadataTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicMetadataTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let target_mosaic_id;
+                (target_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let value_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mut value = Vec::new();
+                for _ in 0..value_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    value.push(element);
+                }
+                let self_ = EmbeddedMosaicMetadataTransactionV1 {
+                    signer_public_key,
+                    network,
+                    target_address,
+                    scoped_metadata_key,
+                    target_mosaic_id,
+                    value_size_delta,
+                    value,
+                };
+                Ok((Self::EmbeddedMosaicMetadataTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedNamespaceMetadataTransactionV1::TRANSACTION_TYPE,
+                EmbeddedNamespaceMetadataTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let scoped_metadata_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let target_namespace_id;
+                (target_namespace_id, payload) = NamespaceId::deserialize(payload)?;
+                let value_size_delta = i16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let value_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mut value = Vec::new();
+                for _ in 0..value_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    value.push(element);
+                }
+                let self_ = EmbeddedNamespaceMetadataTransactionV1 {
+                    signer_public_key,
+                    network,
+                    target_address,
+                    scoped_metadata_key,
+                    target_namespace_id,
+                    value_size_delta,
+                    value,
+                };
+                Ok((Self::EmbeddedNamespaceMetadataTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedMosaicDefinitionTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicDefinitionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let id;
+                (id, payload) = MosaicId::deserialize(payload)?;
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let nonce;
+                (nonce, payload) = MosaicNonce::deserialize(payload)?;
+                let flags;
+                (flags, payload) = MosaicFlags::deserialize(payload)?;
+                let divisibility = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let self_ = EmbeddedMosaicDefinitionTransactionV1 {
+                    signer_public_key,
+                    network,
+                    id,
+                    duration,
+                    nonce,
+                    flags,
+                    divisibility,
+                };
+                Ok((Self::EmbeddedMosaicDefinitionTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedMosaicSupplyChangeTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicSupplyChangeTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic_id;
+                (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let delta;
+                (delta, payload) = Amount::deserialize(payload)?;
+                let action;
+                (action, payload) = MosaicSupplyChangeAction::deserialize(payload)?;
+                let self_ = EmbeddedMosaicSupplyChangeTransactionV1 {
+                    signer_public_key,
+                    network,
+                    mosaic_id,
+                    delta,
+                    action,
+                };
+                Ok((
+                    Self::EmbeddedMosaicSupplyChangeTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedMosaicSupplyRevocationTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicSupplyRevocationTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let source_address;
+                (source_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let mosaic;
+                (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
+                let self_ = EmbeddedMosaicSupplyRevocationTransactionV1 {
+                    signer_public_key,
+                    network,
+                    source_address,
+                    mosaic,
+                };
+                Ok((
+                    Self::EmbeddedMosaicSupplyRevocationTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedMultisigAccountModificationTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMultisigAccountModificationTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let min_removal_delta = i8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let min_approval_delta = i8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let address_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let address_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let multisig_account_modification_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if multisig_account_modification_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        multisig_account_modification_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut address_additions = Vec::new();
+                for _ in 0..address_additions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    address_additions.push(element);
+                }
+                let mut address_deletions = Vec::new();
+                for _ in 0..address_deletions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    address_deletions.push(element);
+                }
+                let self_ = EmbeddedMultisigAccountModificationTransactionV1 {
+                    signer_public_key,
+                    network,
+                    min_removal_delta,
+                    min_approval_delta,
+                    address_additions,
+                    address_deletions,
+                };
+                Ok((
+                    Self::EmbeddedMultisigAccountModificationTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedAddressAliasTransactionV1::TRANSACTION_TYPE,
+                EmbeddedAddressAliasTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let namespace_id;
+                (namespace_id, payload) = NamespaceId::deserialize(payload)?;
+                let address;
+                (address, payload) = Address::deserialize(payload)?;
+                let alias_action;
+                (alias_action, payload) = AliasAction::deserialize(payload)?;
+                let self_ = EmbeddedAddressAliasTransactionV1 {
+                    signer_public_key,
+                    network,
+                    namespace_id,
+                    address,
+                    alias_action,
+                };
+                Ok((Self::EmbeddedAddressAliasTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedMosaicAliasTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicAliasTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let namespace_id;
+                (namespace_id, payload) = NamespaceId::deserialize(payload)?;
+                let mosaic_id;
+                (mosaic_id, payload) = MosaicId::deserialize(payload)?;
+                let alias_action;
+                (alias_action, payload) = AliasAction::deserialize(payload)?;
+                let self_ = EmbeddedMosaicAliasTransactionV1 {
+                    signer_public_key,
+                    network,
+                    namespace_id,
+                    mosaic_id,
+                    alias_action,
+                };
+                Ok((Self::EmbeddedMosaicAliasTransactionV1(self_), payload))
+            }
+            (
+                EmbeddedNamespaceRegistrationTransactionV1::TRANSACTION_TYPE,
+                EmbeddedNamespaceRegistrationTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let duration;
+                (duration, payload) = BlockDuration::deserialize(payload)?;
+                let parent_id;
+                (parent_id, payload) = NamespaceId::deserialize(payload)?;
+                let id;
+                (id, payload) = NamespaceId::deserialize(payload)?;
+                let registration_type_;
+                (registration_type_, payload) = NamespaceRegistrationType::deserialize(payload)?;
+                let name_size = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let mut name = Vec::new();
+                for _ in 0..name_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    name.push(element);
+                }
+                let self_ = EmbeddedNamespaceRegistrationTransactionV1 {
+                    signer_public_key,
+                    network,
+                    duration,
+                    parent_id,
+                    id,
+                    registration_type_,
+                    name,
+                };
+                Ok((
+                    Self::EmbeddedNamespaceRegistrationTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedAccountAddressRestrictionTransactionV1::TRANSACTION_TYPE,
+                EmbeddedAccountAddressRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let restriction_flags;
+                (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
+                let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let account_restriction_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if account_restriction_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        account_restriction_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut restriction_additions = Vec::new();
+                for _ in 0..restriction_additions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    restriction_additions.push(element);
+                }
+                let mut restriction_deletions = Vec::new();
+                for _ in 0..restriction_deletions_count {
+                    let element;
+                    (element, payload) = UnresolvedAddress::deserialize(payload)?;
+                    restriction_deletions.push(element);
+                }
+                let self_ = EmbeddedAccountAddressRestrictionTransactionV1 {
+                    signer_public_key,
+                    network,
+                    restriction_flags,
+                    restriction_additions,
+                    restriction_deletions,
+                };
+                Ok((
+                    Self::EmbeddedAccountAddressRestrictionTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedAccountMosaicRestrictionTransactionV1::TRANSACTION_TYPE,
+                EmbeddedAccountMosaicRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let restriction_flags;
+                (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
+                let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let account_restriction_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if account_restriction_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        account_restriction_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut restriction_additions = Vec::new();
+                for _ in 0..restriction_additions_count {
+                    let element;
+                    (element, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                    restriction_additions.push(element);
+                }
+                let mut restriction_deletions = Vec::new();
+                for _ in 0..restriction_deletions_count {
+                    let element;
+                    (element, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                    restriction_deletions.push(element);
+                }
+                let self_ = EmbeddedAccountMosaicRestrictionTransactionV1 {
+                    signer_public_key,
+                    network,
+                    restriction_flags,
+                    restriction_additions,
+                    restriction_deletions,
+                };
+                Ok((
+                    Self::EmbeddedAccountMosaicRestrictionTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedAccountOperationRestrictionTransactionV1::TRANSACTION_TYPE,
+                EmbeddedAccountOperationRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let restriction_flags;
+                (restriction_flags, payload) = AccountRestrictionFlags::deserialize(payload)?;
+                let restriction_additions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let restriction_deletions_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let account_restriction_transaction_body_reserved_1 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if account_restriction_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        account_restriction_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let mut restriction_additions = Vec::new();
+                for _ in 0..restriction_additions_count {
+                    let element;
+                    (element, payload) = TransactionType::deserialize(payload)?;
+                    restriction_additions.push(element);
+                }
+                let mut restriction_deletions = Vec::new();
+                for _ in 0..restriction_deletions_count {
+                    let element;
+                    (element, payload) = TransactionType::deserialize(payload)?;
+                    restriction_deletions.push(element);
+                }
+                let self_ = EmbeddedAccountOperationRestrictionTransactionV1 {
+                    signer_public_key,
+                    network,
+                    restriction_flags,
+                    restriction_additions,
+                    restriction_deletions,
+                };
+                Ok((
+                    Self::EmbeddedAccountOperationRestrictionTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedMosaicAddressRestrictionTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicAddressRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic_id;
+                (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let target_address;
+                (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let self_ = EmbeddedMosaicAddressRestrictionTransactionV1 {
+                    signer_public_key,
+                    network,
+                    mosaic_id,
+                    restriction_key,
+                    previous_restriction_value,
+                    new_restriction_value,
+                    target_address,
+                };
+                Ok((
+                    Self::EmbeddedMosaicAddressRestrictionTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedMosaicGlobalRestrictionTransactionV1::TRANSACTION_TYPE,
+                EmbeddedMosaicGlobalRestrictionTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let mosaic_id;
+                (mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let reference_mosaic_id;
+                (reference_mosaic_id, payload) = UnresolvedMosaicId::deserialize(payload)?;
+                let restriction_key = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let previous_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let new_restriction_value = u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let previous_restriction_type_;
+                (previous_restriction_type_, payload) =
+                    MosaicRestrictionType::deserialize(payload)?;
+                let new_restriction_type_;
+                (new_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
+                let self_ = EmbeddedMosaicGlobalRestrictionTransactionV1 {
+                    signer_public_key,
+                    network,
+                    mosaic_id,
+                    reference_mosaic_id,
+                    restriction_key,
+                    previous_restriction_value,
+                    new_restriction_value,
+                    previous_restriction_type_,
+                    new_restriction_type_,
+                };
+                Ok((
+                    Self::EmbeddedMosaicGlobalRestrictionTransactionV1(self_),
+                    payload,
+                ))
+            }
+            (
+                EmbeddedTransferTransactionV1::TRANSACTION_TYPE,
+                EmbeddedTransferTransactionV1::TRANSACTION_VERSION,
+            ) => {
+                let recipient_address;
+                (recipient_address, payload) = UnresolvedAddress::deserialize(payload)?;
+                let message_size = u16::from_le_bytes(payload[..2].try_into()?);
+                payload = &payload[2..];
+                let mosaics_count = u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                let transfer_transaction_body_reserved_1 =
+                    u8::from_le_bytes(payload[..1].try_into()?);
+                payload = &payload[1..];
+                if transfer_transaction_body_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        transfer_transaction_body_reserved_1 as u32,
+                    ));
+                }
+                let transfer_transaction_body_reserved_2 =
+                    u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if transfer_transaction_body_reserved_2 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        transfer_transaction_body_reserved_2 as u32,
+                    ));
+                }
+                let mut mosaics = Vec::new();
+                for _ in 0..mosaics_count {
+                    let element;
+                    (element, payload) = UnresolvedMosaic::deserialize(payload)?;
+                    mosaics.push(element);
+                }
+                let mut message = Vec::new();
+                for _ in 0..message_size {
+                    let mut bytes = [0u8; 1];
+                    bytes.copy_from_slice(payload);
+                    let element = u8::from_le_bytes(bytes);
+                    payload = &payload[1..];
+                    message.push(element);
+                }
+                let self_ = EmbeddedTransferTransactionV1 {
+                    signer_public_key,
+                    network,
+                    recipient_address,
+                    mosaics,
+                    message,
+                };
+                Ok((Self::EmbeddedTransferTransactionV1(self_), payload))
+            }
+            (_other_type_, _other_version) => Err(SymbolError::EnumDecodeError(11 as u32)),
+        }
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
-        let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_public_key = self.signer_public_key.serialize();
-        let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
-        let network = self.network.serialize();
-        let type_ = self.type_().serialize();
-        [
-            size.iter(),
-            embedded_transaction_header_reserved_1.iter(),
-            signer_public_key.iter(),
-            entity_body_reserved_1.iter(),
-            version.iter(),
-            network.iter(),
-            type_.iter(),
-        ]
-        .into_iter()
-        .flat_map(|a| a)
-        .map(|x| *x)
-        .collect()
-    }
-}
-impl TraitSignerPublicKey for EmbeddedTransaction {
-    fn get_signer_public_key(&self) -> &PublicKey {
-        &self.signer_public_key
-    }
-    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
-        self.signer_public_key = signer_public_key;
+        match self {
+            Self::EmbeddedAccountKeyLinkTransactionV1(x) => x.serialize(),
+            Self::EmbeddedNodeKeyLinkTransactionV1(x) => x.serialize(),
+            Self::EmbeddedVotingKeyLinkTransactionV1(x) => x.serialize(),
+            Self::EmbeddedVrfKeyLinkTransactionV1(x) => x.serialize(),
+            Self::EmbeddedHashLockTransactionV1(x) => x.serialize(),
+            Self::EmbeddedSecretLockTransactionV1(x) => x.serialize(),
+            Self::EmbeddedSecretProofTransactionV1(x) => x.serialize(),
+            Self::EmbeddedAccountMetadataTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicMetadataTransactionV1(x) => x.serialize(),
+            Self::EmbeddedNamespaceMetadataTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicDefinitionTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicSupplyChangeTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicSupplyRevocationTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMultisigAccountModificationTransactionV1(x) => x.serialize(),
+            Self::EmbeddedAddressAliasTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicAliasTransactionV1(x) => x.serialize(),
+            Self::EmbeddedNamespaceRegistrationTransactionV1(x) => x.serialize(),
+            Self::EmbeddedAccountAddressRestrictionTransactionV1(x) => x.serialize(),
+            Self::EmbeddedAccountMosaicRestrictionTransactionV1(x) => x.serialize(),
+            Self::EmbeddedAccountOperationRestrictionTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicAddressRestrictionTransactionV1(x) => x.serialize(),
+            Self::EmbeddedMosaicGlobalRestrictionTransactionV1(x) => x.serialize(),
+            Self::EmbeddedTransferTransactionV1(x) => x.serialize(),
+        }
     }
 }
 ///None
@@ -1915,6 +3462,7 @@ impl ProofScalar {
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u16)]
 pub enum BlockType {
     NEMESIS = 32835,
     NORMAL = 33091,
@@ -2347,96 +3895,18 @@ impl VrfProof {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Block {
-    pub signature: Signature,
-    pub signer_public_key: PublicKey,
-    pub network: NetworkType,
-    pub height: Height,
-    pub timestamp: Timestamp,
-    pub difficulty: Difficulty,
-    pub generation_hash_proof: VrfProof,
-    pub previous_block_hash: Hash256,
-    pub transactions_hash: Hash256,
-    pub receipts_hash: Hash256,
-    pub state_hash: Hash256,
-    pub beneficiary_address: Address,
-    pub fee_multiplier: BlockFeeMultiplier,
+pub enum Block {
+    NemesisBlockV1(NemesisBlockV1),
+    NormalBlockV1(NormalBlockV1),
+    ImportanceBlockV1(ImportanceBlockV1),
 }
 impl Block {
-    fn version(&self) -> u8 {
-        u8::default()
-    }
-    fn type_(&self) -> BlockType {
-        BlockType::default()
-    }
-    pub fn new(
-        signer_public_key: PublicKey,
-        network: NetworkType,
-        height: Height,
-        timestamp: Timestamp,
-        difficulty: Difficulty,
-        generation_hash_proof: VrfProof,
-        previous_block_hash: Hash256,
-        transactions_hash: Hash256,
-        receipts_hash: Hash256,
-        state_hash: Hash256,
-        beneficiary_address: Address,
-        fee_multiplier: BlockFeeMultiplier,
-    ) -> Self {
-        Self {
-            signature: Signature::default(),
-            signer_public_key,
-            network,
-            height,
-            timestamp,
-            difficulty,
-            generation_hash_proof,
-            previous_block_hash,
-            transactions_hash,
-            receipts_hash,
-            state_hash,
-            beneficiary_address,
-            fee_multiplier,
-        }
-    }
-    pub fn default() -> Self {
-        Self {
-            signature: Signature::default(),
-            signer_public_key: PublicKey::default(),
-            network: NetworkType::default(),
-            height: Height::default(),
-            timestamp: Timestamp::default(),
-            difficulty: Difficulty::default(),
-            generation_hash_proof: VrfProof::default(),
-            previous_block_hash: Hash256::default(),
-            transactions_hash: Hash256::default(),
-            receipts_hash: Hash256::default(),
-            state_hash: Hash256::default(),
-            beneficiary_address: Address::default(),
-            fee_multiplier: BlockFeeMultiplier::default(),
-        }
-    }
     pub fn size(&self) -> usize {
-        let mut size = 0;
-        size += 4;
-        size += 4;
-        size += self.signature.size();
-        size += self.signer_public_key.size();
-        size += 4;
-        size += 1;
-        size += self.network.size();
-        size += self.type_().size();
-        size += self.height.size();
-        size += self.timestamp.size();
-        size += self.difficulty.size();
-        size += self.generation_hash_proof.size();
-        size += self.previous_block_hash.size();
-        size += self.transactions_hash.size();
-        size += self.receipts_hash.size();
-        size += self.state_hash.size();
-        size += self.beneficiary_address.size();
-        size += self.fee_multiplier.size();
-        size
+        match self {
+            Self::NemesisBlockV1(x) => x.size(),
+            Self::NormalBlockV1(x) => x.size(),
+            Self::ImportanceBlockV1(x) => x.size(),
+        }
     }
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
@@ -2475,8 +3945,8 @@ impl Block {
         payload = &payload[1..];
         let network;
         (network, payload) = NetworkType::deserialize(payload)?;
-        let _type_;
-        (_type_, payload) = BlockType::deserialize(payload)?;
+        let type_;
+        (type_, payload) = BlockType::deserialize(payload)?;
         let height;
         (height, payload) = Height::deserialize(payload)?;
         let timestamp;
@@ -2497,82 +3967,124 @@ impl Block {
         (beneficiary_address, payload) = Address::deserialize(payload)?;
         let fee_multiplier;
         (fee_multiplier, payload) = BlockFeeMultiplier::deserialize(payload)?;
-        let self_ = Self {
-            signature,
-            signer_public_key,
-            network,
-            height,
-            timestamp,
-            difficulty,
-            generation_hash_proof,
-            previous_block_hash,
-            transactions_hash,
-            receipts_hash,
-            state_hash,
-            beneficiary_address,
-            fee_multiplier,
-        };
-        Ok((self_, payload))
+        match (type_,) {
+            (NemesisBlockV1::BLOCK_TYPE,) => {
+                let voting_eligible_accounts_count = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                let harvesting_eligible_accounts_count =
+                    u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let total_voting_balance;
+                (total_voting_balance, payload) = Amount::deserialize(payload)?;
+                let previous_importance_block_hash;
+                (previous_importance_block_hash, payload) = Hash256::deserialize(payload)?;
+                let mut transactions = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Transaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let self_ = NemesisBlockV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    height,
+                    timestamp,
+                    difficulty,
+                    generation_hash_proof,
+                    previous_block_hash,
+                    transactions_hash,
+                    receipts_hash,
+                    state_hash,
+                    beneficiary_address,
+                    fee_multiplier,
+                    voting_eligible_accounts_count,
+                    harvesting_eligible_accounts_count,
+                    total_voting_balance,
+                    previous_importance_block_hash,
+                    transactions,
+                };
+                Ok((Self::NemesisBlockV1(self_), payload))
+            }
+            (NormalBlockV1::BLOCK_TYPE,) => {
+                let block_header_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                if block_header_reserved_1 != 0 {
+                    return Err(SymbolError::ReservedIsNotZeroError(
+                        block_header_reserved_1 as u32,
+                    ));
+                }
+                let mut transactions = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Transaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let self_ = NormalBlockV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    height,
+                    timestamp,
+                    difficulty,
+                    generation_hash_proof,
+                    previous_block_hash,
+                    transactions_hash,
+                    receipts_hash,
+                    state_hash,
+                    beneficiary_address,
+                    fee_multiplier,
+                    transactions,
+                };
+                Ok((Self::NormalBlockV1(self_), payload))
+            }
+            (ImportanceBlockV1::BLOCK_TYPE,) => {
+                let voting_eligible_accounts_count = u32::from_le_bytes(payload[..4].try_into()?);
+                payload = &payload[4..];
+                let harvesting_eligible_accounts_count =
+                    u64::from_le_bytes(payload[..8].try_into()?);
+                payload = &payload[8..];
+                let total_voting_balance;
+                (total_voting_balance, payload) = Amount::deserialize(payload)?;
+                let previous_importance_block_hash;
+                (previous_importance_block_hash, payload) = Hash256::deserialize(payload)?;
+                let mut transactions = Vec::new();
+                for _ in 0..0 {
+                    let element;
+                    (element, payload) = Transaction::deserialize(payload)?;
+                    transactions.push(element);
+                }
+                let self_ = ImportanceBlockV1 {
+                    signature,
+                    signer_public_key,
+                    network,
+                    height,
+                    timestamp,
+                    difficulty,
+                    generation_hash_proof,
+                    previous_block_hash,
+                    transactions_hash,
+                    receipts_hash,
+                    state_hash,
+                    beneficiary_address,
+                    fee_multiplier,
+                    voting_eligible_accounts_count,
+                    harvesting_eligible_accounts_count,
+                    total_voting_balance,
+                    previous_importance_block_hash,
+                    transactions,
+                };
+                Ok((Self::ImportanceBlockV1(self_), payload))
+            }
+            (_other_type_,) => Err(SymbolError::EnumDecodeError(11 as u32)),
+        }
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
-        let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
-        let signature = self.signature.serialize();
-        let signer_public_key = self.signer_public_key.serialize();
-        let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
-        let network = self.network.serialize();
-        let type_ = self.type_().serialize();
-        let height = self.height.serialize();
-        let timestamp = self.timestamp.serialize();
-        let difficulty = self.difficulty.serialize();
-        let generation_hash_proof = self.generation_hash_proof.serialize();
-        let previous_block_hash = self.previous_block_hash.serialize();
-        let transactions_hash = self.transactions_hash.serialize();
-        let receipts_hash = self.receipts_hash.serialize();
-        let state_hash = self.state_hash.serialize();
-        let beneficiary_address = self.beneficiary_address.serialize();
-        let fee_multiplier = self.fee_multiplier.serialize();
-        [
-            size.iter(),
-            verifiable_entity_header_reserved_1.iter(),
-            signature.iter(),
-            signer_public_key.iter(),
-            entity_body_reserved_1.iter(),
-            version.iter(),
-            network.iter(),
-            type_.iter(),
-            height.iter(),
-            timestamp.iter(),
-            difficulty.iter(),
-            generation_hash_proof.iter(),
-            previous_block_hash.iter(),
-            transactions_hash.iter(),
-            receipts_hash.iter(),
-            state_hash.iter(),
-            beneficiary_address.iter(),
-            fee_multiplier.iter(),
-        ]
-        .into_iter()
-        .flat_map(|a| a)
-        .map(|x| *x)
-        .collect()
-    }
-}
-impl TraitSignature for Block {
-    fn get_signature(&self) -> &Signature {
-        &self.signature
-    }
-    fn set_signature(&mut self, signature: Signature) {
-        self.signature = signature;
-    }
-}
-impl TraitSignerPublicKey for Block {
-    fn get_signer_public_key(&self) -> &PublicKey {
-        &self.signer_public_key
-    }
-    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
-        self.signer_public_key = signer_public_key;
+        match self {
+            Self::NemesisBlockV1(x) => x.serialize(),
+            Self::NormalBlockV1(x) => x.serialize(),
+            Self::ImportanceBlockV1(x) => x.serialize(),
+        }
     }
 }
 ///binary layout for a nemesis block header
@@ -4836,6 +6348,7 @@ impl FinalizedBlockHeader {
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u16)]
 pub enum ReceiptType {
     MOSAIC_RENTAL_FEE = 4685,
     NAMESPACE_RENTAL_FEE = 4942,
@@ -4986,27 +6499,38 @@ impl ReceiptType {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Receipt {
-    pub version: u16,
+pub enum Receipt {
+    HarvestFeeReceipt(HarvestFeeReceipt),
+    InflationReceipt(InflationReceipt),
+    LockHashCreatedFeeReceipt(LockHashCreatedFeeReceipt),
+    LockHashCompletedFeeReceipt(LockHashCompletedFeeReceipt),
+    LockHashExpiredFeeReceipt(LockHashExpiredFeeReceipt),
+    LockSecretCreatedFeeReceipt(LockSecretCreatedFeeReceipt),
+    LockSecretCompletedFeeReceipt(LockSecretCompletedFeeReceipt),
+    LockSecretExpiredFeeReceipt(LockSecretExpiredFeeReceipt),
+    MosaicExpiredReceipt(MosaicExpiredReceipt),
+    MosaicRentalFeeReceipt(MosaicRentalFeeReceipt),
+    NamespaceExpiredReceipt(NamespaceExpiredReceipt),
+    NamespaceDeletedReceipt(NamespaceDeletedReceipt),
+    NamespaceRentalFeeReceipt(NamespaceRentalFeeReceipt),
 }
 impl Receipt {
-    fn type_(&self) -> ReceiptType {
-        ReceiptType::default()
-    }
-    pub fn new(version: u16) -> Self {
-        Self { version }
-    }
-    pub fn default() -> Self {
-        Self {
-            version: u16::default(),
-        }
-    }
     pub fn size(&self) -> usize {
-        let mut size = 0;
-        size += 4;
-        size += 2;
-        size += self.type_().size();
-        size
+        match self {
+            Self::HarvestFeeReceipt(x) => x.size(),
+            Self::InflationReceipt(x) => x.size(),
+            Self::LockHashCreatedFeeReceipt(x) => x.size(),
+            Self::LockHashCompletedFeeReceipt(x) => x.size(),
+            Self::LockHashExpiredFeeReceipt(x) => x.size(),
+            Self::LockSecretCreatedFeeReceipt(x) => x.size(),
+            Self::LockSecretCompletedFeeReceipt(x) => x.size(),
+            Self::LockSecretExpiredFeeReceipt(x) => x.size(),
+            Self::MosaicExpiredReceipt(x) => x.size(),
+            Self::MosaicRentalFeeReceipt(x) => x.size(),
+            Self::NamespaceExpiredReceipt(x) => x.size(),
+            Self::NamespaceDeletedReceipt(x) => x.size(),
+            Self::NamespaceRentalFeeReceipt(x) => x.size(),
+        }
     }
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
@@ -5025,20 +6549,175 @@ impl Receipt {
         }
         let version = u16::from_le_bytes(payload[..2].try_into()?);
         payload = &payload[2..];
-        let _type_;
-        (_type_, payload) = ReceiptType::deserialize(payload)?;
-        let self_ = Self { version };
-        Ok((self_, payload))
+        let type_;
+        (type_, payload) = ReceiptType::deserialize(payload)?;
+        match (type_,) {
+            (HarvestFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = HarvestFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::HarvestFeeReceipt(self_), payload))
+            }
+            (InflationReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let self_ = InflationReceipt { version, mosaic };
+                Ok((Self::InflationReceipt(self_), payload))
+            }
+            (LockHashCreatedFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = LockHashCreatedFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::LockHashCreatedFeeReceipt(self_), payload))
+            }
+            (LockHashCompletedFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = LockHashCompletedFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::LockHashCompletedFeeReceipt(self_), payload))
+            }
+            (LockHashExpiredFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = LockHashExpiredFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::LockHashExpiredFeeReceipt(self_), payload))
+            }
+            (LockSecretCreatedFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = LockSecretCreatedFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::LockSecretCreatedFeeReceipt(self_), payload))
+            }
+            (LockSecretCompletedFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = LockSecretCompletedFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::LockSecretCompletedFeeReceipt(self_), payload))
+            }
+            (LockSecretExpiredFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let target_address;
+                (target_address, payload) = Address::deserialize(payload)?;
+                let self_ = LockSecretExpiredFeeReceipt {
+                    version,
+                    mosaic,
+                    target_address,
+                };
+                Ok((Self::LockSecretExpiredFeeReceipt(self_), payload))
+            }
+            (MosaicExpiredReceipt::RECEIPT_TYPE,) => {
+                let artifact_id;
+                (artifact_id, payload) = MosaicId::deserialize(payload)?;
+                let self_ = MosaicExpiredReceipt {
+                    version,
+                    artifact_id,
+                };
+                Ok((Self::MosaicExpiredReceipt(self_), payload))
+            }
+            (MosaicRentalFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let sender_address;
+                (sender_address, payload) = Address::deserialize(payload)?;
+                let recipient_address;
+                (recipient_address, payload) = Address::deserialize(payload)?;
+                let self_ = MosaicRentalFeeReceipt {
+                    version,
+                    mosaic,
+                    sender_address,
+                    recipient_address,
+                };
+                Ok((Self::MosaicRentalFeeReceipt(self_), payload))
+            }
+            (NamespaceExpiredReceipt::RECEIPT_TYPE,) => {
+                let artifact_id;
+                (artifact_id, payload) = NamespaceId::deserialize(payload)?;
+                let self_ = NamespaceExpiredReceipt {
+                    version,
+                    artifact_id,
+                };
+                Ok((Self::NamespaceExpiredReceipt(self_), payload))
+            }
+            (NamespaceDeletedReceipt::RECEIPT_TYPE,) => {
+                let artifact_id;
+                (artifact_id, payload) = NamespaceId::deserialize(payload)?;
+                let self_ = NamespaceDeletedReceipt {
+                    version,
+                    artifact_id,
+                };
+                Ok((Self::NamespaceDeletedReceipt(self_), payload))
+            }
+            (NamespaceRentalFeeReceipt::RECEIPT_TYPE,) => {
+                let mosaic;
+                (mosaic, payload) = Mosaic::deserialize(payload)?;
+                let sender_address;
+                (sender_address, payload) = Address::deserialize(payload)?;
+                let recipient_address;
+                (recipient_address, payload) = Address::deserialize(payload)?;
+                let self_ = NamespaceRentalFeeReceipt {
+                    version,
+                    mosaic,
+                    sender_address,
+                    recipient_address,
+                };
+                Ok((Self::NamespaceRentalFeeReceipt(self_), payload))
+            }
+            (_other_type_,) => Err(SymbolError::EnumDecodeError(11 as u32)),
+        }
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
-        let version = self.version.to_le_bytes();
-        let type_ = self.type_().serialize();
-        [size.iter(), version.iter(), type_.iter()]
-            .into_iter()
-            .flat_map(|a| a)
-            .map(|x| *x)
-            .collect()
+        match self {
+            Self::HarvestFeeReceipt(x) => x.serialize(),
+            Self::InflationReceipt(x) => x.serialize(),
+            Self::LockHashCreatedFeeReceipt(x) => x.serialize(),
+            Self::LockHashCompletedFeeReceipt(x) => x.serialize(),
+            Self::LockHashExpiredFeeReceipt(x) => x.serialize(),
+            Self::LockSecretCreatedFeeReceipt(x) => x.serialize(),
+            Self::LockSecretCompletedFeeReceipt(x) => x.serialize(),
+            Self::LockSecretExpiredFeeReceipt(x) => x.serialize(),
+            Self::MosaicExpiredReceipt(x) => x.serialize(),
+            Self::MosaicRentalFeeReceipt(x) => x.serialize(),
+            Self::NamespaceExpiredReceipt(x) => x.serialize(),
+            Self::NamespaceDeletedReceipt(x) => x.serialize(),
+            Self::NamespaceRentalFeeReceipt(x) => x.serialize(),
+        }
     }
 }
 ///Receipt generated when transaction fees are credited to a block harvester.
@@ -7149,6 +8828,7 @@ impl NamespaceId {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum NamespaceRegistrationType {
     ROOT = 0,
     CHILD = 1,
@@ -7205,6 +8885,7 @@ impl NamespaceRegistrationType {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum AliasAction {
     UNLINK = 0,
     LINK = 1,
@@ -15195,6 +16876,7 @@ impl TraitSignerPublicKey for EmbeddedHashLockTransactionV1 {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum LockHashAlgorithm {
     SHA3_256 = 0,
     HASH_160 = 1,
@@ -20110,12 +21792,14 @@ impl MosaicNonce {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum MosaicFlags {
     NONE = 0,
     SUPPLY_MUTABLE = 1,
     TRANSFERABLE = 2,
     RESTRICTABLE = 4,
     REVOKABLE = 8,
+    X(u8),
 }
 impl MosaicFlags {
     const SIZE: usize = 1;
@@ -20139,11 +21823,19 @@ impl MosaicFlags {
             2 => Ok((MosaicFlags::TRANSFERABLE, rest)),
             4 => Ok((MosaicFlags::RESTRICTABLE, rest)),
             8 => Ok((MosaicFlags::REVOKABLE, rest)),
+            x if (!0 & !1 & !2 & !4 & !8 & !0) == 0 => Ok((Self::X(x), rest)),
             other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
-        (self.clone() as u8).to_le_bytes().to_vec()
+        match self {
+            Self::NONE => 0u8.to_le_bytes().to_vec(),
+            Self::SUPPLY_MUTABLE => 1u8.to_le_bytes().to_vec(),
+            Self::TRANSFERABLE => 2u8.to_le_bytes().to_vec(),
+            Self::RESTRICTABLE => 4u8.to_le_bytes().to_vec(),
+            Self::REVOKABLE => 8u8.to_le_bytes().to_vec(),
+            Self::X(x) => x.to_le_bytes().to_vec(),
+        }
     }
     pub fn to_string(&self) -> String {
         format!("MosaicFlags::{:?}", self)
@@ -20172,6 +21864,7 @@ impl MosaicFlags {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum MosaicSupplyChangeAction {
     DECREASE = 0,
     INCREASE = 1,
@@ -26421,12 +28114,14 @@ impl TraitSignerPublicKey for EmbeddedNamespaceRegistrationTransactionV1 {
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u16)]
 pub enum AccountRestrictionFlags {
     ADDRESS = 1,
     MOSAIC_ID = 2,
     TRANSACTION_TYPE = 4,
     OUTGOING = 16384,
     BLOCK = 32768,
+    X(u16),
 }
 impl AccountRestrictionFlags {
     const SIZE: usize = 2;
@@ -26450,11 +28145,19 @@ impl AccountRestrictionFlags {
             4 => Ok((AccountRestrictionFlags::TRANSACTION_TYPE, rest)),
             16384 => Ok((AccountRestrictionFlags::OUTGOING, rest)),
             32768 => Ok((AccountRestrictionFlags::BLOCK, rest)),
+            x if (!1 & !2 & !4 & !16384 & !32768 & !0) == 0 => Ok((Self::X(x), rest)),
             other => Err(SymbolError::EnumDecodeError(other as u32)),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
-        (self.clone() as u16).to_le_bytes().to_vec()
+        match self {
+            Self::ADDRESS => 1u16.to_le_bytes().to_vec(),
+            Self::MOSAIC_ID => 2u16.to_le_bytes().to_vec(),
+            Self::TRANSACTION_TYPE => 4u16.to_le_bytes().to_vec(),
+            Self::OUTGOING => 16384u16.to_le_bytes().to_vec(),
+            Self::BLOCK => 32768u16.to_le_bytes().to_vec(),
+            Self::X(x) => x.to_le_bytes().to_vec(),
+        }
     }
     pub fn to_string(&self) -> String {
         format!("AccountRestrictionFlags::{:?}", self)
@@ -30574,6 +32277,7 @@ impl MosaicRestrictionKey {
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum MosaicRestrictionType {
     NONE = 0,
     EQ = 1,

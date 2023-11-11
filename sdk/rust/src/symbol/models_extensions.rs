@@ -31,16 +31,21 @@ where
     Self: Sized,
     T: TraitMessage + TraitSignature,
 {
-    fn sign_transaction(&self, transaction: &mut T);
+    fn sign_transaction(&self, transaction: T) -> T;
+    fn verify_transaction(&self, transaction: &T) -> Result<(), SymbolError>;
 }
 
 impl<T> ExtentionSigningKey<T> for SigningKey
 where
     T: TraitMessage + TraitSignature,
 {
-    fn sign_transaction(&self, transaction: &mut T) {
+    fn sign_transaction(&self, mut transaction: T) -> T {
         let signature = self.sign(transaction.get_message());
         transaction.set_signature(signature);
+        transaction
+    }
+    fn verify_transaction(&self, transaction: &T) -> Result<(), SymbolError> {
+        Ok(self.verify(transaction.get_message(), transaction.get_signature())?)
     }
 }
 

@@ -1,10 +1,5 @@
 #!/usr/bin/python
 
-# Since the Rust language does not support default arguments,
-# the new(args) and default() functions are provided as constructors.
-# new(args): requires arguments
-# default(): no argument required, default value is set
-
 from pathlib import Path
 from enum import Enum
 import catparser
@@ -33,6 +28,16 @@ def get_type_of_trait(trait, ast_models):
                 return f'Vec<{f.field_type.element_type.short_name.replace("uint", "u").replace("int", "i")}>'
             else:
                 return f.field_type
+            
+def get_factory_type(ast_model):
+    if hasattr(ast_model, 'factory_type'):
+        return ast_model.factory_type
+    return None
+
+def get_factory_types(ast_models):
+    factory_types = set([get_factory_type(ast_model) for ast_model in ast_models])
+    factory_types.remove(None)
+    return factory_types
 
 def generate_files(ast_models, output_directory: Path):
 
@@ -50,13 +55,24 @@ def generate_files(ast_models, output_directory: Path):
             output += f'fn get_{trait}(&self) -> &{type};'
             output += f'fn set_{trait}(&mut self, {trait}: {type});'
             output += '}'
+            
+        factory_types = get_factory_types(ast_models)
 
         for ast_model in ast_models:
             if ast_model.name in ('Signature', 'PublicKey'):
                 continue
+            
             ast_model = copy.deepcopy(ast_model)
             output += header_for_each_ast_model(ast_model)
-            if ast_model.display_type == DisplayType.STRUCT:
+            if ast_model.name in factory_types:
+                factory = ast_model
+                factory_name = factory.name
+                products = []
+                for ast_model in ast_models:
+                    if get_factory_type(ast_model) == factory_name:
+                        products.append(copy.deepcopy(ast_model))
+                output += generate_factory(factory, products)
+            elif ast_model.display_type == DisplayType.STRUCT:
                 output += generate_struct(ast_model)
             elif ast_model.display_type == DisplayType.ENUM:
                 output += generate_enum(ast_model)
@@ -67,24 +83,214 @@ def generate_files(ast_models, output_directory: Path):
             else:
                 raise 'Unexpected'
 
-        # for ast_model in ast_models:
-        #     if DisplayType.STRUCT == ast_model.display_type and ast_model.is_abstract:
-        #         struct_name = ast_model.name
-        #         fields = ast_model.fields
-        #         print("##" + struct_name)
-        #         print(ast_model)
-        #         for f in fields:
-        #             print(f.name)
-        #         factory_generator = FactoryClassFormatter(FactoryFormatter(factory_map, ast_model))
-        #         output += str(factory_generator)
-
         output_file.write(output)
+        
+        
+def generate_factory(factory, products):
+    def update_field_type(field_type):
+        if type(field_type) == lark.lexer.Token:
+            pass
+        elif type(field_type) == catparser.ast.FixedSizeInteger:
+            field_type.short_name = field_type.short_name.replace("uint", "u").replace("int", "i")
+        elif type(field_type) == catparser.ast.Array:
+            element_type = field_type.element_type
+            update_field_type(element_type)
+        elif type(field_type) == str:
+            pass
+        else:
+            raise "unexpected"
+    
+    def constantized_by(field_name, ast_model):
+        for x in ast_model.initializers:
+            if x.target_property_name == field_name:
+                return x.value                    
+        return None
+            
+    def is_size_of_other(field, ast_model):
+        for other_field in ast_model.fields:
+            if field.name == other_field.size:
+                return other_field
+        return None
+    
+    def skip_in_constructor(field):
+        if field.name in ("signature"):
+            return True
+        return False
+    
+    def is_member(field, ast_model):
+        if constantized_by(field.name, ast_model):
+            return False
+        if is_size_of_other(field, ast_model):
+            return False
+        if field.is_const:
+            return False
+        if field.is_reserved:
+            return False
+        if field.name == "size":
+            return False
+        return True
+    
+    def is_method(field):
+        return constantized_by(field.name, factory)
+    
+    # prepare
+    for f in factory.fields:
+        update_field_type(f.field_type)
+    for p in products:
+        for f in p.fields:
+            update_field_type(f.field_type)
+            
 
+    factory_name = factory.name
+    ret = ''
+    
+    ret += f'pub enum {factory_name} {{'
+    for p in products:
+        ret += f'{p.name}({p.name}),'
+    ret += '}'
+    
+    ret += f'impl {factory_name} {{'
+    
+    ret += 'pub fn size(&self) -> usize {'
+    ret += 'match self {'
+    for p in products:
+        ret += f'Self::{p.name}(x) => x.size(),'
+    ret += '}}'
+    
+    ret += 'pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {'
+    for f in factory.fields:
+        if f.is_const:
+            continue
+        fn = f.name
+        if constantized_by(fn, factory):
+            if fn not in factory.discriminator:
+                fn = '_' + fn
+        
+        ft = f.field_type
+        fs = f.size
+        if f.name == 'size':
+            ret += f'if payload.len() < {fs} {{ return Err(SymbolError::SizeError{{expect: {fs}, real: payload.len()}}) }}'
+        if type(ft) == catparser.ast.FixedSizeInteger:
+            ret += f'let {fn} = {ft}::from_le_bytes(payload[..{fs}].try_into()?);'
+            ret += f'payload = &payload[{fs}..];'
+        elif type(ft) == catparser.ast.Array:
+            ret += f'let mut {fn} = Vec::new();'
+            ret += f'for _ in 0..{fs} {{'
+            
+            fte = ft.element_type
+            if type(fte) == catparser.ast.FixedSizeInteger:
+                ftes = fte.size
+                # ften = fte.name
+                ret += f'let mut bytes = [0u8; {ftes}];'
+                ret += f'bytes.copy_from_slice(payload);'
+                ret += f'let element = {fte}::from_le_bytes(bytes);'
+                ret += f'payload = &payload[{ftes}..];'
+                ret += f'{fn}.push(element);'
+            elif type(fte) == str:
+                ret += f'let element;'
+                ret += f'(element, payload) = {fte}::deserialize(payload)?;'
+                ret += f'{fn}.push(element);'
+            else:
+                raise "unexpected"
+            ret += '}'
+        else:
+            ret += f'let {fn};'
+            ret += f'({fn}, payload) = {ft}::deserialize(payload)?;'
+        
+        if f.name == 'size':
+            ret += f'if size as usize >= payload.len() + {fs} {{ return Err(SymbolError::SizeError{{expect: size as usize, real: payload.len() + {fs} }}); }}'
+        if f.is_reserved:
+            ret += f'if {f.name} != 0 {{ return Err(SymbolError::ReservedIsNotZeroError({f.name} as u32)); }}'
+        if constantized_by(f.name, factory):
+            pass
+        
+        
+    common_field_name_list = [f.name for f in factory.fields]
+    ret += 'match ('
+    for d in factory.discriminator:
+        ret += f'{d}, '
+    ret += ') {'
+    for p in products:
+        ret += '('
+        for d in factory.discriminator:
+            ret += f'{p.name}::{constantized_by(d, p)}, '
+        ret += ') => {'
+        for f in p.fields:
+            if f.name in common_field_name_list:
+                continue
+            if f.is_const:
+                continue
+            fn = f.name
+            if constantized_by(f.name, p):
+                fn = '_' + fn
+            
+            ft = f.field_type
+            fs = f.size
+            if f.name == 'size':
+                ret += f'if payload.len() < {fs} {{ return Err(SymbolError::SizeError{{expect: {fs}, real: payload.len()}}) }}'
+            if type(ft) == catparser.ast.FixedSizeInteger:
+                ret += f'let {fn} = {ft}::from_le_bytes(payload[..{fs}].try_into()?);'
+                ret += f'payload = &payload[{fs}..];'
+            elif type(ft) == catparser.ast.Array:
+                ret += f'let mut {fn} = Vec::new();'
+                ret += f'for _ in 0..{fs} {{'
+                
+                fte = ft.element_type
+                if type(fte) == catparser.ast.FixedSizeInteger:
+                    ftes = fte.size
+                    # ften = fte.name
+                    ret += f'let mut bytes = [0u8; {ftes}];'
+                    ret += f'bytes.copy_from_slice(payload);'
+                    ret += f'let element = {fte}::from_le_bytes(bytes);'
+                    ret += f'payload = &payload[{ftes}..];'
+                    ret += f'{fn}.push(element);'
+                elif type(fte) == str:
+                    ret += f'let element;'
+                    ret += f'(element, payload) = {fte}::deserialize(payload)?;'
+                    ret += f'{fn}.push(element);'
+                else:
+                    raise "unexpected"
+                ret += '}'
+            else:
+                ret += f'let {fn};'
+                ret += f'({fn}, payload) = {ft}::deserialize(payload)?;'
+            
+            if f.name == 'size':
+                ret += f'if size as usize >= payload.len() + {fs} {{ return Err(SymbolError::SizeError{{expect: size as usize, real: payload.len() + {fs} }}); }}'
+            if f.is_reserved:
+                ret += f'if {f.name} != 0 {{ return Err(SymbolError::ReservedIsNotZeroError({f.name} as u32)); }}'
+            if constantized_by(f.name, factory):
+                pass
+        ret += f'let self_ = {p.name} {{'
+        for f in p.fields:
+            if not is_member(f, p):
+                continue
+            ret += f'{f.name},'
+        ret += '};'
+            
+        ret += f'Ok((Self::{p.name}(self_), payload))'    
+        
+        ret += '},'
+    ret += '('
+    for d in factory.discriminator:
+        ret += f'_other_{d}, '
+    ret += ')'
+    ret += ' => Err(SymbolError::EnumDecodeError(11 as u32)),'
+    ret += '}}' 
+    
+    ret += 'pub fn serialize(&self) -> Vec<u8> {'
+    ret += 'match self {'
+    for p in products:
+        ret += f'Self::{p.name}(x) => x.serialize(),'
+    ret += '}}'
+
+    
+    ret += '}'
+    return ret.replace('type', 'type_')
+    
+    
 def generate_struct(ast_model):
     struct_name = ast_model.name
-    
-    if struct_name == "EmbeddedTransferTransactionV1":
-        display_ast_model(ast_model.initializers)
     
     def update_field_type(field_type):
         if type(field_type) == lark.lexer.Token:
@@ -99,16 +305,11 @@ def generate_struct(ast_model):
         else:
             raise "unexpected"
     
-    def is_constantized(field):
+    def constantized_by(field_name, ast_model):
         for x in ast_model.initializers:
-            if x.target_property_name == field.name:
-                return x
+            if x.target_property_name == field_name:
+                return x.value                    
         return None
-
-    def constantized_by(field):
-        for x in ast_model.initializers:
-            if x.target_property_name == field.name:
-                return x.value
             
     def is_size_of_other(field):
         for other_field in ast_model.fields:
@@ -122,7 +323,7 @@ def generate_struct(ast_model):
         return False
     
     def is_member(field):
-        if is_constantized(field):
+        if constantized_by(field.name, ast_model):
             return False
         if is_size_of_other(field):
             return False
@@ -135,8 +336,7 @@ def generate_struct(ast_model):
         return True
     
     def is_method(field):
-        method_list = ["version", "type"]
-        return field.name in method_list
+        return constantized_by(field.name, ast_model)
     
     # prepare
     for f in ast_model.fields:
@@ -170,10 +370,11 @@ def generate_struct(ast_model):
             raise "unexpected"
         
     for f in ast_model.fields:
-        if not is_constantized(f):
+        const = constantized_by(f.name, ast_model)
+        if not const:
             continue
-        const = constantized_by(f)
         if const in [f.name for f in ast_model.fields]:
+            print(f'{const} in {[f.name for f in ast_model.fields]}')
             ret += f'fn {f.name}(&self) -> {f.field_type} {{ Self::{const} }}'
         else:
             ret += f'fn {f.name}(&self) -> {f.field_type} {{ {f.field_type}::default() }}'
@@ -248,7 +449,7 @@ def generate_struct(ast_model):
         if f.is_const:
             continue
         fn = f.name
-        if is_constantized(f):
+        if constantized_by(f.name, ast_model):
             fn = '_' + fn
         
         ft = f.field_type
@@ -281,13 +482,12 @@ def generate_struct(ast_model):
         else:
             ret += f'let {fn};'
             ret += f'({fn}, payload) = {ft}::deserialize(payload)?;'
-
         
         if f.name == 'size':
             ret += f'if size as usize >= payload.len() + {fs} {{ return Err(SymbolError::SizeError{{expect: size as usize, real: payload.len() + {fs} }}); }}'
         if f.is_reserved:
             ret += f'if {f.name} != 0 {{ return Err(SymbolError::ReservedIsNotZeroError({f.name} as u32)); }}'
-        if is_constantized(f):
+        if constantized_by(f.name, ast_model):
             pass
     
     ret += f'let self_ = Self {{'
@@ -310,7 +510,7 @@ def generate_struct(ast_model):
 
         ft = f.field_type
         fs = f.size
-        if fn == 'size' or is_constantized(f):
+        if fn == 'size' or constantized_by(f.name, ast_model):
             if type(ft) == catparser.ast.FixedSizeInteger:
                 ret += f"let {fn} = self.{fn}().to_le_bytes();"
             else:
@@ -345,6 +545,7 @@ def generate_struct(ast_model):
     
     ret = ret.replace('type', 'type_')
     
+    ## trait
     for f in ast_model.fields:
         fn = f.name
         if fn not in TRAITS:
@@ -372,6 +573,7 @@ def generate_enum(ast_model):
 
     # structure
     ret += '#[allow(non_camel_case_types)]'
+    ret += f'#[repr({value_type})]'
     ret += f'pub enum {ast_model.name} {{'
     ret += ''.join(
         list(
@@ -381,6 +583,8 @@ def generate_enum(ast_model):
             )
         )
     )
+    if ast_model.is_bitwise:
+        ret += f'X({value_type}),'
     ret += '}'
 
     # implement
@@ -411,15 +615,41 @@ def generate_enum(ast_model):
             )
         )
     )
+    if ast_model.is_bitwise:
+        ret += 'x if ('
+        ret += ''.join(
+            list(
+                map(
+                    lambda e: f'!{e.value} & ',
+                    ast_model.values,
+                )
+            )
+        )
+        ret += '!0) == 0 => Ok((Self::X(x), rest)),'
     ret += 'other => Err(SymbolError::EnumDecodeError(other as u32)),'
     ret += '}'
     ret += '}'
 
 
     ## serialize
-    ret += f'pub fn serialize(&self) -> Vec<u8> {{'
-    ret += f'(self.clone() as {value_type}).to_le_bytes().to_vec()'
-    ret += '}'
+    if ast_model.is_bitwise:
+        ret += f'pub fn serialize(&self) -> Vec<u8> {{'
+        ret += 'match self {'
+        ret += ''.join(
+            list(
+                map(
+                    lambda e: f'Self::{e.name} => {e.value}{value_type}.to_le_bytes().to_vec(),',
+                    ast_model.values,
+                )
+            )
+        )
+        ret += 'Self::X(x) => x.to_le_bytes().to_vec(),'
+        ret += '}'
+        ret += '}'
+    else:
+        ret += f'pub fn serialize(&self) -> Vec<u8> {{'
+        ret += f'(self.clone() as {value_type}).to_le_bytes().to_vec()'
+        ret += '}'
 
     ## to_string
     ret += f'pub fn to_string(&self) -> String {{'
@@ -428,6 +658,10 @@ def generate_enum(ast_model):
 
     # end
     ret += '}'
+    
+    # BitOr
+    if ast_model.is_bitwise:
+        pass
 
     return ret
 
@@ -570,10 +804,11 @@ def display_ast_model(obj, indent: int = 0):
     if type(obj) == list:
         for element in obj:
             if hasattr(element, '__dict__') or type(element) == list:
-                element_out = element
                 if "\n" in str(element):
-                    element_out = str(element).replace("\n", " ")
-                ret += f'{prefix}{element_out}\n'
+                    tmp = str(element).replace("\n", " ")
+                else:
+                    tmp = element
+                ret += f'{prefix}{tmp}\n'
                 ret += display_ast_model(element, indent + 2)
                 continue
             ret += f'{prefix}{element}\n'

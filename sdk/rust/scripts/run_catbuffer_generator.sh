@@ -37,4 +37,4 @@ if [[ $# -eq 0 ]]; then
 fi
 
 cargo fmt
-cargo build
+cargo check
