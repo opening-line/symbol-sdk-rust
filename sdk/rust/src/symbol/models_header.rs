@@ -10,7 +10,7 @@ pub enum SymbolError {
     TryFromSliceError(TryFromSliceError),
     SizeError { expect: usize, real: usize },
     ReservedIsNotZeroError(u32),
-    EnumDecodeError(u32),
+    MismatchError { pattern: Vec<u32>, place: String },
     Ed25519Error(ed25519::Error),
 }
 

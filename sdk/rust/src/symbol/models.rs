@@ -27,7 +27,7 @@ pub trait TraitMessage {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Amount(pub u64);
 impl Amount {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(amount: u64) -> Self {
         Self(amount)
     }
@@ -69,7 +69,7 @@ impl Amount {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockDuration(pub u64);
 impl BlockDuration {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(blockduration: u64) -> Self {
         Self(blockduration)
     }
@@ -112,7 +112,7 @@ impl BlockDuration {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockFeeMultiplier(pub u32);
 impl BlockFeeMultiplier {
-    const SIZE: usize = 4;
+    pub const SIZE: usize = 4;
     pub fn new(blockfeemultiplier: u32) -> Self {
         Self(blockfeemultiplier)
     }
@@ -157,7 +157,7 @@ impl BlockFeeMultiplier {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Difficulty(pub u64);
 impl Difficulty {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(difficulty: u64) -> Self {
         Self(difficulty)
     }
@@ -200,7 +200,7 @@ impl Difficulty {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FinalizationEpoch(pub u32);
 impl FinalizationEpoch {
-    const SIZE: usize = 4;
+    pub const SIZE: usize = 4;
     pub fn new(finalizationepoch: u32) -> Self {
         Self(finalizationepoch)
     }
@@ -243,7 +243,7 @@ impl FinalizationEpoch {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FinalizationPoint(pub u32);
 impl FinalizationPoint {
-    const SIZE: usize = 4;
+    pub const SIZE: usize = 4;
     pub fn new(finalizationpoint: u32) -> Self {
         Self(finalizationpoint)
     }
@@ -286,7 +286,7 @@ impl FinalizationPoint {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Height(pub u64);
 impl Height {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(height: u64) -> Self {
         Self(height)
     }
@@ -329,7 +329,7 @@ impl Height {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Importance(pub u64);
 impl Importance {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(importance: u64) -> Self {
         Self(importance)
     }
@@ -371,7 +371,7 @@ impl Importance {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ImportanceHeight(pub u64);
 impl ImportanceHeight {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(importanceheight: u64) -> Self {
         Self(importanceheight)
     }
@@ -414,7 +414,7 @@ impl ImportanceHeight {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnresolvedMosaicId(pub u64);
 impl UnresolvedMosaicId {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(unresolvedmosaicid: u64) -> Self {
         Self(unresolvedmosaicid)
     }
@@ -456,7 +456,7 @@ impl UnresolvedMosaicId {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicId(pub u64);
 impl MosaicId {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(mosaicid: u64) -> Self {
         Self(mosaicid)
     }
@@ -499,7 +499,7 @@ impl MosaicId {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Timestamp(pub u64);
 impl Timestamp {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(timestamp: u64) -> Self {
         Self(timestamp)
     }
@@ -540,7 +540,7 @@ impl Timestamp {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnresolvedAddress(pub [u8; 24]);
 impl UnresolvedAddress {
-    const SIZE: usize = 24;
+    pub const SIZE: usize = 24;
     pub fn new(unresolvedaddress: [u8; 24]) -> Self {
         Self(unresolvedaddress)
     }
@@ -579,7 +579,7 @@ impl UnresolvedAddress {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Address(pub [u8; 24]);
 impl Address {
-    const SIZE: usize = 24;
+    pub const SIZE: usize = 24;
     pub fn new(address: [u8; 24]) -> Self {
         Self(address)
     }
@@ -619,7 +619,7 @@ impl Address {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Hash256(pub [u8; 32]);
 impl Hash256 {
-    const SIZE: usize = 32;
+    pub const SIZE: usize = 32;
     pub fn new(hash256: [u8; 32]) -> Self {
         Self(hash256)
     }
@@ -659,7 +659,7 @@ impl Hash256 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Hash512(pub [u8; 64]);
 impl Hash512 {
-    const SIZE: usize = 64;
+    pub const SIZE: usize = 64;
     pub fn new(hash512: [u8; 64]) -> Self {
         Self(hash512)
     }
@@ -698,7 +698,7 @@ impl Hash512 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VotingPublicKey(pub [u8; 32]);
 impl VotingPublicKey {
-    const SIZE: usize = 32;
+    pub const SIZE: usize = 32;
     pub fn new(votingpublickey: [u8; 32]) -> Self {
         Self(votingpublickey)
     }
@@ -912,7 +912,7 @@ pub enum LinkAction {
     LINK = 1,
 }
 impl LinkAction {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::UNLINK
     }
@@ -930,7 +930,10 @@ impl LinkAction {
         match u8::from_le_bytes(bytes.try_into()?) {
             0 => Ok((LinkAction::UNLINK, rest)),
             1 => Ok((LinkAction::LINK, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "LinkAction".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -969,7 +972,7 @@ pub enum NetworkType {
     TESTNET = 152,
 }
 impl NetworkType {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::MAINNET
     }
@@ -987,7 +990,10 @@ impl NetworkType {
         match u8::from_le_bytes(bytes.try_into()?) {
             104 => Ok((NetworkType::MAINNET, rest)),
             152 => Ok((NetworkType::TESTNET, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "NetworkType".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -1118,7 +1124,7 @@ pub enum TransactionType {
     TRANSFER = 16724,
 }
 impl TransactionType {
-    const SIZE: usize = 2;
+    pub const SIZE: usize = 2;
     pub fn default() -> Self {
         Self::ACCOUNT_KEY_LINK
     }
@@ -1159,7 +1165,10 @@ impl TransactionType {
             16977 => Ok((TransactionType::MOSAIC_ADDRESS_RESTRICTION, rest)),
             16721 => Ok((TransactionType::MOSAIC_GLOBAL_RESTRICTION, rest)),
             16724 => Ok((TransactionType::TRANSFER, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "TransactionType".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -2338,7 +2347,10 @@ impl Transaction {
                 };
                 Ok((Self::TransferTransactionV1(self_), payload))
             }
-            (_other_type_, _other_version) => Err(SymbolError::EnumDecodeError(11 as u32)),
+            (other_type_, other_version) => Err(SymbolError::MismatchError {
+                pattern: vec![other_type_ as u32, other_version as u32],
+                place: "Transaction".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -2371,6 +2383,141 @@ impl Transaction {
             Self::MosaicGlobalRestrictionTransactionV1(x) => x.serialize(),
             Self::TransferTransactionV1(x) => x.serialize(),
         }
+    }
+}
+impl From<AccountKeyLinkTransactionV1> for Transaction {
+    fn from(value: AccountKeyLinkTransactionV1) -> Self {
+        Self::AccountKeyLinkTransactionV1(value)
+    }
+}
+impl From<NodeKeyLinkTransactionV1> for Transaction {
+    fn from(value: NodeKeyLinkTransactionV1) -> Self {
+        Self::NodeKeyLinkTransactionV1(value)
+    }
+}
+impl From<AggregateCompleteTransactionV1> for Transaction {
+    fn from(value: AggregateCompleteTransactionV1) -> Self {
+        Self::AggregateCompleteTransactionV1(value)
+    }
+}
+impl From<AggregateCompleteTransactionV2> for Transaction {
+    fn from(value: AggregateCompleteTransactionV2) -> Self {
+        Self::AggregateCompleteTransactionV2(value)
+    }
+}
+impl From<AggregateBondedTransactionV1> for Transaction {
+    fn from(value: AggregateBondedTransactionV1) -> Self {
+        Self::AggregateBondedTransactionV1(value)
+    }
+}
+impl From<AggregateBondedTransactionV2> for Transaction {
+    fn from(value: AggregateBondedTransactionV2) -> Self {
+        Self::AggregateBondedTransactionV2(value)
+    }
+}
+impl From<VotingKeyLinkTransactionV1> for Transaction {
+    fn from(value: VotingKeyLinkTransactionV1) -> Self {
+        Self::VotingKeyLinkTransactionV1(value)
+    }
+}
+impl From<VrfKeyLinkTransactionV1> for Transaction {
+    fn from(value: VrfKeyLinkTransactionV1) -> Self {
+        Self::VrfKeyLinkTransactionV1(value)
+    }
+}
+impl From<HashLockTransactionV1> for Transaction {
+    fn from(value: HashLockTransactionV1) -> Self {
+        Self::HashLockTransactionV1(value)
+    }
+}
+impl From<SecretLockTransactionV1> for Transaction {
+    fn from(value: SecretLockTransactionV1) -> Self {
+        Self::SecretLockTransactionV1(value)
+    }
+}
+impl From<SecretProofTransactionV1> for Transaction {
+    fn from(value: SecretProofTransactionV1) -> Self {
+        Self::SecretProofTransactionV1(value)
+    }
+}
+impl From<AccountMetadataTransactionV1> for Transaction {
+    fn from(value: AccountMetadataTransactionV1) -> Self {
+        Self::AccountMetadataTransactionV1(value)
+    }
+}
+impl From<MosaicMetadataTransactionV1> for Transaction {
+    fn from(value: MosaicMetadataTransactionV1) -> Self {
+        Self::MosaicMetadataTransactionV1(value)
+    }
+}
+impl From<NamespaceMetadataTransactionV1> for Transaction {
+    fn from(value: NamespaceMetadataTransactionV1) -> Self {
+        Self::NamespaceMetadataTransactionV1(value)
+    }
+}
+impl From<MosaicDefinitionTransactionV1> for Transaction {
+    fn from(value: MosaicDefinitionTransactionV1) -> Self {
+        Self::MosaicDefinitionTransactionV1(value)
+    }
+}
+impl From<MosaicSupplyChangeTransactionV1> for Transaction {
+    fn from(value: MosaicSupplyChangeTransactionV1) -> Self {
+        Self::MosaicSupplyChangeTransactionV1(value)
+    }
+}
+impl From<MosaicSupplyRevocationTransactionV1> for Transaction {
+    fn from(value: MosaicSupplyRevocationTransactionV1) -> Self {
+        Self::MosaicSupplyRevocationTransactionV1(value)
+    }
+}
+impl From<MultisigAccountModificationTransactionV1> for Transaction {
+    fn from(value: MultisigAccountModificationTransactionV1) -> Self {
+        Self::MultisigAccountModificationTransactionV1(value)
+    }
+}
+impl From<AddressAliasTransactionV1> for Transaction {
+    fn from(value: AddressAliasTransactionV1) -> Self {
+        Self::AddressAliasTransactionV1(value)
+    }
+}
+impl From<MosaicAliasTransactionV1> for Transaction {
+    fn from(value: MosaicAliasTransactionV1) -> Self {
+        Self::MosaicAliasTransactionV1(value)
+    }
+}
+impl From<NamespaceRegistrationTransactionV1> for Transaction {
+    fn from(value: NamespaceRegistrationTransactionV1) -> Self {
+        Self::NamespaceRegistrationTransactionV1(value)
+    }
+}
+impl From<AccountAddressRestrictionTransactionV1> for Transaction {
+    fn from(value: AccountAddressRestrictionTransactionV1) -> Self {
+        Self::AccountAddressRestrictionTransactionV1(value)
+    }
+}
+impl From<AccountMosaicRestrictionTransactionV1> for Transaction {
+    fn from(value: AccountMosaicRestrictionTransactionV1) -> Self {
+        Self::AccountMosaicRestrictionTransactionV1(value)
+    }
+}
+impl From<AccountOperationRestrictionTransactionV1> for Transaction {
+    fn from(value: AccountOperationRestrictionTransactionV1) -> Self {
+        Self::AccountOperationRestrictionTransactionV1(value)
+    }
+}
+impl From<MosaicAddressRestrictionTransactionV1> for Transaction {
+    fn from(value: MosaicAddressRestrictionTransactionV1) -> Self {
+        Self::MosaicAddressRestrictionTransactionV1(value)
+    }
+}
+impl From<MosaicGlobalRestrictionTransactionV1> for Transaction {
+    fn from(value: MosaicGlobalRestrictionTransactionV1) -> Self {
+        Self::MosaicGlobalRestrictionTransactionV1(value)
+    }
+}
+impl From<TransferTransactionV1> for Transaction {
+    fn from(value: TransferTransactionV1) -> Self {
+        Self::TransferTransactionV1(value)
     }
 }
 ///binary layout for an embedded transaction
@@ -3288,7 +3435,10 @@ impl EmbeddedTransaction {
                 };
                 Ok((Self::EmbeddedTransferTransactionV1(self_), payload))
             }
-            (_other_type_, _other_version) => Err(SymbolError::EnumDecodeError(11 as u32)),
+            (other_type_, other_version) => Err(SymbolError::MismatchError {
+                pattern: vec![other_type_ as u32, other_version as u32],
+                place: "EmbeddedTransaction".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -3319,7 +3469,121 @@ impl EmbeddedTransaction {
         }
     }
 }
-///None
+impl From<EmbeddedAccountKeyLinkTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedAccountKeyLinkTransactionV1) -> Self {
+        Self::EmbeddedAccountKeyLinkTransactionV1(value)
+    }
+}
+impl From<EmbeddedNodeKeyLinkTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedNodeKeyLinkTransactionV1) -> Self {
+        Self::EmbeddedNodeKeyLinkTransactionV1(value)
+    }
+}
+impl From<EmbeddedVotingKeyLinkTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedVotingKeyLinkTransactionV1) -> Self {
+        Self::EmbeddedVotingKeyLinkTransactionV1(value)
+    }
+}
+impl From<EmbeddedVrfKeyLinkTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedVrfKeyLinkTransactionV1) -> Self {
+        Self::EmbeddedVrfKeyLinkTransactionV1(value)
+    }
+}
+impl From<EmbeddedHashLockTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedHashLockTransactionV1) -> Self {
+        Self::EmbeddedHashLockTransactionV1(value)
+    }
+}
+impl From<EmbeddedSecretLockTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedSecretLockTransactionV1) -> Self {
+        Self::EmbeddedSecretLockTransactionV1(value)
+    }
+}
+impl From<EmbeddedSecretProofTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedSecretProofTransactionV1) -> Self {
+        Self::EmbeddedSecretProofTransactionV1(value)
+    }
+}
+impl From<EmbeddedAccountMetadataTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedAccountMetadataTransactionV1) -> Self {
+        Self::EmbeddedAccountMetadataTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicMetadataTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicMetadataTransactionV1) -> Self {
+        Self::EmbeddedMosaicMetadataTransactionV1(value)
+    }
+}
+impl From<EmbeddedNamespaceMetadataTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedNamespaceMetadataTransactionV1) -> Self {
+        Self::EmbeddedNamespaceMetadataTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicDefinitionTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicDefinitionTransactionV1) -> Self {
+        Self::EmbeddedMosaicDefinitionTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicSupplyChangeTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicSupplyChangeTransactionV1) -> Self {
+        Self::EmbeddedMosaicSupplyChangeTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicSupplyRevocationTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicSupplyRevocationTransactionV1) -> Self {
+        Self::EmbeddedMosaicSupplyRevocationTransactionV1(value)
+    }
+}
+impl From<EmbeddedMultisigAccountModificationTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMultisigAccountModificationTransactionV1) -> Self {
+        Self::EmbeddedMultisigAccountModificationTransactionV1(value)
+    }
+}
+impl From<EmbeddedAddressAliasTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedAddressAliasTransactionV1) -> Self {
+        Self::EmbeddedAddressAliasTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicAliasTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicAliasTransactionV1) -> Self {
+        Self::EmbeddedMosaicAliasTransactionV1(value)
+    }
+}
+impl From<EmbeddedNamespaceRegistrationTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedNamespaceRegistrationTransactionV1) -> Self {
+        Self::EmbeddedNamespaceRegistrationTransactionV1(value)
+    }
+}
+impl From<EmbeddedAccountAddressRestrictionTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedAccountAddressRestrictionTransactionV1) -> Self {
+        Self::EmbeddedAccountAddressRestrictionTransactionV1(value)
+    }
+}
+impl From<EmbeddedAccountMosaicRestrictionTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedAccountMosaicRestrictionTransactionV1) -> Self {
+        Self::EmbeddedAccountMosaicRestrictionTransactionV1(value)
+    }
+}
+impl From<EmbeddedAccountOperationRestrictionTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedAccountOperationRestrictionTransactionV1) -> Self {
+        Self::EmbeddedAccountOperationRestrictionTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicAddressRestrictionTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicAddressRestrictionTransactionV1) -> Self {
+        Self::EmbeddedMosaicAddressRestrictionTransactionV1(value)
+    }
+}
+impl From<EmbeddedMosaicGlobalRestrictionTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedMosaicGlobalRestrictionTransactionV1) -> Self {
+        Self::EmbeddedMosaicGlobalRestrictionTransactionV1(value)
+    }
+}
+impl From<EmbeddedTransferTransactionV1> for EmbeddedTransaction {
+    fn from(value: EmbeddedTransferTransactionV1) -> Self {
+        Self::EmbeddedTransferTransactionV1(value)
+    }
+}
 //name: ProofGamma
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
 //    size: 32
@@ -3331,7 +3595,7 @@ impl EmbeddedTransaction {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProofGamma(pub [u8; 32]);
 impl ProofGamma {
-    const SIZE: usize = 32;
+    pub const SIZE: usize = 32;
     pub fn new(proofgamma: [u8; 32]) -> Self {
         Self(proofgamma)
     }
@@ -3358,7 +3622,6 @@ impl ProofGamma {
         format!("0x{}", hex::encode(self.0))
     }
 }
-///None
 //name: ProofVerificationHash
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
 //    size: 16
@@ -3370,7 +3633,7 @@ impl ProofGamma {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProofVerificationHash(pub [u8; 16]);
 impl ProofVerificationHash {
-    const SIZE: usize = 16;
+    pub const SIZE: usize = 16;
     pub fn new(proofverificationhash: [u8; 16]) -> Self {
         Self(proofverificationhash)
     }
@@ -3397,7 +3660,6 @@ impl ProofVerificationHash {
         format!("0x{}", hex::encode(self.0))
     }
 }
-///None
 //name: ProofScalar
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
 //    size: 32
@@ -3409,7 +3671,7 @@ impl ProofVerificationHash {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProofScalar(pub [u8; 32]);
 impl ProofScalar {
-    const SIZE: usize = 32;
+    pub const SIZE: usize = 32;
     pub fn new(proofscalar: [u8; 32]) -> Self {
         Self(proofscalar)
     }
@@ -3469,7 +3731,7 @@ pub enum BlockType {
     IMPORTANCE = 33347,
 }
 impl BlockType {
-    const SIZE: usize = 2;
+    pub const SIZE: usize = 2;
     pub fn default() -> Self {
         Self::NEMESIS
     }
@@ -3488,7 +3750,10 @@ impl BlockType {
             32835 => Ok((BlockType::NEMESIS, rest)),
             33091 => Ok((BlockType::NORMAL, rest)),
             33347 => Ok((BlockType::IMPORTANCE, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "BlockType".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -4076,7 +4341,10 @@ impl Block {
                 };
                 Ok((Self::ImportanceBlockV1(self_), payload))
             }
-            (_other_type_,) => Err(SymbolError::EnumDecodeError(11 as u32)),
+            (other_type_,) => Err(SymbolError::MismatchError {
+                pattern: vec![other_type_ as u32],
+                place: "Block".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -4085,6 +4353,21 @@ impl Block {
             Self::NormalBlockV1(x) => x.serialize(),
             Self::ImportanceBlockV1(x) => x.serialize(),
         }
+    }
+}
+impl From<NemesisBlockV1> for Block {
+    fn from(value: NemesisBlockV1) -> Self {
+        Self::NemesisBlockV1(value)
+    }
+}
+impl From<NormalBlockV1> for Block {
+    fn from(value: NormalBlockV1) -> Self {
+        Self::NormalBlockV1(value)
+    }
+}
+impl From<ImportanceBlockV1> for Block {
+    fn from(value: ImportanceBlockV1) -> Self {
+        Self::ImportanceBlockV1(value)
     }
 }
 ///binary layout for a nemesis block header
@@ -4514,12 +4797,12 @@ pub struct NemesisBlockV1 {
     pub transactions: Vec<Transaction>,
 }
 impl NemesisBlockV1 {
-    const BLOCK_VERSION: u8 = 1;
-    const BLOCK_TYPE: BlockType = BlockType::NEMESIS;
-    fn version(&self) -> u8 {
+    pub const BLOCK_VERSION: u8 = 1;
+    pub const BLOCK_TYPE: BlockType = BlockType::NEMESIS;
+    pub fn version(&self) -> u8 {
         Self::BLOCK_VERSION
     }
-    fn type_(&self) -> BlockType {
+    pub fn type_(&self) -> BlockType {
         Self::BLOCK_TYPE
     }
     pub fn new(
@@ -5163,12 +5446,12 @@ pub struct NormalBlockV1 {
     pub transactions: Vec<Transaction>,
 }
 impl NormalBlockV1 {
-    const BLOCK_VERSION: u8 = 1;
-    const BLOCK_TYPE: BlockType = BlockType::NORMAL;
-    fn version(&self) -> u8 {
+    pub const BLOCK_VERSION: u8 = 1;
+    pub const BLOCK_TYPE: BlockType = BlockType::NORMAL;
+    pub fn version(&self) -> u8 {
         Self::BLOCK_VERSION
     }
-    fn type_(&self) -> BlockType {
+    pub fn type_(&self) -> BlockType {
         Self::BLOCK_TYPE
     }
     pub fn new(
@@ -5831,12 +6114,12 @@ pub struct ImportanceBlockV1 {
     pub transactions: Vec<Transaction>,
 }
 impl ImportanceBlockV1 {
-    const BLOCK_VERSION: u8 = 1;
-    const BLOCK_TYPE: BlockType = BlockType::IMPORTANCE;
-    fn version(&self) -> u8 {
+    pub const BLOCK_VERSION: u8 = 1;
+    pub const BLOCK_TYPE: BlockType = BlockType::IMPORTANCE;
+    pub fn version(&self) -> u8 {
         Self::BLOCK_VERSION
     }
-    fn type_(&self) -> BlockType {
+    pub fn type_(&self) -> BlockType {
         Self::BLOCK_TYPE
     }
     pub fn new(
@@ -6368,7 +6651,7 @@ pub enum ReceiptType {
     MOSAIC_ALIAS_RESOLUTION = 62019,
 }
 impl ReceiptType {
-    const SIZE: usize = 2;
+    pub const SIZE: usize = 2;
     pub fn default() -> Self {
         Self::MOSAIC_RENTAL_FEE
     }
@@ -6400,7 +6683,10 @@ impl ReceiptType {
             57667 => Ok((ReceiptType::TRANSACTION_GROUP, rest)),
             61763 => Ok((ReceiptType::ADDRESS_ALIAS_RESOLUTION, rest)),
             62019 => Ok((ReceiptType::MOSAIC_ALIAS_RESOLUTION, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "ReceiptType".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -6699,7 +6985,10 @@ impl Receipt {
                 };
                 Ok((Self::NamespaceRentalFeeReceipt(self_), payload))
             }
-            (_other_type_,) => Err(SymbolError::EnumDecodeError(11 as u32)),
+            (other_type_,) => Err(SymbolError::MismatchError {
+                pattern: vec![other_type_ as u32],
+                place: "Receipt".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -6718,6 +7007,71 @@ impl Receipt {
             Self::NamespaceDeletedReceipt(x) => x.serialize(),
             Self::NamespaceRentalFeeReceipt(x) => x.serialize(),
         }
+    }
+}
+impl From<HarvestFeeReceipt> for Receipt {
+    fn from(value: HarvestFeeReceipt) -> Self {
+        Self::HarvestFeeReceipt(value)
+    }
+}
+impl From<InflationReceipt> for Receipt {
+    fn from(value: InflationReceipt) -> Self {
+        Self::InflationReceipt(value)
+    }
+}
+impl From<LockHashCreatedFeeReceipt> for Receipt {
+    fn from(value: LockHashCreatedFeeReceipt) -> Self {
+        Self::LockHashCreatedFeeReceipt(value)
+    }
+}
+impl From<LockHashCompletedFeeReceipt> for Receipt {
+    fn from(value: LockHashCompletedFeeReceipt) -> Self {
+        Self::LockHashCompletedFeeReceipt(value)
+    }
+}
+impl From<LockHashExpiredFeeReceipt> for Receipt {
+    fn from(value: LockHashExpiredFeeReceipt) -> Self {
+        Self::LockHashExpiredFeeReceipt(value)
+    }
+}
+impl From<LockSecretCreatedFeeReceipt> for Receipt {
+    fn from(value: LockSecretCreatedFeeReceipt) -> Self {
+        Self::LockSecretCreatedFeeReceipt(value)
+    }
+}
+impl From<LockSecretCompletedFeeReceipt> for Receipt {
+    fn from(value: LockSecretCompletedFeeReceipt) -> Self {
+        Self::LockSecretCompletedFeeReceipt(value)
+    }
+}
+impl From<LockSecretExpiredFeeReceipt> for Receipt {
+    fn from(value: LockSecretExpiredFeeReceipt) -> Self {
+        Self::LockSecretExpiredFeeReceipt(value)
+    }
+}
+impl From<MosaicExpiredReceipt> for Receipt {
+    fn from(value: MosaicExpiredReceipt) -> Self {
+        Self::MosaicExpiredReceipt(value)
+    }
+}
+impl From<MosaicRentalFeeReceipt> for Receipt {
+    fn from(value: MosaicRentalFeeReceipt) -> Self {
+        Self::MosaicRentalFeeReceipt(value)
+    }
+}
+impl From<NamespaceExpiredReceipt> for Receipt {
+    fn from(value: NamespaceExpiredReceipt) -> Self {
+        Self::NamespaceExpiredReceipt(value)
+    }
+}
+impl From<NamespaceDeletedReceipt> for Receipt {
+    fn from(value: NamespaceDeletedReceipt) -> Self {
+        Self::NamespaceDeletedReceipt(value)
+    }
+}
+impl From<NamespaceRentalFeeReceipt> for Receipt {
+    fn from(value: NamespaceRentalFeeReceipt) -> Self {
+        Self::NamespaceRentalFeeReceipt(value)
     }
 }
 ///Receipt generated when transaction fees are credited to a block harvester.
@@ -6851,8 +7205,8 @@ pub struct HarvestFeeReceipt {
     pub target_address: Address,
 }
 impl HarvestFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::HARVEST_FEE;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::HARVEST_FEE;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -7045,8 +7399,8 @@ pub struct InflationReceipt {
     pub mosaic: Mosaic,
 }
 impl InflationReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::INFLATION;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::INFLATION;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic) -> Self {
@@ -7233,8 +7587,8 @@ pub struct LockHashCreatedFeeReceipt {
     pub target_address: Address,
 }
 impl LockHashCreatedFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_CREATED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_CREATED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -7440,8 +7794,8 @@ pub struct LockHashCompletedFeeReceipt {
     pub target_address: Address,
 }
 impl LockHashCompletedFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_COMPLETED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_COMPLETED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -7647,8 +8001,8 @@ pub struct LockHashExpiredFeeReceipt {
     pub target_address: Address,
 }
 impl LockHashExpiredFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_EXPIRED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_HASH_EXPIRED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -7854,8 +8208,8 @@ pub struct LockSecretCreatedFeeReceipt {
     pub target_address: Address,
 }
 impl LockSecretCreatedFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_CREATED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_CREATED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -8061,8 +8415,8 @@ pub struct LockSecretCompletedFeeReceipt {
     pub target_address: Address,
 }
 impl LockSecretCompletedFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_COMPLETED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_COMPLETED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -8268,8 +8622,8 @@ pub struct LockSecretExpiredFeeReceipt {
     pub target_address: Address,
 }
 impl LockSecretExpiredFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_EXPIRED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::LOCK_SECRET_EXPIRED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, mosaic: Mosaic, target_address: Address) -> Self {
@@ -8462,8 +8816,8 @@ pub struct MosaicExpiredReceipt {
     pub artifact_id: MosaicId,
 }
 impl MosaicExpiredReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::MOSAIC_EXPIRED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::MOSAIC_EXPIRED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, artifact_id: MosaicId) -> Self {
@@ -8674,8 +9028,8 @@ pub struct MosaicRentalFeeReceipt {
     pub recipient_address: Address,
 }
 impl MosaicRentalFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::MOSAIC_RENTAL_FEE;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::MOSAIC_RENTAL_FEE;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(
@@ -8763,7 +9117,6 @@ impl MosaicRentalFeeReceipt {
         .collect()
     }
 }
-///None
 //name: NamespaceId
 //linked_type: <class 'catparser.ast.FixedSizeInteger'>
 //    short_name: uint64
@@ -8777,7 +9130,7 @@ impl MosaicRentalFeeReceipt {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceId(pub u64);
 impl NamespaceId {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(namespaceid: u64) -> Self {
         Self(namespaceid)
     }
@@ -8834,7 +9187,7 @@ pub enum NamespaceRegistrationType {
     CHILD = 1,
 }
 impl NamespaceRegistrationType {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::ROOT
     }
@@ -8852,7 +9205,10 @@ impl NamespaceRegistrationType {
         match u8::from_le_bytes(bytes.try_into()?) {
             0 => Ok((NamespaceRegistrationType::ROOT, rest)),
             1 => Ok((NamespaceRegistrationType::CHILD, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "NamespaceRegistrationType".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -8891,7 +9247,7 @@ pub enum AliasAction {
     LINK = 1,
 }
 impl AliasAction {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::UNLINK
     }
@@ -8909,7 +9265,10 @@ impl AliasAction {
         match u8::from_le_bytes(bytes.try_into()?) {
             0 => Ok((AliasAction::UNLINK, rest)),
             1 => Ok((AliasAction::LINK, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "AliasAction".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -9037,8 +9396,8 @@ pub struct NamespaceExpiredReceipt {
     pub artifact_id: NamespaceId,
 }
 impl NamespaceExpiredReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_EXPIRED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_EXPIRED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, artifact_id: NamespaceId) -> Self {
@@ -9223,8 +9582,8 @@ pub struct NamespaceDeletedReceipt {
     pub artifact_id: NamespaceId,
 }
 impl NamespaceDeletedReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_DELETED;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_DELETED;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(version: u16, artifact_id: NamespaceId) -> Self {
@@ -9435,8 +9794,8 @@ pub struct NamespaceRentalFeeReceipt {
     pub recipient_address: Address,
 }
 impl NamespaceRentalFeeReceipt {
-    const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_RENTAL_FEE;
-    fn type_(&self) -> ReceiptType {
+    pub const RECEIPT_TYPE: ReceiptType = ReceiptType::NAMESPACE_RENTAL_FEE;
+    pub fn type_(&self) -> ReceiptType {
         Self::RECEIPT_TYPE
     }
     pub fn new(
@@ -10717,12 +11076,12 @@ pub struct AccountKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl AccountKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -11095,12 +11454,12 @@ pub struct EmbeddedAccountKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl EmbeddedAccountKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -11479,12 +11838,12 @@ pub struct NodeKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl NodeKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::NODE_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::NODE_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -11857,12 +12216,12 @@ pub struct EmbeddedNodeKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl EmbeddedNodeKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::NODE_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::NODE_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -12613,12 +12972,12 @@ pub struct AggregateCompleteTransactionV1 {
     pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateCompleteTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_COMPLETE;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_COMPLETE;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -13149,12 +13508,12 @@ pub struct AggregateCompleteTransactionV2 {
     pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateCompleteTransactionV2 {
-    const TRANSACTION_VERSION: u8 = 2;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_COMPLETE;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 2;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_COMPLETE;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -13687,12 +14046,12 @@ pub struct AggregateBondedTransactionV1 {
     pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateBondedTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_BONDED;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_BONDED;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -14225,12 +14584,12 @@ pub struct AggregateBondedTransactionV2 {
     pub cosignatures: Vec<Cosignature>,
 }
 impl AggregateBondedTransactionV2 {
-    const TRANSACTION_VERSION: u8 = 2;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_BONDED;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 2;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::AGGREGATE_BONDED;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -14712,12 +15071,12 @@ pub struct VotingKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl VotingKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::VOTING_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::VOTING_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -15134,12 +15493,12 @@ pub struct EmbeddedVotingKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl EmbeddedVotingKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::VOTING_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::VOTING_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -15537,12 +15896,12 @@ pub struct VrfKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl VrfKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::VRF_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::VRF_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -15915,12 +16274,12 @@ pub struct EmbeddedVrfKeyLinkTransactionV1 {
     pub link_action: LinkAction,
 }
 impl EmbeddedVrfKeyLinkTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::VRF_KEY_LINK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::VRF_KEY_LINK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -16315,12 +16674,12 @@ pub struct HashLockTransactionV1 {
     pub hash: Hash256,
 }
 impl HashLockTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::HASH_LOCK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::HASH_LOCK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -16715,12 +17074,12 @@ pub struct EmbeddedHashLockTransactionV1 {
     pub hash: Hash256,
 }
 impl EmbeddedHashLockTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::HASH_LOCK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::HASH_LOCK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -16883,7 +17242,7 @@ pub enum LockHashAlgorithm {
     HASH_256 = 2,
 }
 impl LockHashAlgorithm {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::SHA3_256
     }
@@ -16902,7 +17261,10 @@ impl LockHashAlgorithm {
             0 => Ok((LockHashAlgorithm::SHA3_256, rest)),
             1 => Ok((LockHashAlgorithm::HASH_160, rest)),
             2 => Ok((LockHashAlgorithm::HASH_256, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "LockHashAlgorithm".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -17210,12 +17572,12 @@ pub struct SecretLockTransactionV1 {
     pub hash_algorithm: LockHashAlgorithm,
 }
 impl SecretLockTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_LOCK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_LOCK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -17654,12 +18016,12 @@ pub struct EmbeddedSecretLockTransactionV1 {
     pub hash_algorithm: LockHashAlgorithm,
 }
 impl EmbeddedSecretLockTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_LOCK;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_LOCK;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -18124,12 +18486,12 @@ pub struct SecretProofTransactionV1 {
     pub proof: Vec<u8>,
 }
 impl SecretProofTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_PROOF;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_PROOF;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -18589,12 +18951,12 @@ pub struct EmbeddedSecretProofTransactionV1 {
     pub proof: Vec<u8>,
 }
 impl EmbeddedSecretProofTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_PROOF;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::SECRET_PROOF;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -19073,12 +19435,12 @@ pub struct AccountMetadataTransactionV1 {
     pub value: Vec<u8>,
 }
 impl AccountMetadataTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_METADATA;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_METADATA;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -19550,12 +19912,12 @@ pub struct EmbeddedAccountMetadataTransactionV1 {
     pub value: Vec<u8>,
 }
 impl EmbeddedAccountMetadataTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_METADATA;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_METADATA;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -20046,12 +20408,12 @@ pub struct MosaicMetadataTransactionV1 {
     pub value: Vec<u8>,
 }
 impl MosaicMetadataTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_METADATA;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_METADATA;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -20545,12 +20907,12 @@ pub struct EmbeddedMosaicMetadataTransactionV1 {
     pub value: Vec<u8>,
 }
 impl EmbeddedMosaicMetadataTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_METADATA;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_METADATA;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -21050,12 +21412,12 @@ pub struct NamespaceMetadataTransactionV1 {
     pub value: Vec<u8>,
 }
 impl NamespaceMetadataTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_METADATA;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_METADATA;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -21549,12 +21911,12 @@ pub struct EmbeddedNamespaceMetadataTransactionV1 {
     pub value: Vec<u8>,
 }
 impl EmbeddedNamespaceMetadataTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_METADATA;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_METADATA;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -21713,7 +22075,6 @@ impl TraitSignerPublicKey for EmbeddedNamespaceMetadataTransactionV1 {
         self.signer_public_key = signer_public_key;
     }
 }
-///None
 //name: MosaicNonce
 //linked_type: <class 'catparser.ast.FixedSizeInteger'>
 //    short_name: uint32
@@ -21727,7 +22088,7 @@ impl TraitSignerPublicKey for EmbeddedNamespaceMetadataTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicNonce(pub u32);
 impl MosaicNonce {
-    const SIZE: usize = 4;
+    pub const SIZE: usize = 4;
     pub fn new(mosaicnonce: u32) -> Self {
         Self(mosaicnonce)
     }
@@ -21802,7 +22163,7 @@ pub enum MosaicFlags {
     X(u8),
 }
 impl MosaicFlags {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::NONE
     }
@@ -21824,7 +22185,10 @@ impl MosaicFlags {
             4 => Ok((MosaicFlags::RESTRICTABLE, rest)),
             8 => Ok((MosaicFlags::REVOKABLE, rest)),
             x if (!0 & !1 & !2 & !4 & !8 & !0) == 0 => Ok((Self::X(x), rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "MosaicFlags".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -21870,7 +22234,7 @@ pub enum MosaicSupplyChangeAction {
     INCREASE = 1,
 }
 impl MosaicSupplyChangeAction {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::DECREASE
     }
@@ -21888,7 +22252,10 @@ impl MosaicSupplyChangeAction {
         match u8::from_le_bytes(bytes.try_into()?) {
             0 => Ok((MosaicSupplyChangeAction::DECREASE, rest)),
             1 => Ok((MosaicSupplyChangeAction::INCREASE, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "MosaicSupplyChangeAction".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -22200,12 +22567,12 @@ pub struct MosaicDefinitionTransactionV1 {
     pub divisibility: u8,
 }
 impl MosaicDefinitionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_DEFINITION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_DEFINITION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -22650,12 +23017,12 @@ pub struct EmbeddedMosaicDefinitionTransactionV1 {
     pub divisibility: u8,
 }
 impl EmbeddedMosaicDefinitionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_DEFINITION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_DEFINITION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -23073,12 +23440,12 @@ pub struct MosaicSupplyChangeTransactionV1 {
     pub action: MosaicSupplyChangeAction,
 }
 impl MosaicSupplyChangeTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_CHANGE;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_CHANGE;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -23473,12 +23840,12 @@ pub struct EmbeddedMosaicSupplyChangeTransactionV1 {
     pub action: MosaicSupplyChangeAction,
 }
 impl EmbeddedMosaicSupplyChangeTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_CHANGE;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_CHANGE;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -23865,12 +24232,12 @@ pub struct MosaicSupplyRevocationTransactionV1 {
     pub mosaic: UnresolvedMosaic,
 }
 impl MosaicSupplyRevocationTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_REVOCATION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_REVOCATION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -24243,12 +24610,12 @@ pub struct EmbeddedMosaicSupplyRevocationTransactionV1 {
     pub mosaic: UnresolvedMosaic,
 }
 impl EmbeddedMosaicSupplyRevocationTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_REVOCATION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_SUPPLY_REVOCATION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -24735,12 +25102,12 @@ pub struct MultisigAccountModificationTransactionV1 {
     pub address_deletions: Vec<UnresolvedAddress>,
 }
 impl MultisigAccountModificationTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MULTISIG_ACCOUNT_MODIFICATION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MULTISIG_ACCOUNT_MODIFICATION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -25284,12 +25651,12 @@ pub struct EmbeddedMultisigAccountModificationTransactionV1 {
     pub address_deletions: Vec<UnresolvedAddress>,
 }
 impl EmbeddedMultisigAccountModificationTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MULTISIG_ACCOUNT_MODIFICATION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MULTISIG_ACCOUNT_MODIFICATION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -25744,12 +26111,12 @@ pub struct AddressAliasTransactionV1 {
     pub alias_action: AliasAction,
 }
 impl AddressAliasTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ADDRESS_ALIAS;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ADDRESS_ALIAS;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -26144,12 +26511,12 @@ pub struct EmbeddedAddressAliasTransactionV1 {
     pub alias_action: AliasAction,
 }
 impl EmbeddedAddressAliasTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ADDRESS_ALIAS;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ADDRESS_ALIAS;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -26550,12 +26917,12 @@ pub struct MosaicAliasTransactionV1 {
     pub alias_action: AliasAction,
 }
 impl MosaicAliasTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ALIAS;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ALIAS;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -26950,12 +27317,12 @@ pub struct EmbeddedMosaicAliasTransactionV1 {
     pub alias_action: AliasAction,
 }
 impl EmbeddedMosaicAliasTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ALIAS;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ALIAS;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -27420,12 +27787,12 @@ pub struct NamespaceRegistrationTransactionV1 {
     pub name: Vec<u8>,
 }
 impl NamespaceRegistrationTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_REGISTRATION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_REGISTRATION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -27913,12 +28280,12 @@ pub struct EmbeddedNamespaceRegistrationTransactionV1 {
     pub name: Vec<u8>,
 }
 impl EmbeddedNamespaceRegistrationTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_REGISTRATION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::NAMESPACE_REGISTRATION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -28124,7 +28491,7 @@ pub enum AccountRestrictionFlags {
     X(u16),
 }
 impl AccountRestrictionFlags {
-    const SIZE: usize = 2;
+    pub const SIZE: usize = 2;
     pub fn default() -> Self {
         Self::ADDRESS
     }
@@ -28146,7 +28513,10 @@ impl AccountRestrictionFlags {
             16384 => Ok((AccountRestrictionFlags::OUTGOING, rest)),
             32768 => Ok((AccountRestrictionFlags::BLOCK, rest)),
             x if (!1 & !2 & !4 & !16384 & !32768 & !0) == 0 => Ok((Self::X(x), rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "AccountRestrictionFlags".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -28503,12 +28873,12 @@ pub struct AccountAddressRestrictionTransactionV1 {
     pub restriction_deletions: Vec<UnresolvedAddress>,
 }
 impl AccountAddressRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_ADDRESS_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_ADDRESS_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -29018,12 +29388,12 @@ pub struct EmbeddedAccountAddressRestrictionTransactionV1 {
     pub restriction_deletions: Vec<UnresolvedAddress>,
 }
 impl EmbeddedAccountAddressRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_ADDRESS_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_ADDRESS_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -29538,12 +29908,12 @@ pub struct AccountMosaicRestrictionTransactionV1 {
     pub restriction_deletions: Vec<UnresolvedMosaicId>,
 }
 impl AccountMosaicRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_MOSAIC_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_MOSAIC_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -30053,12 +30423,12 @@ pub struct EmbeddedAccountMosaicRestrictionTransactionV1 {
     pub restriction_deletions: Vec<UnresolvedMosaicId>,
 }
 impl EmbeddedAccountMosaicRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_MOSAIC_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_MOSAIC_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -30573,12 +30943,12 @@ pub struct AccountOperationRestrictionTransactionV1 {
     pub restriction_deletions: Vec<TransactionType>,
 }
 impl AccountOperationRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_OPERATION_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_OPERATION_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -31088,12 +31458,12 @@ pub struct EmbeddedAccountOperationRestrictionTransactionV1 {
     pub restriction_deletions: Vec<TransactionType>,
 }
 impl EmbeddedAccountOperationRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_OPERATION_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::ACCOUNT_OPERATION_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -31582,12 +31952,12 @@ pub struct MosaicAddressRestrictionTransactionV1 {
     pub target_address: UnresolvedAddress,
 }
 impl MosaicAddressRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ADDRESS_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ADDRESS_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -32044,12 +32414,12 @@ pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
     pub target_address: UnresolvedAddress,
 }
 impl EmbeddedMosaicAddressRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ADDRESS_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_ADDRESS_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -32197,7 +32567,6 @@ impl TraitSignerPublicKey for EmbeddedMosaicAddressRestrictionTransactionV1 {
         self.signer_public_key = signer_public_key;
     }
 }
-///None
 //name: MosaicRestrictionKey
 //linked_type: <class 'catparser.ast.FixedSizeInteger'>
 //    short_name: uint64
@@ -32211,7 +32580,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicAddressRestrictionTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicRestrictionKey(pub u64);
 impl MosaicRestrictionKey {
-    const SIZE: usize = 8;
+    pub const SIZE: usize = 8;
     pub fn new(mosaicrestrictionkey: u64) -> Self {
         Self(mosaicrestrictionkey)
     }
@@ -32288,7 +32657,7 @@ pub enum MosaicRestrictionType {
     GE = 6,
 }
 impl MosaicRestrictionType {
-    const SIZE: usize = 1;
+    pub const SIZE: usize = 1;
     pub fn default() -> Self {
         Self::NONE
     }
@@ -32311,7 +32680,10 @@ impl MosaicRestrictionType {
             4 => Ok((MosaicRestrictionType::LE, rest)),
             5 => Ok((MosaicRestrictionType::GT, rest)),
             6 => Ok((MosaicRestrictionType::GE, rest)),
-            other => Err(SymbolError::EnumDecodeError(other as u32)),
+            other => Err(SymbolError::MismatchError {
+                pattern: vec![other as u32],
+                place: "MosaicRestrictionType".to_string(),
+            }),
         }
     }
     pub fn serialize(&self) -> Vec<u8> {
@@ -32661,12 +33033,12 @@ pub struct MosaicGlobalRestrictionTransactionV1 {
     pub new_restriction_type_: MosaicRestrictionType,
 }
 impl MosaicGlobalRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_GLOBAL_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_GLOBAL_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -33167,12 +33539,12 @@ pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
     pub new_restriction_type_: MosaicRestrictionType,
 }
 impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_GLOBAL_RESTRICTION;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::MOSAIC_GLOBAL_RESTRICTION;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -33708,12 +34080,12 @@ pub struct TransferTransactionV1 {
     pub message: Vec<u8>,
 }
 impl TransferTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::TRANSFER;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::TRANSFER;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
@@ -34256,12 +34628,12 @@ pub struct EmbeddedTransferTransactionV1 {
     pub message: Vec<u8>,
 }
 impl EmbeddedTransferTransactionV1 {
-    const TRANSACTION_VERSION: u8 = 1;
-    const TRANSACTION_TYPE: TransactionType = TransactionType::TRANSFER;
-    fn version(&self) -> u8 {
+    pub const TRANSACTION_VERSION: u8 = 1;
+    pub const TRANSACTION_TYPE: TransactionType = TransactionType::TRANSFER;
+    pub fn version(&self) -> u8 {
         Self::TRANSACTION_VERSION
     }
-    fn type_(&self) -> TransactionType {
+    pub fn type_(&self) -> TransactionType {
         Self::TRANSACTION_TYPE
     }
     pub fn new(

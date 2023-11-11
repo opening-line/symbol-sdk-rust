@@ -273,9 +273,14 @@ def generate_factory(factory, products):
         ret += '},'
     ret += '('
     for d in factory.discriminator:
-        ret += f'_other_{d}, '
+        ret += f'other_{d}, '
     ret += ')'
-    ret += ' => Err(SymbolError::EnumDecodeError(11 as u32)),'
+    ret += ' => Err(SymbolError::MismatchError{ pattern: vec!['
+    for d in factory.discriminator:
+        ret += f'other_{d} as u32, '
+    ret += '], '
+    ret += f'place: "{factory_name}".to_string()'
+    ret += '}),'
     ret += '}}' 
     
     ret += 'pub fn serialize(&self) -> Vec<u8> {'
@@ -286,6 +291,10 @@ def generate_factory(factory, products):
 
     
     ret += '}'
+    
+    for p in products:
+        ret += f'impl From<{p.name}> for {factory_name} {{ fn from(value: {p.name}) -> Self {{ Self::{p.name}(value) }} }}'
+    
     return ret.replace('type', 'type_')
     
     
@@ -363,9 +372,9 @@ def generate_struct(ast_model):
         if not f.is_const:
             continue
         if type(f.value) == str:
-            ret += f'const {f.name}: {f.field_type} = {f.field_type}::{f.value};'
+            ret += f'pub const {f.name}: {f.field_type} = {f.field_type}::{f.value};'
         elif type(f.value) == int:
-            ret += f'const {f.name}: {f.field_type} = {f.value};'
+            ret += f'pub const {f.name}: {f.field_type} = {f.value};'
         else:
             raise "unexpected"
         
@@ -374,10 +383,9 @@ def generate_struct(ast_model):
         if not const:
             continue
         if const in [f.name for f in ast_model.fields]:
-            print(f'{const} in {[f.name for f in ast_model.fields]}')
-            ret += f'fn {f.name}(&self) -> {f.field_type} {{ Self::{const} }}'
+            ret += f'pub fn {f.name}(&self) -> {f.field_type} {{ Self::{const} }}'
         else:
-            ret += f'fn {f.name}(&self) -> {f.field_type} {{ {f.field_type}::default() }}'
+            ret += f'pub fn {f.name}(&self) -> {f.field_type} {{ {f.field_type}::default() }}'
         
     ## constructor
     ret += 'pub fn new('
@@ -589,8 +597,9 @@ def generate_enum(ast_model):
 
     # implement
     ret += 'impl ' + ast_model.name + ' {'
-    ## SIZE # or size
-    ret += f'const SIZE: usize = {ast_model.size};'
+    
+    ## SIZE
+    ret += f'pub const SIZE: usize = {ast_model.size};'
 
     ## constructor
     ret += 'pub fn default() -> Self {'
@@ -626,7 +635,7 @@ def generate_enum(ast_model):
             )
         )
         ret += '!0) == 0 => Ok((Self::X(x), rest)),'
-    ret += 'other => Err(SymbolError::EnumDecodeError(other as u32)),'
+    ret += f'other => Err(SymbolError::MismatchError{{ pattern: vec![ other as u32], place: "{ast_model.name}".to_string() }}),'
     ret += '}'
     ret += '}'
 
@@ -676,8 +685,9 @@ def generate_bytearray(ast_model):
     
     # implement
     ret += 'impl ' + ast_model.name + ' {'
-    ## SIZE # or size
-    ret += f'const SIZE: usize = {ast_model.size};'
+    
+    ## SIZE
+    ret += f'pub const SIZE: usize = {ast_model.size};'
 
     ## constructor 
     ret += f'pub fn new({name_lower}: {value_type}) -> Self {{'
@@ -690,23 +700,23 @@ def generate_bytearray(ast_model):
 
     ## size
     ret += 'pub fn size(&self) -> usize {'
-    ret += f'Self::SIZE'
+    ret += 'Self::SIZE'
     ret += '}'
 
     ## deserialize
-    ret += f'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {{'
+    ret += 'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {'
     ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
     ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
     ret += 'Ok((Self(bytes.try_into()?), rest))'
     ret += '}'
 
     ## serialize
-    ret += f'pub fn serialize(&self) -> Vec<u8> {{'
+    ret += 'pub fn serialize(&self) -> Vec<u8> {'
     ret += 'self.0.to_vec()'
     ret += '}'
 
     ## to_string
-    ret += f'pub fn to_string(&self) -> String {{'
+    ret += 'pub fn to_string(&self) -> String {'
     ret += 'format!("0x{}", hex::encode(self.0))'
     ret += '}'
 
@@ -733,8 +743,9 @@ def generate_integer(ast_model):
 
     # implement
     ret += 'impl ' + ast_model.name + ' {'
-    ## SIZE # or size
-    ret += f'const SIZE: usize = {ast_model.size};'
+    
+    ## SIZE
+    ret += f'pub const SIZE: usize = {ast_model.size};'
 
     ## constructor
     ret += f'pub fn new({name_lower}: {value_type}) -> Self {{'
@@ -742,16 +753,16 @@ def generate_integer(ast_model):
     ret += '}'
     
     ret += 'pub fn default() -> Self {'
-    ret += f'Self(0)'
+    ret += 'Self(0)'
     ret += '}'
 
     ## size
     ret += 'pub fn size(&self) -> usize {'
-    ret += f'Self::SIZE'
+    ret += 'Self::SIZE'
     ret += '}'
 
     ## deserialize
-    ret += f'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {{'
+    ret += 'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {'
     ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
     ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
     ret += f'let value = {value_type}::from_le_bytes(bytes.try_into()?);'
@@ -759,12 +770,12 @@ def generate_integer(ast_model):
     ret += '}'
 
     ## serialize
-    ret += f'pub fn serialize(&self) -> Vec<u8> {{'
+    ret += 'pub fn serialize(&self) -> Vec<u8> {'
     ret += 'self.0.to_le_bytes().to_vec()'
     ret += '}'
 
     ## to_string
-    ret += f'pub fn to_string(&self) -> String {{'
+    ret += 'pub fn to_string(&self) -> String {'
     ret += f'format!("0x{{:0{ast_model.size * 2}x}}", self.0)'
     ret += '}'
 
@@ -786,6 +797,9 @@ def display_ast_model(obj, indent: int = 0):
         for key, value in vars(obj).items():
             if key == 'comment':
                 if indent != 0:
+                    continue
+                if str(value) == 'None':
+                    ret += f'\n'
                     continue
                 value = str(value).replace("\n", "\n///")
                 ret += f'\n///{value}\n'

@@ -1,15 +1,12 @@
 use symbol::symbol::models_extensions::*;
 
-// もう少し分かりやすい補助説明を出力する
 // accountのaddressの入手方法が不明, 公開鍵からもアドレスを入手可能？
+// UnresolvedAddressにfrom_public_key。
 // merkleHash ????
 // messageの暗号化,AES-GCM形式
-// UnresolvedAddressにfrom_public_key。
 // deadlineの便利なメソッド　https://github.com/xembook/quick_learning_symbol/blob/main/04_transaction.md#%E6%9C%89%E5%8A%B9%E6%9C%9F%E9%99%90
 // 暗号化した事を示すフラグ？　https://github.com/xembook/quick_learning_symbol/blob/main/04_transaction.md#%E6%9A%97%E5%8F%B7%E6%96%87%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8
 // ノードとの通信関係
-// TransferTransaction toAggregateメソッド
-// Flags　//*is_bitwise: True bit演算
 
 fn main() {
     let t = TransferTransactionV1::new(
