@@ -57,7 +57,6 @@ void call(Closure body) {
 			TEST_PYTHON_CREDENTIALS_ID = 'TEST_PYPI_TOKEN_ID'
 			DEV_BRANCH = 'dev'
 			RELEASE_BRANCH = 'main'
-			GITHUB_EMAIL = 'jenkins@symbol.dev'
 
 			LINT_SETUP_SCRIPT_FILEPATH = 'scripts/ci/setup_lint.sh'
 			LINT_SCRIPT_FILEPATH = 'scripts/ci/lint.sh'
@@ -77,7 +76,10 @@ void call(Closure body) {
 		stages {
 			stage('setup environment') {
 				steps {
-					runScript('git submodule update --remote')
+					script {
+						runScript('git submodule update --remote')
+						author = sh(script: 'git log -1 --pretty=format:\'%an\'', returnStdout: true).trim()
+					}
 				}
 			}
 			stage('CI pipeline') {
@@ -99,6 +101,10 @@ void call(Closure body) {
 					}
 					stage('setup docker environment') {
 						steps {
+							script {
+								helper.runInitializeScriptIfPresent()
+							}
+
 							runStepRelativeToPackageRoot packageRootPath, {
 								configureArtifactRepository(jobHelper.resolveCiEnvironmentName(jenkinsfileParams))
 							}
@@ -120,14 +126,21 @@ void call(Closure body) {
 							anyOf {
 								branch env.DEV_BRANCH
 								branch env.RELEASE_BRANCH
-
-								// Dependabot commits do not always conform to our commit message convention
-								environment name: 'CHANGE_AUTHOR', value: 'dependabot[bot]'
 							}
 						}
 						steps {
-							runStepRelativeToPackageRoot '.', {
-								verifyCommitMessage()
+							script {
+								runStepRelativeToPackageRoot '.', {
+									final String[] exemptAuthor = ['github-actions[bot]', 'dependabot[bot]']
+
+									println("Last commit author: ${author}")
+									if (exemptAuthor.contains(author)) {
+										println("Disabling max body line length rule for ${author}")
+										env.GITLINT_IGNORE = 'body-max-line-length'
+									}
+
+									verifyCommitMessage()
+								}
 							}
 						}
 					}
@@ -213,13 +226,8 @@ void call(Closure body) {
 					}
 					stage('run tests (vectors)') {
 						when {
-							allOf {
-								expression {
-									return params.SHOULD_RUN_ALL_TEST?.toBoolean()
-								}
-								expression {
-									return fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))
-								}
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))
 							}
 						}
 						steps {
@@ -242,8 +250,7 @@ void call(Closure body) {
 									// If all the tests are not run then code coverage will fail to meet the required minimum
 									// Nightly builds will run all tests.
 									return (params.SHOULD_RUN_ALL_TEST?.toBoolean()
-										|| (!fileExists(resolvePath(packageRootPath, env.TEST_EXAMPLES_SCRIPT_FILEPATH))
-										&& !fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))))
+										|| !fileExists(resolvePath(packageRootPath, env.TEST_EXAMPLES_SCRIPT_FILEPATH)))
 								}
 							}
 						}

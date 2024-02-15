@@ -23,8 +23,8 @@ List<String> readArrayParameterValue(String parameterValue) {
 	return values
 }
 
-Map<String, String> siblingJobNames(Map<String, String> displayNameJenkinsfileMap) {
-	Item project = Jenkins.get().getItemByFullName(currentBuild.fullProjectName)
+Map<String, String> siblingJobNames(Map<String, String> displayNameJenkinsfileMap, String jobFolder) {
+	Item project = Jenkins.get().getItemByFullName(jobFolder)
 	List<Item> siblingItems = project.parent.items
 
 	Map<String, String> targets = [:]
@@ -57,8 +57,7 @@ String resolveJobName(String jobFolder, String branchName) {
 	List<Item> jobs = Jenkins.get().getItemByFullName(jobFolder).items
 	for (Item item in jobs) {
 		if (item.name.startsWith('PR-') && item.isBuildable()) {
-			String changeBranch = item.lastBuild.environment.get('CHANGE_BRANCH', '')
-			if (changeBranch == branchName) {
+			if (env.CHANGE_BRANCH == branchName) {
 				echo "found PR: ${item.name}"
 				return item.name
 			}
@@ -68,8 +67,12 @@ String resolveJobName(String jobFolder, String branchName) {
 	throw new IllegalStateException("Multibranch job folder ${jobFolder} does not contain a job with branch ${branchName}")
 }
 
-Map <String, String> loadJenkinsfileMap() {
-	Object buildConfiguration = yamlHelper.readYamlFromFile(helper.resolveBuildConfigurationFile())
+Object loadBuildConfigurationfile() {
+	String buildConfiguration = readTrusted(helper.resolveBuildConfigurationFile())
+	return yamlHelper.readYamlFromText(buildConfiguration)
+}
+
+Map <String, String> loadJenkinsfileMap(Object buildConfiguration = loadBuildConfigurationfile()) {
 	Map<String, String> displayNameJenkinsfileMap = [:]
 
 	buildConfiguration.builds.each { build -> displayNameJenkinsfileMap.put(build.name, build.path) }

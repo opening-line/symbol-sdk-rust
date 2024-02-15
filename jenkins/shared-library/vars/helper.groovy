@@ -13,8 +13,7 @@ Boolean isPublicBuild(String buildConfiguration) {
 }
 
 String resolveRepoName() {
-	// groovylint-disable-next-line UnnecessaryGetter
-	return scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last()
+	return scm.userRemoteConfigs[0].url.tokenize('/').last()
 }
 
 void runInitializeScriptIfPresent() {
@@ -24,12 +23,6 @@ void runInitializeScriptIfPresent() {
 		runScript("bash ${initFile}")
 		runScript('git submodule update --remote')
 	}
-}
-
-void configureGitHub() {
-	runScript('git config user.name "symbol-bot"')
-	// groovylint-disable-next-line GStringExpressionWithinString
-	runScript('git config user.email "${GITHUB_EMAIL}"')
 }
 
 String resolveBuildConfigurationFile() {
@@ -109,4 +102,8 @@ boolean tryRunCommand(Closure command) {
 
 String resolveWorkspacePath(String os) {
 	return 'windows' == os ? 'C:\\Users\\Administrator\\jenkins\\workspace\\' : '/home/ubuntu/jenkins/workspace/'
+}
+
+String resolveGitHubCredentialsId() {
+	return scm.userRemoteConfigs[0].credentialsId
 }
