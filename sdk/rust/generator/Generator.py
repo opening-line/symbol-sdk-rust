@@ -3,7 +3,6 @@
 from pathlib import Path
 from enum import Enum
 import catparser
-import lark
 from catparser.DisplayType import DisplayType
 
 TRAITS = ("signature", "signer_public_key", "message")
@@ -39,7 +38,57 @@ def get_factory_types(ast_models):
     factory_types.remove(None)
     return factory_types
 
+def update_int_type_of_struct(ast_models):
+    def _update_int_type(field_type):
+        if type(field_type) == catparser.ast.FixedSizeInteger:
+            field_type.short_name = field_type.short_name.replace("uint", "u").replace("int", "i")
+        elif type(field_type) == catparser.ast.Array:
+            element_type = field_type.element_type
+            _update_int_type(element_type)
+        else:
+            pass
+    for ast_model in ast_models:
+        if ast_model.display_type != DisplayType.STRUCT:
+            continue
+        for f in ast_model.fields:
+            _update_int_type(f.field_type)
+            
+def constantized_by(field_name, ast_model):
+    for x in ast_model.initializers:
+        if x.target_property_name == field_name:
+            return x.value                    
+    return None
+        
+def is_size_of_other(field, ast_model):
+    for other_field in ast_model.fields:
+        if field.name == other_field.size:
+            return other_field
+    return None
+
+def skip_in_constructor(field):
+    if field.name in ("signature"):
+        return True
+    return False
+
+def is_member(field, ast_model):
+    if constantized_by(field.name, ast_model):
+        return False
+    if is_size_of_other(field, ast_model):
+        return False
+    if field.is_const:
+        return False
+    if field.is_reserved:
+        return False
+    if field.name == "size":
+        return False
+    return True
+
+def is_method(field, ast_model):
+    return constantized_by(field.name, ast_model)
+
 def generate_files(ast_models, output_directory: Path):
+    
+    update_int_type_of_struct(ast_models)
 
     output_directory.mkdir(exist_ok=True)
 
@@ -90,60 +139,6 @@ def generate_files(ast_models, output_directory: Path):
         
         
 def generate_factory(factory, products):
-    def update_field_type(field_type):
-        if type(field_type) == lark.lexer.Token:
-            pass
-        elif type(field_type) == catparser.ast.FixedSizeInteger:
-            field_type.short_name = field_type.short_name.replace("uint", "u").replace("int", "i")
-        elif type(field_type) == catparser.ast.Array:
-            element_type = field_type.element_type
-            update_field_type(element_type)
-        elif type(field_type) == str:
-            pass
-        else:
-            raise "unexpected"
-    
-    def constantized_by(field_name, ast_model):
-        for x in ast_model.initializers:
-            if x.target_property_name == field_name:
-                return x.value                    
-        return None
-            
-    def is_size_of_other(field, ast_model):
-        for other_field in ast_model.fields:
-            if field.name == other_field.size:
-                return other_field
-        return None
-    
-    def skip_in_constructor(field):
-        if field.name in ("signature"):
-            return True
-        return False
-    
-    def is_member(field, ast_model):
-        if constantized_by(field.name, ast_model):
-            return False
-        if is_size_of_other(field, ast_model):
-            return False
-        if field.is_const:
-            return False
-        if field.is_reserved:
-            return False
-        if field.name == "size":
-            return False
-        return True
-    
-    def is_method(field):
-        return constantized_by(field.name, factory)
-    
-    # prepare
-    for f in factory.fields:
-        update_field_type(f.field_type)
-    for p in products:
-        for f in p.fields:
-            update_field_type(f.field_type)
-            
-
     factory_name = factory.name
     ret = ''
     
@@ -207,7 +202,6 @@ def generate_factory(factory, products):
             ret += f'if {f.name} != 0 {{ return Err(SymbolError::ReservedIsNotZeroError({f.name} as u32)); }}'
         if constantized_by(f.name, factory):
             pass
-        
         
     common_field_name_list = [f.name for f in factory.fields]
     ret += 'match ('
@@ -293,7 +287,6 @@ def generate_factory(factory, products):
         ret += f'Self::{p.name}(x) => x.serialize(),'
     ret += '}}'
 
-    
     ret += '}'
     
     for p in products:
@@ -305,63 +298,13 @@ def generate_factory(factory, products):
 def generate_struct(ast_model):
     struct_name = ast_model.name
     
-    def update_field_type(field_type):
-        if type(field_type) == lark.lexer.Token:
-            pass
-        elif type(field_type) == catparser.ast.FixedSizeInteger:
-            field_type.short_name = field_type.short_name.replace("uint", "u").replace("int", "i")
-        elif type(field_type) == catparser.ast.Array:
-            element_type = field_type.element_type
-            update_field_type(element_type)
-        elif type(field_type) == str:
-            pass
-        else:
-            raise "unexpected"
-    
-    def constantized_by(field_name, ast_model):
-        for x in ast_model.initializers:
-            if x.target_property_name == field_name:
-                return x.value                    
-        return None
-            
-    def is_size_of_other(field):
-        for other_field in ast_model.fields:
-            if field.name == other_field.size:
-                return other_field
-        return None
-    
-    def skip_in_constructor(field):
-        if field.name in ("signature"):
-            return True
-        return False
-    
-    def is_member(field):
-        if constantized_by(field.name, ast_model):
-            return False
-        if is_size_of_other(field):
-            return False
-        if field.is_const:
-            return False
-        if field.is_reserved:
-            return False
-        if field.name == "size":
-            return False
-        return True
-    
-    def is_method(field):
-        return constantized_by(field.name, ast_model)
-    
-    # prepare
-    for f in ast_model.fields:
-        update_field_type(f.field_type)
-        
     # rust
     ret = ''
     
     # struct
     ret += f'pub struct {ast_model.name} {{'
     for f in ast_model.fields:
-        if not is_member(f):
+        if not is_member(f, ast_model):
             continue
         if type(f.field_type) == catparser.ast.Array:
             ret += f'pub {f.name}: Vec<{f.field_type.element_type}>,'
@@ -394,7 +337,7 @@ def generate_struct(ast_model):
     ## constructor
     ret += 'pub fn new('
     for f in ast_model.fields:
-        if not is_member(f):
+        if not is_member(f, ast_model):
             continue
         if skip_in_constructor(f):
             continue
@@ -405,7 +348,7 @@ def generate_struct(ast_model):
     ret += ') -> Self {'
     ret += 'Self {'
     for f in ast_model.fields:
-        if not is_member(f):
+        if not is_member(f, ast_model):
             continue
         if skip_in_constructor(f):
             ret += f'{f.name}: {f.field_type}::default(),'
@@ -417,7 +360,7 @@ def generate_struct(ast_model):
     ret += 'pub fn default() -> Self {'
     ret += 'Self {'
     for f in ast_model.fields:
-        if not is_member(f):
+        if not is_member(f, ast_model):
             continue
         if type(f.field_type) == catparser.ast.Array:
             ret += f'{f.name}: Vec::new(),'
@@ -435,7 +378,7 @@ def generate_struct(ast_model):
         if f.is_const:
             continue
         if f.size is None:
-            if is_method(f):
+            if is_method(f, ast_model):
                 ret += f'size += self.{f.name}().size();'
             else:
                 ret += f'size += self.{f.name}.size();'
@@ -504,7 +447,7 @@ def generate_struct(ast_model):
     
     ret += f'let self_ = Self {{'
     for f in ast_model.fields:
-        if not is_member(f):
+        if not is_member(f, ast_model):
             continue
         ret += f'{f.name},'
     ret += '};'
@@ -529,8 +472,8 @@ def generate_struct(ast_model):
                 ret += f"let {fn} = self.{fn}().serialize();"
         elif f.is_reserved:
             ret += f'let {fn} = 0{ft.short_name}.to_le_bytes();'
-        elif is_size_of_other(f):
-            other_field = is_size_of_other(f)
+        elif is_size_of_other(f, ast_model):
+            other_field = is_size_of_other(f, ast_model)
             ofn = other_field.name
             ret += f'let {fn} = self.{ofn}.len().to_le_bytes();'
         elif type(ft) == catparser.ast.Array:

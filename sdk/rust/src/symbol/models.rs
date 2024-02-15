@@ -1182,14 +1182,14 @@ impl TransactionType {
 //name: Transaction
 //disposition: abstract
 //fields: <class 'list'>
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -1200,14 +1200,14 @@ impl TransactionType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -1242,14 +1242,14 @@ impl TransactionType {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -1260,14 +1260,14 @@ impl TransactionType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -2525,14 +2525,14 @@ impl From<TransferTransactionV1> for Transaction {
 //name: EmbeddedTransaction
 //disposition: abstract
 //fields: <class 'list'>
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -2543,14 +2543,14 @@ impl From<TransferTransactionV1> for Transaction {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -2573,14 +2573,14 @@ impl From<TransferTransactionV1> for Transaction {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -2591,14 +2591,14 @@ impl From<TransferTransactionV1> for Transaction {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -3878,14 +3878,14 @@ impl VrfProof {
 //name: Block
 //disposition: abstract
 //fields: <class 'list'>
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -3896,14 +3896,14 @@ impl VrfProof {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -3938,14 +3938,14 @@ impl VrfProof {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -3956,14 +3956,14 @@ impl VrfProof {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -4377,14 +4377,14 @@ impl From<ImportanceBlockV1> for Block {
 //name: NemesisBlockV1
 //disposition: None
 //fields: <class 'list'>
-//    BLOCK_VERSION = make_const(uint8, 1)
+//    BLOCK_VERSION = make_const(u8, 1)
 //        name: BLOCK_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -4407,14 +4407,14 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -4425,14 +4425,14 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -4467,14 +4467,14 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -4485,14 +4485,14 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -4647,14 +4647,14 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    voting_eligible_accounts_count = uint32
+//    voting_eligible_accounts_count = u32
 //        name: voting_eligible_accounts_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -4665,14 +4665,14 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    harvesting_eligible_accounts_count = uint64
+//    harvesting_eligible_accounts_count = u64
 //        name: harvesting_eligible_accounts_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -5072,14 +5072,14 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //name: NormalBlockV1
 //disposition: None
 //fields: <class 'list'>
-//    BLOCK_VERSION = make_const(uint8, 1)
+//    BLOCK_VERSION = make_const(u8, 1)
 //        name: BLOCK_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -5102,14 +5102,14 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -5120,14 +5120,14 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -5162,14 +5162,14 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -5180,14 +5180,14 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -5342,14 +5342,14 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    block_header_reserved_1 = make_reserved(uint32, 0)
+//    block_header_reserved_1 = make_reserved(u32, 0)
 //        name: block_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -5694,14 +5694,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //name: ImportanceBlockV1
 //disposition: None
 //fields: <class 'list'>
-//    BLOCK_VERSION = make_const(uint8, 1)
+//    BLOCK_VERSION = make_const(u8, 1)
 //        name: BLOCK_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -5724,14 +5724,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -5742,14 +5742,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -5784,14 +5784,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -5802,14 +5802,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -5964,14 +5964,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    voting_eligible_accounts_count = uint32
+//    voting_eligible_accounts_count = u32
 //        name: voting_eligible_accounts_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -5982,14 +5982,14 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    harvesting_eligible_accounts_count = uint64
+//    harvesting_eligible_accounts_count = u64
 //        name: harvesting_eligible_accounts_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -6703,14 +6703,14 @@ impl ReceiptType {
 //name: Receipt
 //disposition: abstract
 //fields: <class 'list'>
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -6721,14 +6721,14 @@ impl ReceiptType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7094,14 +7094,14 @@ impl From<NamespaceRentalFeeReceipt> for Receipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7112,14 +7112,14 @@ impl From<NamespaceRentalFeeReceipt> for Receipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7301,14 +7301,14 @@ impl HarvestFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7319,14 +7319,14 @@ impl HarvestFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7476,14 +7476,14 @@ impl InflationReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7494,14 +7494,14 @@ impl InflationReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7683,14 +7683,14 @@ impl LockHashCreatedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7701,14 +7701,14 @@ impl LockHashCreatedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7890,14 +7890,14 @@ impl LockHashCompletedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -7908,14 +7908,14 @@ impl LockHashCompletedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8097,14 +8097,14 @@ impl LockHashExpiredFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8115,14 +8115,14 @@ impl LockHashExpiredFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8304,14 +8304,14 @@ impl LockSecretCreatedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8322,14 +8322,14 @@ impl LockSecretCreatedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8511,14 +8511,14 @@ impl LockSecretCompletedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8529,14 +8529,14 @@ impl LockSecretCompletedFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8718,14 +8718,14 @@ impl LockSecretExpiredFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8736,14 +8736,14 @@ impl LockSecretExpiredFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8904,14 +8904,14 @@ impl MosaicExpiredReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -8922,14 +8922,14 @@ impl MosaicExpiredReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9298,14 +9298,14 @@ impl AliasAction {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9316,14 +9316,14 @@ impl AliasAction {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9484,14 +9484,14 @@ impl NamespaceExpiredReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9502,14 +9502,14 @@ impl NamespaceExpiredReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9670,14 +9670,14 @@ impl NamespaceDeletedReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9688,14 +9688,14 @@ impl NamespaceDeletedReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint16
+//    version = u16
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9891,14 +9891,14 @@ impl NamespaceRentalFeeReceipt {
 //name: ReceiptSource
 //disposition: None
 //fields: <class 'list'>
-//    primary_id = uint32
+//    primary_id = u32
 //        name: primary_id
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -9909,14 +9909,14 @@ impl NamespaceRentalFeeReceipt {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    secondary_id = uint32
+//    secondary_id = u32
 //        name: secondary_id
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10085,14 +10085,14 @@ impl AddressResolutionEntry {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    resolution_entries_count = uint32
+//    resolution_entries_count = u32
 //        name: resolution_entries_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10304,14 +10304,14 @@ impl MosaicResolutionEntry {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    resolution_entries_count = uint32
+//    resolution_entries_count = u32
 //        name: resolution_entries_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10426,14 +10426,14 @@ impl MosaicResolutionStatement {
 //name: TransactionStatement
 //disposition: None
 //fields: <class 'list'>
-//    primary_id = uint32
+//    primary_id = u32
 //        name: primary_id
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10444,14 +10444,14 @@ impl MosaicResolutionStatement {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    secondary_id = uint32
+//    secondary_id = u32
 //        name: secondary_id
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10462,14 +10462,14 @@ impl MosaicResolutionStatement {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    receipt_count = uint32
+//    receipt_count = u32
 //        name: receipt_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10582,14 +10582,14 @@ impl TransactionStatement {
 //name: BlockStatement
 //disposition: None
 //fields: <class 'list'>
-//    transaction_statement_count = uint32
+//    transaction_statement_count = u32
 //        name: transaction_statement_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10620,14 +10620,14 @@ impl TransactionStatement {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: transaction_statement_count
-//    address_resolution_statement_count = uint32
+//    address_resolution_statement_count = u32
 //        name: address_resolution_statement_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10658,14 +10658,14 @@ impl TransactionStatement {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: address_resolution_statement_count
-//    mosaic_resolution_statement_count = uint32
+//    mosaic_resolution_statement_count = u32
 //        name: mosaic_resolution_statement_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10827,14 +10827,14 @@ impl BlockStatement {
 //name: AccountKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -10857,14 +10857,14 @@ impl BlockStatement {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -10875,14 +10875,14 @@ impl BlockStatement {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -10917,14 +10917,14 @@ impl BlockStatement {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -10935,14 +10935,14 @@ impl BlockStatement {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -11244,14 +11244,14 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //name: EmbeddedAccountKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -11274,14 +11274,14 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -11292,14 +11292,14 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -11322,14 +11322,14 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -11340,14 +11340,14 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -11589,14 +11589,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //name: NodeKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -11619,14 +11619,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -11637,14 +11637,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -11679,14 +11679,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -11697,14 +11697,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12006,14 +12006,14 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //name: EmbeddedNodeKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -12036,14 +12036,14 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12054,14 +12054,14 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -12084,14 +12084,14 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -12102,14 +12102,14 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12350,14 +12350,14 @@ impl TraitSignerVerifyingKey for EmbeddedNodeKeyLinkTransactionV1 {
 //name: Cosignature
 //disposition: None
 //fields: <class 'list'>
-//    version = uint64
+//    version = u64
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12486,14 +12486,14 @@ impl TraitSignature for Cosignature {
 //name: DetachedCosignature
 //disposition: None
 //fields: <class 'list'>
-//    version = uint64
+//    version = u64
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12649,14 +12649,14 @@ impl TraitSignature for DetachedCosignature {
 //name: AggregateCompleteTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -12679,14 +12679,14 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12697,14 +12697,14 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -12739,14 +12739,14 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -12757,14 +12757,14 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12835,14 +12835,14 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    payload_size = uint32
+//    payload_size = u32
 //        name: payload_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -12853,14 +12853,14 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    aggregate_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    aggregate_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: aggregate_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -13185,14 +13185,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //name: AggregateCompleteTransactionV2
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 2)
+//    TRANSACTION_VERSION = make_const(u8, 2)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 2
 //        disposition: const
@@ -13215,14 +13215,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -13233,14 +13233,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -13275,14 +13275,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -13293,14 +13293,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -13371,14 +13371,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    payload_size = uint32
+//    payload_size = u32
 //        name: payload_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -13389,14 +13389,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    aggregate_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    aggregate_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: aggregate_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -13723,14 +13723,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //name: AggregateBondedTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -13753,14 +13753,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -13771,14 +13771,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -13813,14 +13813,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -13831,14 +13831,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -13909,14 +13909,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    payload_size = uint32
+//    payload_size = u32
 //        name: payload_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -13927,14 +13927,14 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    aggregate_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    aggregate_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: aggregate_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -14261,14 +14261,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //name: AggregateBondedTransactionV2
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 2)
+//    TRANSACTION_VERSION = make_const(u8, 2)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 2
 //        disposition: const
@@ -14291,14 +14291,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -14309,14 +14309,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -14351,14 +14351,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -14369,14 +14369,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -14447,14 +14447,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    payload_size = uint32
+//    payload_size = u32
 //        name: payload_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -14465,14 +14465,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    aggregate_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    aggregate_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: aggregate_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -14800,14 +14800,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //name: VotingKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -14830,14 +14830,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -14848,14 +14848,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -14890,14 +14890,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -14908,14 +14908,14 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -15261,14 +15261,14 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //name: EmbeddedVotingKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -15291,14 +15291,14 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -15309,14 +15309,14 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -15339,14 +15339,14 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -15357,14 +15357,14 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -15651,14 +15651,14 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //name: VrfKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -15681,14 +15681,14 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -15699,14 +15699,14 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -15741,14 +15741,14 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -15759,14 +15759,14 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -16068,14 +16068,14 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //name: EmbeddedVrfKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -16098,14 +16098,14 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -16116,14 +16116,14 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -16146,14 +16146,14 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -16164,14 +16164,14 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -16416,14 +16416,14 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 //name: HashLockTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -16446,14 +16446,14 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -16464,14 +16464,14 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -16506,14 +16506,14 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -16524,14 +16524,14 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -16855,14 +16855,14 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //name: EmbeddedHashLockTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -16885,14 +16885,14 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -16903,14 +16903,14 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -16933,14 +16933,14 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -16951,14 +16951,14 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -17288,14 +17288,14 @@ impl LockHashAlgorithm {
 //name: SecretLockTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -17318,14 +17318,14 @@ impl LockHashAlgorithm {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -17336,14 +17336,14 @@ impl LockHashAlgorithm {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -17378,14 +17378,14 @@ impl LockHashAlgorithm {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -17396,14 +17396,14 @@ impl LockHashAlgorithm {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -17771,14 +17771,14 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //name: EmbeddedSecretLockTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -17801,14 +17801,14 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -17819,14 +17819,14 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -17849,14 +17849,14 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -17867,14 +17867,14 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18183,14 +18183,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //name: SecretProofTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -18213,14 +18213,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18231,14 +18231,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -18273,14 +18273,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -18291,14 +18291,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18381,14 +18381,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    proof_size = uint16
+//    proof_size = u16
 //        name: proof_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18411,15 +18411,15 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    proof = array(uint8, proof_size)
+//    proof = array(u8, proof_size)
 //        name: proof
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: proof_size
 //            *alignment: None
@@ -18687,14 +18687,14 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //name: EmbeddedSecretProofTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -18717,14 +18717,14 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18735,14 +18735,14 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -18765,14 +18765,14 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -18783,14 +18783,14 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18849,14 +18849,14 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    proof_size = uint16
+//    proof_size = u16
 //        name: proof_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -18879,15 +18879,15 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    proof = array(uint8, proof_size)
+//    proof = array(u8, proof_size)
 //        name: proof
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: proof_size
 //            *alignment: None
@@ -19120,14 +19120,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //name: AccountMetadataTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -19150,14 +19150,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19168,14 +19168,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -19210,14 +19210,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -19228,14 +19228,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19306,14 +19306,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    scoped_metadata_key = uint64
+//    scoped_metadata_key = u64
 //        name: scoped_metadata_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19324,14 +19324,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    value_size_delta = int16
+//    value_size_delta = i16
 //        name: value_size_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int16
+//            short_name: i16
 //            is_unsigned: False
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: int16
+//            *name: i16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19342,14 +19342,14 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 2
-//    value_size = uint16
+//    value_size = u16
 //        name: value_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19360,15 +19360,15 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    value = array(uint8, value_size)
+//    value = array(u8, value_size)
 //        name: value
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: value_size
 //            *alignment: None
@@ -19636,14 +19636,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //name: EmbeddedAccountMetadataTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -19666,14 +19666,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19684,14 +19684,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -19714,14 +19714,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -19732,14 +19732,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19786,14 +19786,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    scoped_metadata_key = uint64
+//    scoped_metadata_key = u64
 //        name: scoped_metadata_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19804,14 +19804,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    value_size_delta = int16
+//    value_size_delta = i16
 //        name: value_size_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int16
+//            short_name: i16
 //            is_unsigned: False
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: int16
+//            *name: i16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19822,14 +19822,14 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 2
-//    value_size = uint16
+//    value_size = u16
 //        name: value_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -19840,15 +19840,15 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    value = array(uint8, value_size)
+//    value = array(u8, value_size)
 //        name: value
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: value_size
 //            *alignment: None
@@ -20080,14 +20080,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //name: MosaicMetadataTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -20110,14 +20110,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20128,14 +20128,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -20170,14 +20170,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -20188,14 +20188,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20266,14 +20266,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    scoped_metadata_key = uint64
+//    scoped_metadata_key = u64
 //        name: scoped_metadata_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20296,14 +20296,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    value_size_delta = int16
+//    value_size_delta = i16
 //        name: value_size_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int16
+//            short_name: i16
 //            is_unsigned: False
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: int16
+//            *name: i16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20314,14 +20314,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 2
-//    value_size = uint16
+//    value_size = u16
 //        name: value_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20332,15 +20332,15 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    value = array(uint8, value_size)
+//    value = array(u8, value_size)
 //        name: value
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: value_size
 //            *alignment: None
@@ -20618,14 +20618,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //name: EmbeddedMosaicMetadataTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -20648,14 +20648,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20666,14 +20666,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -20696,14 +20696,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -20714,14 +20714,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20768,14 +20768,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    scoped_metadata_key = uint64
+//    scoped_metadata_key = u64
 //        name: scoped_metadata_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20798,14 +20798,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    value_size_delta = int16
+//    value_size_delta = i16
 //        name: value_size_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int16
+//            short_name: i16
 //            is_unsigned: False
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: int16
+//            *name: i16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20816,14 +20816,14 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 2
-//    value_size = uint16
+//    value_size = u16
 //        name: value_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -20834,15 +20834,15 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    value = array(uint8, value_size)
+//    value = array(u8, value_size)
 //        name: value
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: value_size
 //            *alignment: None
@@ -21084,14 +21084,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //name: NamespaceMetadataTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -21114,14 +21114,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21132,14 +21132,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -21174,14 +21174,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -21192,14 +21192,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21270,14 +21270,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    scoped_metadata_key = uint64
+//    scoped_metadata_key = u64
 //        name: scoped_metadata_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21300,14 +21300,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    value_size_delta = int16
+//    value_size_delta = i16
 //        name: value_size_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int16
+//            short_name: i16
 //            is_unsigned: False
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: int16
+//            *name: i16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21318,14 +21318,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 2
-//    value_size = uint16
+//    value_size = u16
 //        name: value_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21336,15 +21336,15 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    value = array(uint8, value_size)
+//    value = array(u8, value_size)
 //        name: value
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: value_size
 //            *alignment: None
@@ -21622,14 +21622,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //name: EmbeddedNamespaceMetadataTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -21652,14 +21652,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21670,14 +21670,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -21700,14 +21700,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -21718,14 +21718,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21772,14 +21772,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    scoped_metadata_key = uint64
+//    scoped_metadata_key = u64
 //        name: scoped_metadata_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21802,14 +21802,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    value_size_delta = int16
+//    value_size_delta = i16
 //        name: value_size_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int16
+//            short_name: i16
 //            is_unsigned: False
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: int16
+//            *name: i16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21820,14 +21820,14 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 2
-//    value_size = uint16
+//    value_size = u16
 //        name: value_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -21838,15 +21838,15 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    value = array(uint8, value_size)
+//    value = array(u8, value_size)
 //        name: value
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: value_size
 //            *alignment: None
@@ -22277,14 +22277,14 @@ impl MosaicSupplyChangeAction {
 //name: MosaicDefinitionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -22307,14 +22307,14 @@ impl MosaicSupplyChangeAction {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -22325,14 +22325,14 @@ impl MosaicSupplyChangeAction {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -22367,14 +22367,14 @@ impl MosaicSupplyChangeAction {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -22385,14 +22385,14 @@ impl MosaicSupplyChangeAction {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -22499,14 +22499,14 @@ impl MosaicSupplyChangeAction {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    divisibility = uint8
+//    divisibility = u8
 //        name: divisibility
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -22766,14 +22766,14 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //name: EmbeddedMosaicDefinitionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -22796,14 +22796,14 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -22814,14 +22814,14 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -22844,14 +22844,14 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -22862,14 +22862,14 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -22952,14 +22952,14 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    divisibility = uint8
+//    divisibility = u8
 //        name: divisibility
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -23182,14 +23182,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 //name: MosaicSupplyChangeTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -23212,14 +23212,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -23230,14 +23230,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -23272,14 +23272,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -23290,14 +23290,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -23621,14 +23621,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //name: EmbeddedMosaicSupplyChangeTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -23651,14 +23651,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -23669,14 +23669,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -23699,14 +23699,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -23717,14 +23717,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -23987,14 +23987,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //name: MosaicSupplyRevocationTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -24017,14 +24017,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24035,14 +24035,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -24077,14 +24077,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -24095,14 +24095,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24404,14 +24404,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //name: EmbeddedMosaicSupplyRevocationTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -24434,14 +24434,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24452,14 +24452,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -24482,14 +24482,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -24500,14 +24500,14 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24749,14 +24749,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //name: MultisigAccountModificationTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -24779,14 +24779,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24797,14 +24797,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -24839,14 +24839,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -24857,14 +24857,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24923,14 +24923,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    min_removal_delta = int8
+//    min_removal_delta = i8
 //        name: min_removal_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int8
+//            short_name: i8
 //            is_unsigned: False
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: int8
+//            *name: i8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24941,14 +24941,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 1
-//    min_approval_delta = int8
+//    min_approval_delta = i8
 //        name: min_approval_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int8
+//            short_name: i8
 //            is_unsigned: False
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: int8
+//            *name: i8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24959,14 +24959,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 1
-//    address_additions_count = uint8
+//    address_additions_count = u8
 //        name: address_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24977,14 +24977,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    address_deletions_count = uint8
+//    address_deletions_count = u8
 //        name: address_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -24995,14 +24995,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    multisig_account_modification_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    multisig_account_modification_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: multisig_account_modification_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -25337,14 +25337,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //name: EmbeddedMultisigAccountModificationTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -25367,14 +25367,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25385,14 +25385,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -25415,14 +25415,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -25433,14 +25433,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25475,14 +25475,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    min_removal_delta = int8
+//    min_removal_delta = i8
 //        name: min_removal_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int8
+//            short_name: i8
 //            is_unsigned: False
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: int8
+//            *name: i8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25493,14 +25493,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 1
-//    min_approval_delta = int8
+//    min_approval_delta = i8
 //        name: min_approval_delta
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: int8
+//            short_name: i8
 //            is_unsigned: False
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: int8
+//            *name: i8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25511,14 +25511,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: False
 //        *size: 1
-//    address_additions_count = uint8
+//    address_additions_count = u8
 //        name: address_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25529,14 +25529,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    address_deletions_count = uint8
+//    address_deletions_count = u8
 //        name: address_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25547,14 +25547,14 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    multisig_account_modification_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    multisig_account_modification_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: multisig_account_modification_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -25853,14 +25853,14 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 //name: AddressAliasTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -25883,14 +25883,14 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -25901,14 +25901,14 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -25943,14 +25943,14 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -25961,14 +25961,14 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -26292,14 +26292,14 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //name: EmbeddedAddressAliasTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -26322,14 +26322,14 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -26340,14 +26340,14 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -26370,14 +26370,14 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -26388,14 +26388,14 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -26659,14 +26659,14 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 //name: MosaicAliasTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -26689,14 +26689,14 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -26707,14 +26707,14 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -26749,14 +26749,14 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -26767,14 +26767,14 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -27098,14 +27098,14 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //name: EmbeddedMosaicAliasTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -27128,14 +27128,14 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -27146,14 +27146,14 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -27176,14 +27176,14 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -27194,14 +27194,14 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -27465,14 +27465,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //name: NamespaceRegistrationTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -27495,14 +27495,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -27513,14 +27513,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -27555,14 +27555,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -27573,14 +27573,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -27693,14 +27693,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    name_size = uint8
+//    name_size = u8
 //        name: name_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -27711,15 +27711,15 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    name = array(uint8, name_size)
+//    name = array(u8, name_size)
 //        name: name
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: name_size
 //            *alignment: None
@@ -27997,14 +27997,14 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //name: EmbeddedNamespaceRegistrationTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -28027,14 +28027,14 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28045,14 +28045,14 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -28075,14 +28075,14 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -28093,14 +28093,14 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28189,14 +28189,14 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    name_size = uint8
+//    name_size = u8
 //        name: name_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28207,15 +28207,15 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    name = array(uint8, name_size)
+//    name = array(u8, name_size)
 //        name: name
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: name_size
 //            *alignment: None
@@ -28545,14 +28545,14 @@ impl AccountRestrictionFlags {
 //name: AccountAddressRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -28575,14 +28575,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28593,14 +28593,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -28635,14 +28635,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -28653,14 +28653,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28731,14 +28731,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_additions_count = uint8
+//    restriction_additions_count = u8
 //        name: restriction_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28749,14 +28749,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    restriction_deletions_count = uint8
+//    restriction_deletions_count = u8
 //        name: restriction_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -28767,14 +28767,14 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    account_restriction_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    account_restriction_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: account_restriction_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -29099,14 +29099,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //name: EmbeddedAccountAddressRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -29129,14 +29129,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29147,14 +29147,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -29177,14 +29177,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -29195,14 +29195,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29249,14 +29249,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_additions_count = uint8
+//    restriction_additions_count = u8
 //        name: restriction_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29267,14 +29267,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    restriction_deletions_count = uint8
+//    restriction_deletions_count = u8
 //        name: restriction_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29285,14 +29285,14 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    account_restriction_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    account_restriction_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: account_restriction_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -29580,14 +29580,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //name: AccountMosaicRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -29610,14 +29610,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29628,14 +29628,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -29670,14 +29670,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -29688,14 +29688,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29766,14 +29766,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_additions_count = uint8
+//    restriction_additions_count = u8
 //        name: restriction_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29784,14 +29784,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    restriction_deletions_count = uint8
+//    restriction_deletions_count = u8
 //        name: restriction_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -29802,14 +29802,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    account_restriction_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    account_restriction_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: account_restriction_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -30134,14 +30134,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //name: EmbeddedAccountMosaicRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -30164,14 +30164,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30182,14 +30182,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -30212,14 +30212,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -30230,14 +30230,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30284,14 +30284,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_additions_count = uint8
+//    restriction_additions_count = u8
 //        name: restriction_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30302,14 +30302,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    restriction_deletions_count = uint8
+//    restriction_deletions_count = u8
 //        name: restriction_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30320,14 +30320,14 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    account_restriction_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    account_restriction_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: account_restriction_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -30615,14 +30615,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //name: AccountOperationRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -30645,14 +30645,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30663,14 +30663,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -30705,14 +30705,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -30723,14 +30723,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30801,14 +30801,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_additions_count = uint8
+//    restriction_additions_count = u8
 //        name: restriction_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30819,14 +30819,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    restriction_deletions_count = uint8
+//    restriction_deletions_count = u8
 //        name: restriction_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -30837,14 +30837,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    account_restriction_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    account_restriction_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: account_restriction_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -31169,14 +31169,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //name: EmbeddedAccountOperationRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -31199,14 +31199,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31217,14 +31217,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -31247,14 +31247,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -31265,14 +31265,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31319,14 +31319,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_additions_count = uint8
+//    restriction_additions_count = u8
 //        name: restriction_additions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31337,14 +31337,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    restriction_deletions_count = uint8
+//    restriction_deletions_count = u8
 //        name: restriction_deletions_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31355,14 +31355,14 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    account_restriction_transaction_body_reserved_1 = make_reserved(uint32, 0)
+//    account_restriction_transaction_body_reserved_1 = make_reserved(u32, 0)
 //        name: account_restriction_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -31650,14 +31650,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //name: MosaicAddressRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -31680,14 +31680,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31698,14 +31698,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -31740,14 +31740,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -31758,14 +31758,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31836,14 +31836,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_key = uint64
+//    restriction_key = u64
 //        name: restriction_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31854,14 +31854,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    previous_restriction_value = uint64
+//    previous_restriction_value = u64
 //        name: previous_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -31872,14 +31872,14 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    new_restriction_value = uint64
+//    new_restriction_value = u64
 //        name: new_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32151,14 +32151,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //name: EmbeddedMosaicAddressRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -32181,14 +32181,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32199,14 +32199,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -32229,14 +32229,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -32247,14 +32247,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32301,14 +32301,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_key = uint64
+//    restriction_key = u64
 //        name: restriction_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32319,14 +32319,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    previous_restriction_value = uint64
+//    previous_restriction_value = u64
 //        name: previous_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32337,14 +32337,14 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    new_restriction_value = uint64
+//    new_restriction_value = u64
 //        name: new_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32705,14 +32705,14 @@ impl MosaicRestrictionType {
 //name: MosaicGlobalRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -32735,14 +32735,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32753,14 +32753,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -32795,14 +32795,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -32813,14 +32813,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32903,14 +32903,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_key = uint64
+//    restriction_key = u64
 //        name: restriction_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32921,14 +32921,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    previous_restriction_value = uint64
+//    previous_restriction_value = u64
 //        name: previous_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -32939,14 +32939,14 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    new_restriction_value = uint64
+//    new_restriction_value = u64
 //        name: new_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33250,14 +33250,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //name: EmbeddedMosaicGlobalRestrictionTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -33280,14 +33280,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33298,14 +33298,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -33328,14 +33328,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -33346,14 +33346,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33412,14 +33412,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    restriction_key = uint64
+//    restriction_key = u64
 //        name: restriction_key
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33430,14 +33430,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    previous_restriction_value = uint64
+//    previous_restriction_value = u64
 //        name: previous_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33448,14 +33448,14 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    new_restriction_value = uint64
+//    new_restriction_value = u64
 //        name: new_restriction_value
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint64
+//            short_name: u64
 //            is_unsigned: True
 //            size: 8
 //            display_type: DisplayType.INTEGER
-//            *name: uint64
+//            *name: u64
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33722,14 +33722,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //name: TransferTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -33752,14 +33752,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33770,14 +33770,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    verifiable_entity_header_reserved_1 = make_reserved(uint32, 0)
+//    verifiable_entity_header_reserved_1 = make_reserved(u32, 0)
 //        name: verifiable_entity_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -33812,14 +33812,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -33830,14 +33830,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33908,14 +33908,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    message_size = uint16
+//    message_size = u16
 //        name: message_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33926,14 +33926,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    mosaics_count = uint8
+//    mosaics_count = u8
 //        name: mosaics_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -33944,14 +33944,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    transfer_transaction_body_reserved_1 = make_reserved(uint8, 0)
+//    transfer_transaction_body_reserved_1 = make_reserved(u8, 0)
 //        name: transfer_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -33962,14 +33962,14 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    transfer_transaction_body_reserved_2 = make_reserved(uint32, 0)
+//    transfer_transaction_body_reserved_2 = make_reserved(u32, 0)
 //        name: transfer_transaction_body_reserved_2
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -34006,15 +34006,15 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: mosaics_count
-//    message = array(uint8, message_size)
+//    message = array(u8, message_size)
 //        name: message
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: message_size
 //            *alignment: None
@@ -34309,14 +34309,14 @@ impl TraitMessage for TransferTransactionV1 {
 //name: EmbeddedTransferTransactionV1
 //disposition: None
 //fields: <class 'list'>
-//    TRANSACTION_VERSION = make_const(uint8, 1)
+//    TRANSACTION_VERSION = make_const(u8, 1)
 //        name: TRANSACTION_VERSION
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 1
 //        disposition: const
@@ -34339,14 +34339,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    size = uint32
+//    size = u32
 //        name: size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -34357,14 +34357,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    embedded_transaction_header_reserved_1 = make_reserved(uint32, 0)
+//    embedded_transaction_header_reserved_1 = make_reserved(u32, 0)
 //        name: embedded_transaction_header_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -34387,14 +34387,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    entity_body_reserved_1 = make_reserved(uint32, 0)
+//    entity_body_reserved_1 = make_reserved(u32, 0)
 //        name: entity_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -34405,14 +34405,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    version = uint8
+//    version = u8
 //        name: version
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -34459,14 +34459,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    message_size = uint16
+//    message_size = u16
 //        name: message_size
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint16
+//            short_name: u16
 //            is_unsigned: True
 //            size: 2
 //            display_type: DisplayType.INTEGER
-//            *name: uint16
+//            *name: u16
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -34477,14 +34477,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 2
-//    mosaics_count = uint8
+//    mosaics_count = u8
 //        name: mosaics_count
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: None
 //        disposition: None
@@ -34495,14 +34495,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    transfer_transaction_body_reserved_1 = make_reserved(uint8, 0)
+//    transfer_transaction_body_reserved_1 = make_reserved(u8, 0)
 //        name: transfer_transaction_body_reserved_1
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint8
+//            short_name: u8
 //            is_unsigned: True
 //            size: 1
 //            display_type: DisplayType.INTEGER
-//            *name: uint8
+//            *name: u8
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -34513,14 +34513,14 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 1
-//    transfer_transaction_body_reserved_2 = make_reserved(uint32, 0)
+//    transfer_transaction_body_reserved_2 = make_reserved(u32, 0)
 //        name: transfer_transaction_body_reserved_2
 //        field_type: <class 'catparser.ast.FixedSizeInteger'>
-//            short_name: uint32
+//            short_name: u32
 //            is_unsigned: True
 //            size: 4
 //            display_type: DisplayType.INTEGER
-//            *name: uint32
+//            *name: u32
 //            *sizeref: None
 //        value: 0
 //        disposition: reserved
@@ -34557,15 +34557,15 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: mosaics_count
-//    message = array(uint8, message_size)
+//    message = array(u8, message_size)
 //        name: message
 //        field_type: <class 'catparser.ast.Array'>
 //            element_type: <class 'catparser.ast.FixedSizeInteger'>
-//                short_name: uint8
+//                short_name: u8
 //                is_unsigned: True
 //                size: 1
 //                display_type: DisplayType.INTEGER
-//                *name: uint8
+//                *name: u8
 //                *sizeref: None
 //            size: message_size
 //            *alignment: None
