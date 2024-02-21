@@ -9,6 +9,10 @@ use symbol::symbol::models_extensions::*;
 // ノードとの通信関係
 // mosaicsのsort
 
+// TODO
+// https://github.com/symbol/symbol/blob/fd5d13c72c134e1878754780c52f3015a781f29f/sdk/python/examples/docs/__main__.py#L136 の再現
+// https://github.com/symbol/symbol/blob/fd5d13c72c134e1878754780c52f3015a781f29f/sdk/python/examples/docs/__main__.py#L149 の再現
+
 fn main() {
     let t = TransferTransactionV1::new(
         VerifyingKey::from_str("A59277D56E9F4FA46854F5EFAAA253B09F8AE69A473565E01FD9E6A738E4AB74")

@@ -1,28 +1,40 @@
+use std::fs::read_to_string;
+use serde::Deserialize;
+use serde_json;
+use hex::{encode, decode};
+
 use symbol::symbol::models_extensions::*;
 
+const TEST_VECTERS_PATH: &str = "../../tests/vectors/symbol";
+
+// #[test]
+// fn test_keccak_256() {
+    
+// }
+
 #[test]
-fn test_symbol_1() {
-    let tx = TransferTransactionV1::new(
-        VerifyingKey::from_str("87DA603E7BE5656C45692D5FC7F6D0EF8F24BB7A5C10ED5FDA8C5CFBC49FCBC8")
-            .unwrap(),
-        NetworkType::TESTNET,
-        Amount(1000000),
-        Timestamp(41998024783),
-        UnresolvedAddress::from_str("TCHBDENCLKEBILBPWP3JPB2XNY64OE7PYHHE32I").unwrap(),
-        vec![UnresolvedMosaic::new(
-            UnresolvedMosaicId(0x7CDF3B117A3C40CC),
-            Amount(1000000),
-        )],
-        vec![],
-    );
+fn test0_sha3_256() {
+    use sha3::{Digest, Sha3_256};
 
-    let s_key = SigningKey::from_bytes(
-        "A59277D56E9F4FA46854F5EFAAA253B0"
-            .as_bytes()
-            .try_into()
-            .unwrap(),
-    );
+    #[derive(Deserialize)]
+    struct Test {
+        hash: String,
+        length: usize,
+        data: String,
+    }
 
-    let signed_tx = s_key.sign_transaction(tx);
-    s_key.verify_transaction(&signed_tx).unwrap();
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/0.test-sha3-256.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests {
+        let data = decode(test.data).expect("Decoding failed");
+        assert_eq!(data.len(), test.length);
+        
+        let mut hasher = Sha3_256::new();
+        hasher.update(&data);
+        let result = hasher.finalize();
+        let result_hex = encode(result);
+        assert_eq!(result_hex, test.hash.to_lowercase());
+    }
 }
