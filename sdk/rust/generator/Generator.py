@@ -132,9 +132,6 @@ def generate_files(ast_models, output_directory: Path):
             else:
                 raise 'Unexpected'
 
-        output = output.replace('publickey', 'verifyingkey').replace('PublicKey', 'VerifyingKey')
-        output = output.replace('public_key', 'verifying_key').replace('public key', 'verifying key')
-
         output_file.write(output)
         
         

@@ -4,9 +4,9 @@ pub trait TraitSignature {
     fn get_signature(&self) -> &Signature;
     fn set_signature(&mut self, signature: Signature);
 }
-pub trait TraitSignerVerifyingKey {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey;
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey);
+pub trait TraitSignerPublicKey {
+    fn get_signer_public_key(&self) -> &PublicKey;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey);
 }
 pub trait TraitMessage {
     fn get_message(&self) -> &Vec<u8>;
@@ -567,7 +567,7 @@ impl UnresolvedAddress {
         format!("0x{}", hex::encode(self.0))
     }
 }
-///An [address](/concepts/cryptography.html#address) identifies an account and is derived from its VerifyingKey.
+///An [address](/concepts/cryptography.html#address) identifies an account and is derived from its PublicKey.
 //name: Address
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
 //    size: 24
@@ -686,8 +686,8 @@ impl Hash512 {
         format!("0x{}", hex::encode(self.0))
     }
 }
-///A VerifyingKey used for voting during the [finalization process](/concepts/block.html#finalization).
-//name: VotingVerifyingKey
+///A PublicKey used for voting during the [finalization process](/concepts/block.html#finalization).
+//name: VotingPublicKey
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
 //    size: 32
 //    is_unsigned: True
@@ -696,11 +696,11 @@ impl Hash512 {
 //*is_unsigned: True
 //*size: 32
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct VotingVerifyingKey(pub [u8; 32]);
-impl VotingVerifyingKey {
+pub struct VotingPublicKey(pub [u8; 32]);
+impl VotingPublicKey {
     pub const SIZE: usize = 32;
-    pub fn new(votingverifyingkey: [u8; 32]) -> Self {
-        Self(votingverifyingkey)
+    pub fn new(votingpublickey: [u8; 32]) -> Self {
+        Self(votingpublickey)
     }
     pub fn default() -> Self {
         Self([0; 32])
@@ -1230,9 +1230,9 @@ impl TransactionType {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -1457,8 +1457,8 @@ impl Transaction {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -1481,17 +1481,17 @@ impl Transaction {
                 AccountKeyLinkTransactionV1::TRANSACTION_TYPE,
                 AccountKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = AccountKeyLinkTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
-                    linked_verifying_key,
+                    linked_public_key,
                     link_action,
                 };
                 Ok((Self::AccountKeyLinkTransactionV1(self_), payload))
@@ -1500,17 +1500,17 @@ impl Transaction {
                 NodeKeyLinkTransactionV1::TRANSACTION_TYPE,
                 NodeKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = NodeKeyLinkTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
-                    linked_verifying_key,
+                    linked_public_key,
                     link_action,
                 };
                 Ok((Self::NodeKeyLinkTransactionV1(self_), payload))
@@ -1545,7 +1545,7 @@ impl Transaction {
                 }
                 let self_ = AggregateCompleteTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1585,7 +1585,7 @@ impl Transaction {
                 }
                 let self_ = AggregateCompleteTransactionV2 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1625,7 +1625,7 @@ impl Transaction {
                 }
                 let self_ = AggregateBondedTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1665,7 +1665,7 @@ impl Transaction {
                 }
                 let self_ = AggregateBondedTransactionV2 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1679,8 +1679,8 @@ impl Transaction {
                 VotingKeyLinkTransactionV1::TRANSACTION_TYPE,
                 VotingKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VotingVerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = VotingPublicKey::deserialize(payload)?;
                 let start_epoch;
                 (start_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
                 let end_epoch;
@@ -1689,11 +1689,11 @@ impl Transaction {
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = VotingKeyLinkTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
-                    linked_verifying_key,
+                    linked_public_key,
                     start_epoch,
                     end_epoch,
                     link_action,
@@ -1704,17 +1704,17 @@ impl Transaction {
                 VrfKeyLinkTransactionV1::TRANSACTION_TYPE,
                 VrfKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = VrfKeyLinkTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
-                    linked_verifying_key,
+                    linked_public_key,
                     link_action,
                 };
                 Ok((Self::VrfKeyLinkTransactionV1(self_), payload))
@@ -1731,7 +1731,7 @@ impl Transaction {
                 (hash, payload) = Hash256::deserialize(payload)?;
                 let self_ = HashLockTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1757,7 +1757,7 @@ impl Transaction {
                 (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
                 let self_ = SecretLockTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1791,7 +1791,7 @@ impl Transaction {
                 }
                 let self_ = SecretProofTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1824,7 +1824,7 @@ impl Transaction {
                 }
                 let self_ = AccountMetadataTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1859,7 +1859,7 @@ impl Transaction {
                 }
                 let self_ = MosaicMetadataTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1895,7 +1895,7 @@ impl Transaction {
                 }
                 let self_ = NamespaceMetadataTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1923,7 +1923,7 @@ impl Transaction {
                 payload = &payload[1..];
                 let self_ = MosaicDefinitionTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1947,7 +1947,7 @@ impl Transaction {
                 (action, payload) = MosaicSupplyChangeAction::deserialize(payload)?;
                 let self_ = MosaicSupplyChangeTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -1967,7 +1967,7 @@ impl Transaction {
                 (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
                 let self_ = MosaicSupplyRevocationTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2010,7 +2010,7 @@ impl Transaction {
                 }
                 let self_ = MultisigAccountModificationTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2036,7 +2036,7 @@ impl Transaction {
                 (alias_action, payload) = AliasAction::deserialize(payload)?;
                 let self_ = AddressAliasTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2058,7 +2058,7 @@ impl Transaction {
                 (alias_action, payload) = AliasAction::deserialize(payload)?;
                 let self_ = MosaicAliasTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2092,7 +2092,7 @@ impl Transaction {
                 }
                 let self_ = NamespaceRegistrationTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2136,7 +2136,7 @@ impl Transaction {
                 }
                 let self_ = AccountAddressRestrictionTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2178,7 +2178,7 @@ impl Transaction {
                 }
                 let self_ = AccountMosaicRestrictionTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2220,7 +2220,7 @@ impl Transaction {
                 }
                 let self_ = AccountOperationRestrictionTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2249,7 +2249,7 @@ impl Transaction {
                 (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
                 let self_ = MosaicAddressRestrictionTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2282,7 +2282,7 @@ impl Transaction {
                 (new_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
                 let self_ = MosaicGlobalRestrictionTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2338,7 +2338,7 @@ impl Transaction {
                 }
                 let self_ = TransferTransactionV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     fee,
                     deadline,
@@ -2561,9 +2561,9 @@ impl From<TransferTransactionV1> for Transaction {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -2758,8 +2758,8 @@ impl EmbeddedTransaction {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -2778,14 +2778,14 @@ impl EmbeddedTransaction {
                 EmbeddedAccountKeyLinkTransactionV1::TRANSACTION_TYPE,
                 EmbeddedAccountKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = EmbeddedAccountKeyLinkTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
-                    linked_verifying_key,
+                    linked_public_key,
                     link_action,
                 };
                 Ok((Self::EmbeddedAccountKeyLinkTransactionV1(self_), payload))
@@ -2794,14 +2794,14 @@ impl EmbeddedTransaction {
                 EmbeddedNodeKeyLinkTransactionV1::TRANSACTION_TYPE,
                 EmbeddedNodeKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = EmbeddedNodeKeyLinkTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
-                    linked_verifying_key,
+                    linked_public_key,
                     link_action,
                 };
                 Ok((Self::EmbeddedNodeKeyLinkTransactionV1(self_), payload))
@@ -2810,8 +2810,8 @@ impl EmbeddedTransaction {
                 EmbeddedVotingKeyLinkTransactionV1::TRANSACTION_TYPE,
                 EmbeddedVotingKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VotingVerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = VotingPublicKey::deserialize(payload)?;
                 let start_epoch;
                 (start_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
                 let end_epoch;
@@ -2819,9 +2819,9 @@ impl EmbeddedTransaction {
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = EmbeddedVotingKeyLinkTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
-                    linked_verifying_key,
+                    linked_public_key,
                     start_epoch,
                     end_epoch,
                     link_action,
@@ -2832,14 +2832,14 @@ impl EmbeddedTransaction {
                 EmbeddedVrfKeyLinkTransactionV1::TRANSACTION_TYPE,
                 EmbeddedVrfKeyLinkTransactionV1::TRANSACTION_VERSION,
             ) => {
-                let linked_verifying_key;
-                (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+                let linked_public_key;
+                (linked_public_key, payload) = PublicKey::deserialize(payload)?;
                 let link_action;
                 (link_action, payload) = LinkAction::deserialize(payload)?;
                 let self_ = EmbeddedVrfKeyLinkTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
-                    linked_verifying_key,
+                    linked_public_key,
                     link_action,
                 };
                 Ok((Self::EmbeddedVrfKeyLinkTransactionV1(self_), payload))
@@ -2855,7 +2855,7 @@ impl EmbeddedTransaction {
                 let hash;
                 (hash, payload) = Hash256::deserialize(payload)?;
                 let self_ = EmbeddedHashLockTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     mosaic,
                     duration,
@@ -2878,7 +2878,7 @@ impl EmbeddedTransaction {
                 let hash_algorithm;
                 (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
                 let self_ = EmbeddedSecretLockTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     recipient_address,
                     secret,
@@ -2909,7 +2909,7 @@ impl EmbeddedTransaction {
                     proof.push(element);
                 }
                 let self_ = EmbeddedSecretProofTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     recipient_address,
                     secret,
@@ -2939,7 +2939,7 @@ impl EmbeddedTransaction {
                     value.push(element);
                 }
                 let self_ = EmbeddedAccountMetadataTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     target_address,
                     scoped_metadata_key,
@@ -2971,7 +2971,7 @@ impl EmbeddedTransaction {
                     value.push(element);
                 }
                 let self_ = EmbeddedMosaicMetadataTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     target_address,
                     scoped_metadata_key,
@@ -3004,7 +3004,7 @@ impl EmbeddedTransaction {
                     value.push(element);
                 }
                 let self_ = EmbeddedNamespaceMetadataTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     target_address,
                     scoped_metadata_key,
@@ -3029,7 +3029,7 @@ impl EmbeddedTransaction {
                 let divisibility = u8::from_le_bytes(payload[..1].try_into()?);
                 payload = &payload[1..];
                 let self_ = EmbeddedMosaicDefinitionTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     id,
                     duration,
@@ -3050,7 +3050,7 @@ impl EmbeddedTransaction {
                 let action;
                 (action, payload) = MosaicSupplyChangeAction::deserialize(payload)?;
                 let self_ = EmbeddedMosaicSupplyChangeTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     mosaic_id,
                     delta,
@@ -3070,7 +3070,7 @@ impl EmbeddedTransaction {
                 let mosaic;
                 (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
                 let self_ = EmbeddedMosaicSupplyRevocationTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     source_address,
                     mosaic,
@@ -3113,7 +3113,7 @@ impl EmbeddedTransaction {
                     address_deletions.push(element);
                 }
                 let self_ = EmbeddedMultisigAccountModificationTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     min_removal_delta,
                     min_approval_delta,
@@ -3136,7 +3136,7 @@ impl EmbeddedTransaction {
                 let alias_action;
                 (alias_action, payload) = AliasAction::deserialize(payload)?;
                 let self_ = EmbeddedAddressAliasTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     namespace_id,
                     address,
@@ -3155,7 +3155,7 @@ impl EmbeddedTransaction {
                 let alias_action;
                 (alias_action, payload) = AliasAction::deserialize(payload)?;
                 let self_ = EmbeddedMosaicAliasTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     namespace_id,
                     mosaic_id,
@@ -3186,7 +3186,7 @@ impl EmbeddedTransaction {
                     name.push(element);
                 }
                 let self_ = EmbeddedNamespaceRegistrationTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     duration,
                     parent_id,
@@ -3230,7 +3230,7 @@ impl EmbeddedTransaction {
                     restriction_deletions.push(element);
                 }
                 let self_ = EmbeddedAccountAddressRestrictionTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     restriction_flags,
                     restriction_additions,
@@ -3272,7 +3272,7 @@ impl EmbeddedTransaction {
                     restriction_deletions.push(element);
                 }
                 let self_ = EmbeddedAccountMosaicRestrictionTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     restriction_flags,
                     restriction_additions,
@@ -3314,7 +3314,7 @@ impl EmbeddedTransaction {
                     restriction_deletions.push(element);
                 }
                 let self_ = EmbeddedAccountOperationRestrictionTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     restriction_flags,
                     restriction_additions,
@@ -3340,7 +3340,7 @@ impl EmbeddedTransaction {
                 let target_address;
                 (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
                 let self_ = EmbeddedMosaicAddressRestrictionTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     mosaic_id,
                     restriction_key,
@@ -3373,7 +3373,7 @@ impl EmbeddedTransaction {
                 let new_restriction_type_;
                 (new_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
                 let self_ = EmbeddedMosaicGlobalRestrictionTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     mosaic_id,
                     reference_mosaic_id,
@@ -3429,7 +3429,7 @@ impl EmbeddedTransaction {
                     message.push(element);
                 }
                 let self_ = EmbeddedTransferTransactionV1 {
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     recipient_address,
                     mosaics,
@@ -3926,9 +3926,9 @@ impl VrfProof {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -4200,8 +4200,8 @@ impl Block {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -4254,7 +4254,7 @@ impl Block {
                 }
                 let self_ = NemesisBlockV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     height,
                     timestamp,
@@ -4290,7 +4290,7 @@ impl Block {
                 }
                 let self_ = NormalBlockV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     height,
                     timestamp,
@@ -4324,7 +4324,7 @@ impl Block {
                 }
                 let self_ = ImportanceBlockV1 {
                     signature,
-                    signer_verifying_key,
+                    signer_public_key,
                     network,
                     height,
                     timestamp,
@@ -4455,9 +4455,9 @@ impl From<ImportanceBlockV1> for Block {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -4781,7 +4781,7 @@ impl From<ImportanceBlockV1> for Block {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NemesisBlockV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub height: Height,
     pub timestamp: Timestamp,
@@ -4809,7 +4809,7 @@ impl NemesisBlockV1 {
         Self::BLOCK_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
         timestamp: Timestamp,
@@ -4829,7 +4829,7 @@ impl NemesisBlockV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             height,
             timestamp,
@@ -4851,7 +4851,7 @@ impl NemesisBlockV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             height: Height::default(),
             timestamp: Timestamp::default(),
@@ -4875,7 +4875,7 @@ impl NemesisBlockV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -4921,8 +4921,8 @@ impl NemesisBlockV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -4972,7 +4972,7 @@ impl NemesisBlockV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             height,
             timestamp,
@@ -4996,7 +4996,7 @@ impl NemesisBlockV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -5025,7 +5025,7 @@ impl NemesisBlockV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -5060,12 +5060,12 @@ impl TraitSignature for NemesisBlockV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for NemesisBlockV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for NemesisBlockV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///binary layout for a normal block header
@@ -5150,9 +5150,9 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -5434,7 +5434,7 @@ impl TraitSignerVerifyingKey for NemesisBlockV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NormalBlockV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub height: Height,
     pub timestamp: Timestamp,
@@ -5458,7 +5458,7 @@ impl NormalBlockV1 {
         Self::BLOCK_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
         timestamp: Timestamp,
@@ -5474,7 +5474,7 @@ impl NormalBlockV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             height,
             timestamp,
@@ -5492,7 +5492,7 @@ impl NormalBlockV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             height: Height::default(),
             timestamp: Timestamp::default(),
@@ -5512,7 +5512,7 @@ impl NormalBlockV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -5555,8 +5555,8 @@ impl NormalBlockV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -5605,7 +5605,7 @@ impl NormalBlockV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             height,
             timestamp,
@@ -5625,7 +5625,7 @@ impl NormalBlockV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -5650,7 +5650,7 @@ impl NormalBlockV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -5682,12 +5682,12 @@ impl TraitSignature for NormalBlockV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for NormalBlockV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for NormalBlockV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///binary layout for an importance block header
@@ -5772,9 +5772,9 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -6098,7 +6098,7 @@ impl TraitSignerVerifyingKey for NormalBlockV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ImportanceBlockV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub height: Height,
     pub timestamp: Timestamp,
@@ -6126,7 +6126,7 @@ impl ImportanceBlockV1 {
         Self::BLOCK_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         height: Height,
         timestamp: Timestamp,
@@ -6146,7 +6146,7 @@ impl ImportanceBlockV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             height,
             timestamp,
@@ -6168,7 +6168,7 @@ impl ImportanceBlockV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             height: Height::default(),
             timestamp: Timestamp::default(),
@@ -6192,7 +6192,7 @@ impl ImportanceBlockV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -6238,8 +6238,8 @@ impl ImportanceBlockV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -6289,7 +6289,7 @@ impl ImportanceBlockV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             height,
             timestamp,
@@ -6313,7 +6313,7 @@ impl ImportanceBlockV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -6342,7 +6342,7 @@ impl ImportanceBlockV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -6377,12 +6377,12 @@ impl TraitSignature for ImportanceBlockV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for ImportanceBlockV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for ImportanceBlockV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///binary layout for finalization round
@@ -10905,9 +10905,9 @@ impl BlockStatement {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -11001,9 +11001,9 @@ impl BlockStatement {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VerifyingKey
-//        name: linked_verifying_key
-//        field_type: VerifyingKey
+//    linked_public_key = PublicKey
+//        name: linked_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -11072,11 +11072,11 @@ impl BlockStatement {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountKeyLinkTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
-    pub linked_verifying_key: VerifyingKey,
+    pub linked_public_key: PublicKey,
     pub link_action: LinkAction,
 }
 impl AccountKeyLinkTransactionV1 {
@@ -11089,31 +11089,31 @@ impl AccountKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
-        linked_verifying_key: VerifyingKey,
+        linked_public_key: PublicKey,
         link_action: LinkAction,
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         }
     }
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
-            linked_verifying_key: VerifyingKey::default(),
+            linked_public_key: PublicKey::default(),
             link_action: LinkAction::default(),
         }
     }
@@ -11122,14 +11122,14 @@ impl AccountKeyLinkTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
         size += self.fee.size();
         size += self.deadline.size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.link_action.size();
         size
     }
@@ -11157,8 +11157,8 @@ impl AccountKeyLinkTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -11176,17 +11176,17 @@ impl AccountKeyLinkTransactionV1 {
         (fee, payload) = Amount::deserialize(payload)?;
         let deadline;
         (deadline, payload) = Timestamp::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = PublicKey::deserialize(payload)?;
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         };
         Ok((self_, payload))
@@ -11195,27 +11195,27 @@ impl AccountKeyLinkTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
             fee.iter(),
             deadline.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             link_action.iter(),
         ]
         .into_iter()
@@ -11232,12 +11232,12 @@ impl TraitSignature for AccountKeyLinkTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AccountKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of AccountKeyLinkTransaction (V1, latest).
@@ -11310,9 +11310,9 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -11382,9 +11382,9 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VerifyingKey
-//        name: linked_verifying_key
-//        field_type: VerifyingKey
+//    linked_public_key = PublicKey
+//        name: linked_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -11452,9 +11452,9 @@ impl TraitSignerVerifyingKey for AccountKeyLinkTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountKeyLinkTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
-    pub linked_verifying_key: VerifyingKey,
+    pub linked_public_key: PublicKey,
     pub link_action: LinkAction,
 }
 impl EmbeddedAccountKeyLinkTransactionV1 {
@@ -11467,23 +11467,23 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
-        linked_verifying_key: VerifyingKey,
+        linked_public_key: PublicKey,
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         }
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
-            linked_verifying_key: VerifyingKey::default(),
+            linked_public_key: PublicKey::default(),
             link_action: LinkAction::default(),
         }
     }
@@ -11491,12 +11491,12 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.link_action.size();
         size
     }
@@ -11522,8 +11522,8 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -11537,14 +11537,14 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         (network, payload) = NetworkType::deserialize(payload)?;
         let _type_;
         (_type_, payload) = TransactionType::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = PublicKey::deserialize(payload)?;
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         };
         Ok((self_, payload))
@@ -11552,22 +11552,22 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             link_action.iter(),
         ]
         .into_iter()
@@ -11576,16 +11576,16 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedAccountKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///This transaction is required for all accounts willing to activate delegated harvesting (V1, latest).
-///Announce a NodeKeyLinkTransaction to link an account with a verifying key used by TLS to create sessions.
+///Announce a NodeKeyLinkTransaction to link an account with a public key used by TLS to create sessions.
 //name: NodeKeyLinkTransactionV1
 //disposition: None
 //fields: <class 'list'>
@@ -11667,9 +11667,9 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -11763,9 +11763,9 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VerifyingKey
-//        name: linked_verifying_key
-//        field_type: VerifyingKey
+//    linked_public_key = PublicKey
+//        name: linked_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -11834,11 +11834,11 @@ impl TraitSignerVerifyingKey for EmbeddedAccountKeyLinkTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NodeKeyLinkTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
-    pub linked_verifying_key: VerifyingKey,
+    pub linked_public_key: PublicKey,
     pub link_action: LinkAction,
 }
 impl NodeKeyLinkTransactionV1 {
@@ -11851,31 +11851,31 @@ impl NodeKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
-        linked_verifying_key: VerifyingKey,
+        linked_public_key: PublicKey,
         link_action: LinkAction,
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         }
     }
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
-            linked_verifying_key: VerifyingKey::default(),
+            linked_public_key: PublicKey::default(),
             link_action: LinkAction::default(),
         }
     }
@@ -11884,14 +11884,14 @@ impl NodeKeyLinkTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
         size += self.fee.size();
         size += self.deadline.size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.link_action.size();
         size
     }
@@ -11919,8 +11919,8 @@ impl NodeKeyLinkTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -11938,17 +11938,17 @@ impl NodeKeyLinkTransactionV1 {
         (fee, payload) = Amount::deserialize(payload)?;
         let deadline;
         (deadline, payload) = Timestamp::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = PublicKey::deserialize(payload)?;
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         };
         Ok((self_, payload))
@@ -11957,27 +11957,27 @@ impl NodeKeyLinkTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
             fee.iter(),
             deadline.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             link_action.iter(),
         ]
         .into_iter()
@@ -11994,12 +11994,12 @@ impl TraitSignature for NodeKeyLinkTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for NodeKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of NodeKeyLinkTransaction (V1, latest).
@@ -12072,9 +12072,9 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -12144,9 +12144,9 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VerifyingKey
-//        name: linked_verifying_key
-//        field_type: VerifyingKey
+//    linked_public_key = PublicKey
+//        name: linked_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -12214,9 +12214,9 @@ impl TraitSignerVerifyingKey for NodeKeyLinkTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedNodeKeyLinkTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
-    pub linked_verifying_key: VerifyingKey,
+    pub linked_public_key: PublicKey,
     pub link_action: LinkAction,
 }
 impl EmbeddedNodeKeyLinkTransactionV1 {
@@ -12229,23 +12229,23 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
-        linked_verifying_key: VerifyingKey,
+        linked_public_key: PublicKey,
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         }
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
-            linked_verifying_key: VerifyingKey::default(),
+            linked_public_key: PublicKey::default(),
             link_action: LinkAction::default(),
         }
     }
@@ -12253,12 +12253,12 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.link_action.size();
         size
     }
@@ -12284,8 +12284,8 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -12299,14 +12299,14 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         (network, payload) = NetworkType::deserialize(payload)?;
         let _type_;
         (_type_, payload) = TransactionType::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = PublicKey::deserialize(payload)?;
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         };
         Ok((self_, payload))
@@ -12314,22 +12314,22 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             link_action.iter(),
         ]
         .into_iter()
@@ -12338,12 +12338,12 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedNodeKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedNodeKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Cosignature attached to an AggregateCompleteTransaction or AggregateBondedTransaction.
@@ -12368,9 +12368,9 @@ impl TraitSignerVerifyingKey for EmbeddedNodeKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -12412,66 +12412,62 @@ impl TraitSignerVerifyingKey for EmbeddedNodeKeyLinkTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Cosignature {
     pub version: u64,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub signature: Signature,
 }
 impl Cosignature {
-    pub fn new(version: u64, signer_verifying_key: VerifyingKey) -> Self {
+    pub fn new(version: u64, signer_public_key: PublicKey) -> Self {
         Self {
             version,
-            signer_verifying_key,
+            signer_public_key,
             signature: Signature::default(),
         }
     }
     pub fn default() -> Self {
         Self {
             version: u64::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             signature: Signature::default(),
         }
     }
     pub fn size(&self) -> usize {
         let mut size = 0;
         size += 8;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += self.signature.size();
         size
     }
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let version = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let self_ = Self {
             version,
-            signer_verifying_key,
+            signer_public_key,
             signature,
         };
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
         let version = self.version.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let signature = self.signature.serialize();
-        [
-            version.iter(),
-            signer_verifying_key.iter(),
-            signature.iter(),
-        ]
-        .into_iter()
-        .flat_map(|a| a)
-        .map(|x| *x)
-        .collect()
+        [version.iter(), signer_public_key.iter(), signature.iter()]
+            .into_iter()
+            .flat_map(|a| a)
+            .map(|x| *x)
+            .collect()
     }
 }
-impl TraitSignerVerifyingKey for Cosignature {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for Cosignature {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 impl TraitSignature for Cosignature {
@@ -12504,9 +12500,9 @@ impl TraitSignature for Cosignature {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 8
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -12565,15 +12561,15 @@ impl TraitSignature for Cosignature {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DetachedCosignature {
     pub version: u64,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub signature: Signature,
     pub parent_hash: Hash256,
 }
 impl DetachedCosignature {
-    pub fn new(version: u64, signer_verifying_key: VerifyingKey, parent_hash: Hash256) -> Self {
+    pub fn new(version: u64, signer_public_key: PublicKey, parent_hash: Hash256) -> Self {
         Self {
             version,
-            signer_verifying_key,
+            signer_public_key,
             signature: Signature::default(),
             parent_hash,
         }
@@ -12581,7 +12577,7 @@ impl DetachedCosignature {
     pub fn default() -> Self {
         Self {
             version: u64::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             signature: Signature::default(),
             parent_hash: Hash256::default(),
         }
@@ -12589,7 +12585,7 @@ impl DetachedCosignature {
     pub fn size(&self) -> usize {
         let mut size = 0;
         size += 8;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += self.signature.size();
         size += self.parent_hash.size();
         size
@@ -12597,15 +12593,15 @@ impl DetachedCosignature {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         let version = u64::from_le_bytes(payload[..8].try_into()?);
         payload = &payload[8..];
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
         let parent_hash;
         (parent_hash, payload) = Hash256::deserialize(payload)?;
         let self_ = Self {
             version,
-            signer_verifying_key,
+            signer_public_key,
             signature,
             parent_hash,
         };
@@ -12613,12 +12609,12 @@ impl DetachedCosignature {
     }
     pub fn serialize(&self) -> Vec<u8> {
         let version = self.version.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let signature = self.signature.serialize();
         let parent_hash = self.parent_hash.serialize();
         [
             version.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             signature.iter(),
             parent_hash.iter(),
         ]
@@ -12628,12 +12624,12 @@ impl DetachedCosignature {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for DetachedCosignature {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for DetachedCosignature {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 impl TraitSignature for DetachedCosignature {
@@ -12727,9 +12723,9 @@ impl TraitSignature for DetachedCosignature {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -12971,7 +12967,7 @@ impl TraitSignature for DetachedCosignature {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateCompleteTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -12989,7 +12985,7 @@ impl AggregateCompleteTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -12999,7 +12995,7 @@ impl AggregateCompleteTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -13011,7 +13007,7 @@ impl AggregateCompleteTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -13025,7 +13021,7 @@ impl AggregateCompleteTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -13063,8 +13059,8 @@ impl AggregateCompleteTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -13107,7 +13103,7 @@ impl AggregateCompleteTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -13121,7 +13117,7 @@ impl AggregateCompleteTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -13145,7 +13141,7 @@ impl AggregateCompleteTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -13172,12 +13168,12 @@ impl TraitSignature for AggregateCompleteTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AggregateCompleteTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Send transactions in batches to different accounts (V2, latest).
@@ -13263,9 +13259,9 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -13507,7 +13503,7 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateCompleteTransactionV2 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -13525,7 +13521,7 @@ impl AggregateCompleteTransactionV2 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -13535,7 +13531,7 @@ impl AggregateCompleteTransactionV2 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -13547,7 +13543,7 @@ impl AggregateCompleteTransactionV2 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -13561,7 +13557,7 @@ impl AggregateCompleteTransactionV2 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -13599,8 +13595,8 @@ impl AggregateCompleteTransactionV2 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -13643,7 +13639,7 @@ impl AggregateCompleteTransactionV2 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -13657,7 +13653,7 @@ impl AggregateCompleteTransactionV2 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -13681,7 +13677,7 @@ impl AggregateCompleteTransactionV2 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -13708,12 +13704,12 @@ impl TraitSignature for AggregateCompleteTransactionV2 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AggregateCompleteTransactionV2 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Propose an arrangement of transactions between different accounts (V1, deprecated).
@@ -13801,9 +13797,9 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -14045,7 +14041,7 @@ impl TraitSignerVerifyingKey for AggregateCompleteTransactionV2 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateBondedTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -14063,7 +14059,7 @@ impl AggregateBondedTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -14073,7 +14069,7 @@ impl AggregateBondedTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -14085,7 +14081,7 @@ impl AggregateBondedTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -14099,7 +14095,7 @@ impl AggregateBondedTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -14137,8 +14133,8 @@ impl AggregateBondedTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -14181,7 +14177,7 @@ impl AggregateBondedTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -14195,7 +14191,7 @@ impl AggregateBondedTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -14219,7 +14215,7 @@ impl AggregateBondedTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -14246,12 +14242,12 @@ impl TraitSignature for AggregateBondedTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AggregateBondedTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Propose an arrangement of transactions between different accounts (V2, latest).
@@ -14339,9 +14335,9 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -14583,7 +14579,7 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateBondedTransactionV2 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -14601,7 +14597,7 @@ impl AggregateBondedTransactionV2 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -14611,7 +14607,7 @@ impl AggregateBondedTransactionV2 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -14623,7 +14619,7 @@ impl AggregateBondedTransactionV2 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -14637,7 +14633,7 @@ impl AggregateBondedTransactionV2 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -14675,8 +14671,8 @@ impl AggregateBondedTransactionV2 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -14719,7 +14715,7 @@ impl AggregateBondedTransactionV2 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -14733,7 +14729,7 @@ impl AggregateBondedTransactionV2 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -14757,7 +14753,7 @@ impl AggregateBondedTransactionV2 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -14784,15 +14780,15 @@ impl TraitSignature for AggregateBondedTransactionV2 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AggregateBondedTransactionV2 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
-///Link an account with a verifying key required for finalization voting (V1, latest).
+///Link an account with a public key required for finalization voting (V1, latest).
 ///This transaction is required for node operators wanting to vote for [finalization](/concepts/block.html#finalization).
 ///Announce a VotingKeyLinkTransaction to associate a voting key with an account during a fixed period. An account can be linked to up to **3** different voting keys at the same time.
 ///The recommended production setting is to always have at least **2** linked keys with different ``endPoint`` values to ensure a key is registered after the first one expires.
@@ -14878,9 +14874,9 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -14974,9 +14970,9 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VotingVerifyingKey
-//        name: linked_verifying_key
-//        field_type: VotingVerifyingKey
+//    linked_public_key = VotingPublicKey
+//        name: linked_public_key
+//        field_type: VotingPublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -15069,11 +15065,11 @@ impl TraitSignerVerifyingKey for AggregateBondedTransactionV2 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VotingKeyLinkTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
-    pub linked_verifying_key: VotingVerifyingKey,
+    pub linked_public_key: VotingPublicKey,
     pub start_epoch: FinalizationEpoch,
     pub end_epoch: FinalizationEpoch,
     pub link_action: LinkAction,
@@ -15088,22 +15084,22 @@ impl VotingKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
-        linked_verifying_key: VotingVerifyingKey,
+        linked_public_key: VotingPublicKey,
         start_epoch: FinalizationEpoch,
         end_epoch: FinalizationEpoch,
         link_action: LinkAction,
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             start_epoch,
             end_epoch,
             link_action,
@@ -15112,11 +15108,11 @@ impl VotingKeyLinkTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
-            linked_verifying_key: VotingVerifyingKey::default(),
+            linked_public_key: VotingPublicKey::default(),
             start_epoch: FinalizationEpoch::default(),
             end_epoch: FinalizationEpoch::default(),
             link_action: LinkAction::default(),
@@ -15127,14 +15123,14 @@ impl VotingKeyLinkTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
         size += self.fee.size();
         size += self.deadline.size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.start_epoch.size();
         size += self.end_epoch.size();
         size += self.link_action.size();
@@ -15164,8 +15160,8 @@ impl VotingKeyLinkTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -15183,8 +15179,8 @@ impl VotingKeyLinkTransactionV1 {
         (fee, payload) = Amount::deserialize(payload)?;
         let deadline;
         (deadline, payload) = Timestamp::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VotingVerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = VotingPublicKey::deserialize(payload)?;
         let start_epoch;
         (start_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
         let end_epoch;
@@ -15193,11 +15189,11 @@ impl VotingKeyLinkTransactionV1 {
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             start_epoch,
             end_epoch,
             link_action,
@@ -15208,14 +15204,14 @@ impl VotingKeyLinkTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let start_epoch = self.start_epoch.serialize();
         let end_epoch = self.end_epoch.serialize();
         let link_action = self.link_action.serialize();
@@ -15223,14 +15219,14 @@ impl VotingKeyLinkTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
             fee.iter(),
             deadline.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             start_epoch.iter(),
             end_epoch.iter(),
             link_action.iter(),
@@ -15249,12 +15245,12 @@ impl TraitSignature for VotingKeyLinkTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for VotingKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of VotingKeyLinkTransaction (V1, latest).
@@ -15327,9 +15323,9 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -15399,9 +15395,9 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VotingVerifyingKey
-//        name: linked_verifying_key
-//        field_type: VotingVerifyingKey
+//    linked_public_key = VotingPublicKey
+//        name: linked_public_key
+//        field_type: VotingPublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -15493,9 +15489,9 @@ impl TraitSignerVerifyingKey for VotingKeyLinkTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedVotingKeyLinkTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
-    pub linked_verifying_key: VotingVerifyingKey,
+    pub linked_public_key: VotingPublicKey,
     pub start_epoch: FinalizationEpoch,
     pub end_epoch: FinalizationEpoch,
     pub link_action: LinkAction,
@@ -15510,17 +15506,17 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
-        linked_verifying_key: VotingVerifyingKey,
+        linked_public_key: VotingPublicKey,
         start_epoch: FinalizationEpoch,
         end_epoch: FinalizationEpoch,
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             start_epoch,
             end_epoch,
             link_action,
@@ -15528,9 +15524,9 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
-            linked_verifying_key: VotingVerifyingKey::default(),
+            linked_public_key: VotingPublicKey::default(),
             start_epoch: FinalizationEpoch::default(),
             end_epoch: FinalizationEpoch::default(),
             link_action: LinkAction::default(),
@@ -15540,12 +15536,12 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.start_epoch.size();
         size += self.end_epoch.size();
         size += self.link_action.size();
@@ -15573,8 +15569,8 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -15588,8 +15584,8 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         (network, payload) = NetworkType::deserialize(payload)?;
         let _type_;
         (_type_, payload) = TransactionType::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VotingVerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = VotingPublicKey::deserialize(payload)?;
         let start_epoch;
         (start_epoch, payload) = FinalizationEpoch::deserialize(payload)?;
         let end_epoch;
@@ -15597,9 +15593,9 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             start_epoch,
             end_epoch,
             link_action,
@@ -15609,24 +15605,24 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let start_epoch = self.start_epoch.serialize();
         let end_epoch = self.end_epoch.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             start_epoch.iter(),
             end_epoch.iter(),
             link_action.iter(),
@@ -15637,16 +15633,16 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedVotingKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
-///Link an account with a VRF verifying key required for harvesting (V1, latest).
-///Announce a VrfKeyLinkTransaction to link an account with a VRF verifying key. The linked key is used to randomize block production and leader/participant selection.
+///Link an account with a VRF public key required for harvesting (V1, latest).
+///Announce a VrfKeyLinkTransaction to link an account with a VRF public key. The linked key is used to randomize block production and leader/participant selection.
 ///This transaction is required for all accounts wishing to [harvest](/concepts/harvesting.html).
 //name: VrfKeyLinkTransactionV1
 //disposition: None
@@ -15729,9 +15725,9 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -15825,9 +15821,9 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VerifyingKey
-//        name: linked_verifying_key
-//        field_type: VerifyingKey
+//    linked_public_key = PublicKey
+//        name: linked_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -15896,11 +15892,11 @@ impl TraitSignerVerifyingKey for EmbeddedVotingKeyLinkTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VrfKeyLinkTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
-    pub linked_verifying_key: VerifyingKey,
+    pub linked_public_key: PublicKey,
     pub link_action: LinkAction,
 }
 impl VrfKeyLinkTransactionV1 {
@@ -15913,31 +15909,31 @@ impl VrfKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
-        linked_verifying_key: VerifyingKey,
+        linked_public_key: PublicKey,
         link_action: LinkAction,
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         }
     }
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
-            linked_verifying_key: VerifyingKey::default(),
+            linked_public_key: PublicKey::default(),
             link_action: LinkAction::default(),
         }
     }
@@ -15946,14 +15942,14 @@ impl VrfKeyLinkTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
         size += self.fee.size();
         size += self.deadline.size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.link_action.size();
         size
     }
@@ -15981,8 +15977,8 @@ impl VrfKeyLinkTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -16000,17 +15996,17 @@ impl VrfKeyLinkTransactionV1 {
         (fee, payload) = Amount::deserialize(payload)?;
         let deadline;
         (deadline, payload) = Timestamp::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = PublicKey::deserialize(payload)?;
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         };
         Ok((self_, payload))
@@ -16019,27 +16015,27 @@ impl VrfKeyLinkTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
             fee.iter(),
             deadline.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             link_action.iter(),
         ]
         .into_iter()
@@ -16056,12 +16052,12 @@ impl TraitSignature for VrfKeyLinkTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for VrfKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of VrfKeyLinkTransaction (V1, latest).
@@ -16134,9 +16130,9 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -16206,9 +16202,9 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    linked_verifying_key = VerifyingKey
-//        name: linked_verifying_key
-//        field_type: VerifyingKey
+//    linked_public_key = PublicKey
+//        name: linked_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -16276,9 +16272,9 @@ impl TraitSignerVerifyingKey for VrfKeyLinkTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedVrfKeyLinkTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
-    pub linked_verifying_key: VerifyingKey,
+    pub linked_public_key: PublicKey,
     pub link_action: LinkAction,
 }
 impl EmbeddedVrfKeyLinkTransactionV1 {
@@ -16291,23 +16287,23 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
-        linked_verifying_key: VerifyingKey,
+        linked_public_key: PublicKey,
         link_action: LinkAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         }
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
-            linked_verifying_key: VerifyingKey::default(),
+            linked_public_key: PublicKey::default(),
             link_action: LinkAction::default(),
         }
     }
@@ -16315,12 +16311,12 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
         size += self.type_().size();
-        size += self.linked_verifying_key.size();
+        size += self.linked_public_key.size();
         size += self.link_action.size();
         size
     }
@@ -16346,8 +16342,8 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -16361,14 +16357,14 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         (network, payload) = NetworkType::deserialize(payload)?;
         let _type_;
         (_type_, payload) = TransactionType::deserialize(payload)?;
-        let linked_verifying_key;
-        (linked_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let linked_public_key;
+        (linked_public_key, payload) = PublicKey::deserialize(payload)?;
         let link_action;
         (link_action, payload) = LinkAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
-            linked_verifying_key,
+            linked_public_key,
             link_action,
         };
         Ok((self_, payload))
@@ -16376,22 +16372,22 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
-        let linked_verifying_key = self.linked_verifying_key.serialize();
+        let linked_public_key = self.linked_public_key.serialize();
         let link_action = self.link_action.serialize();
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
             type_.iter(),
-            linked_verifying_key.iter(),
+            linked_public_key.iter(),
             link_action.iter(),
         ]
         .into_iter()
@@ -16400,12 +16396,12 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedVrfKeyLinkTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Lock a deposit needed to announce an AggregateBondedTransaction (V1, latest).
@@ -16494,9 +16490,9 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -16673,7 +16669,7 @@ impl TraitSignerVerifyingKey for EmbeddedVrfKeyLinkTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HashLockTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -16691,7 +16687,7 @@ impl HashLockTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -16701,7 +16697,7 @@ impl HashLockTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -16713,7 +16709,7 @@ impl HashLockTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -16727,7 +16723,7 @@ impl HashLockTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -16763,8 +16759,8 @@ impl HashLockTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -16790,7 +16786,7 @@ impl HashLockTransactionV1 {
         (hash, payload) = Hash256::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -16804,7 +16800,7 @@ impl HashLockTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -16818,7 +16814,7 @@ impl HashLockTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -16843,12 +16839,12 @@ impl TraitSignature for HashLockTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for HashLockTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for HashLockTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of HashLockTransaction.
@@ -16921,9 +16917,9 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -17075,7 +17071,7 @@ impl TraitSignerVerifyingKey for HashLockTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedHashLockTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub mosaic: UnresolvedMosaic,
     pub duration: BlockDuration,
@@ -17091,14 +17087,14 @@ impl EmbeddedHashLockTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         mosaic: UnresolvedMosaic,
         duration: BlockDuration,
         hash: Hash256,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic,
             duration,
@@ -17107,7 +17103,7 @@ impl EmbeddedHashLockTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             mosaic: UnresolvedMosaic::default(),
             duration: BlockDuration::default(),
@@ -17118,7 +17114,7 @@ impl EmbeddedHashLockTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -17150,8 +17146,8 @@ impl EmbeddedHashLockTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -17172,7 +17168,7 @@ impl EmbeddedHashLockTransactionV1 {
         let hash;
         (hash, payload) = Hash256::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic,
             duration,
@@ -17183,7 +17179,7 @@ impl EmbeddedHashLockTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -17194,7 +17190,7 @@ impl EmbeddedHashLockTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -17209,12 +17205,12 @@ impl EmbeddedHashLockTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedHashLockTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedHashLockTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Enumeration of lock hash algorithms.
@@ -17366,9 +17362,9 @@ impl LockHashAlgorithm {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -17569,7 +17565,7 @@ impl LockHashAlgorithm {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SecretLockTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -17589,7 +17585,7 @@ impl SecretLockTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -17601,7 +17597,7 @@ impl SecretLockTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -17615,7 +17611,7 @@ impl SecretLockTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -17631,7 +17627,7 @@ impl SecretLockTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -17669,8 +17665,8 @@ impl SecretLockTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -17700,7 +17696,7 @@ impl SecretLockTransactionV1 {
         (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -17716,7 +17712,7 @@ impl SecretLockTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -17732,7 +17728,7 @@ impl SecretLockTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -17759,12 +17755,12 @@ impl TraitSignature for SecretLockTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for SecretLockTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of SecretLockTransaction (V1, latest).
@@ -17837,9 +17833,9 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -18015,7 +18011,7 @@ impl TraitSignerVerifyingKey for SecretLockTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedSecretLockTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub recipient_address: UnresolvedAddress,
     pub secret: Hash256,
@@ -18033,7 +18029,7 @@ impl EmbeddedSecretLockTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         recipient_address: UnresolvedAddress,
         secret: Hash256,
@@ -18042,7 +18038,7 @@ impl EmbeddedSecretLockTransactionV1 {
         hash_algorithm: LockHashAlgorithm,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             recipient_address,
             secret,
@@ -18053,7 +18049,7 @@ impl EmbeddedSecretLockTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             recipient_address: UnresolvedAddress::default(),
             secret: Hash256::default(),
@@ -18066,7 +18062,7 @@ impl EmbeddedSecretLockTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -18100,8 +18096,8 @@ impl EmbeddedSecretLockTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -18126,7 +18122,7 @@ impl EmbeddedSecretLockTransactionV1 {
         let hash_algorithm;
         (hash_algorithm, payload) = LockHashAlgorithm::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             recipient_address,
             secret,
@@ -18139,7 +18135,7 @@ impl EmbeddedSecretLockTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -18152,7 +18148,7 @@ impl EmbeddedSecretLockTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -18169,12 +18165,12 @@ impl EmbeddedSecretLockTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedSecretLockTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Conclude a token swap between different chains (V1, latest).
@@ -18261,9 +18257,9 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -18484,7 +18480,7 @@ impl TraitSignerVerifyingKey for EmbeddedSecretLockTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SecretProofTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -18503,7 +18499,7 @@ impl SecretProofTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -18514,7 +18510,7 @@ impl SecretProofTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -18527,7 +18523,7 @@ impl SecretProofTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -18542,7 +18538,7 @@ impl SecretProofTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -18580,8 +18576,8 @@ impl SecretProofTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -18617,7 +18613,7 @@ impl SecretProofTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -18632,7 +18628,7 @@ impl SecretProofTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -18648,7 +18644,7 @@ impl SecretProofTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -18675,12 +18671,12 @@ impl TraitSignature for SecretProofTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for SecretProofTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of SecretProofTransaction (V1, latest).
@@ -18753,9 +18749,9 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -18951,7 +18947,7 @@ impl TraitSignerVerifyingKey for SecretProofTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedSecretProofTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub recipient_address: UnresolvedAddress,
     pub secret: Hash256,
@@ -18968,7 +18964,7 @@ impl EmbeddedSecretProofTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         recipient_address: UnresolvedAddress,
         secret: Hash256,
@@ -18976,7 +18972,7 @@ impl EmbeddedSecretProofTransactionV1 {
         proof: Vec<u8>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             recipient_address,
             secret,
@@ -18986,7 +18982,7 @@ impl EmbeddedSecretProofTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             recipient_address: UnresolvedAddress::default(),
             secret: Hash256::default(),
@@ -18998,7 +18994,7 @@ impl EmbeddedSecretProofTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -19032,8 +19028,8 @@ impl EmbeddedSecretProofTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -19064,7 +19060,7 @@ impl EmbeddedSecretProofTransactionV1 {
             proof.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             recipient_address,
             secret,
@@ -19076,7 +19072,7 @@ impl EmbeddedSecretProofTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -19089,7 +19085,7 @@ impl EmbeddedSecretProofTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -19106,12 +19102,12 @@ impl EmbeddedSecretProofTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedSecretProofTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Associate a key-value state ([metadata](/concepts/metadata.html)) to an **account** (V1, latest).
@@ -19198,9 +19194,9 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -19433,7 +19429,7 @@ impl TraitSignerVerifyingKey for EmbeddedSecretProofTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountMetadataTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -19452,7 +19448,7 @@ impl AccountMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -19463,7 +19459,7 @@ impl AccountMetadataTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -19476,7 +19472,7 @@ impl AccountMetadataTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -19491,7 +19487,7 @@ impl AccountMetadataTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -19529,8 +19525,8 @@ impl AccountMetadataTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -19566,7 +19562,7 @@ impl AccountMetadataTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -19581,7 +19577,7 @@ impl AccountMetadataTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -19597,7 +19593,7 @@ impl AccountMetadataTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -19624,12 +19620,12 @@ impl TraitSignature for AccountMetadataTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AccountMetadataTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of AccountMetadataTransaction (V1, latest).
@@ -19702,9 +19698,9 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -19912,7 +19908,7 @@ impl TraitSignerVerifyingKey for AccountMetadataTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountMetadataTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub target_address: UnresolvedAddress,
     pub scoped_metadata_key: u64,
@@ -19929,7 +19925,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         target_address: UnresolvedAddress,
         scoped_metadata_key: u64,
@@ -19937,7 +19933,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
         value: Vec<u8>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             target_address,
             scoped_metadata_key,
@@ -19947,7 +19943,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             target_address: UnresolvedAddress::default(),
             scoped_metadata_key: u64::default(),
@@ -19959,7 +19955,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -19993,8 +19989,8 @@ impl EmbeddedAccountMetadataTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -20025,7 +20021,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
             value.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             target_address,
             scoped_metadata_key,
@@ -20037,7 +20033,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -20050,7 +20046,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -20067,12 +20063,12 @@ impl EmbeddedAccountMetadataTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedAccountMetadataTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Associate a key-value state ([metadata](/concepts/metadata.html)) to a **mosaic** (V1, latest).
@@ -20158,9 +20154,9 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -20405,7 +20401,7 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMetadataTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicMetadataTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -20425,7 +20421,7 @@ impl MosaicMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -20437,7 +20433,7 @@ impl MosaicMetadataTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -20451,7 +20447,7 @@ impl MosaicMetadataTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -20467,7 +20463,7 @@ impl MosaicMetadataTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -20506,8 +20502,8 @@ impl MosaicMetadataTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -20545,7 +20541,7 @@ impl MosaicMetadataTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -20561,7 +20557,7 @@ impl MosaicMetadataTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -20578,7 +20574,7 @@ impl MosaicMetadataTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -20606,12 +20602,12 @@ impl TraitSignature for MosaicMetadataTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicMetadataTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicMetadataTransaction (V1, latest).
@@ -20684,9 +20680,9 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -20906,7 +20902,7 @@ impl TraitSignerVerifyingKey for MosaicMetadataTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicMetadataTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub target_address: UnresolvedAddress,
     pub scoped_metadata_key: u64,
@@ -20924,7 +20920,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         target_address: UnresolvedAddress,
         scoped_metadata_key: u64,
@@ -20933,7 +20929,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         value: Vec<u8>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             target_address,
             scoped_metadata_key,
@@ -20944,7 +20940,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             target_address: UnresolvedAddress::default(),
             scoped_metadata_key: u64::default(),
@@ -20957,7 +20953,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -20992,8 +20988,8 @@ impl EmbeddedMosaicMetadataTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -21026,7 +21022,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
             value.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             target_address,
             scoped_metadata_key,
@@ -21039,7 +21035,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -21053,7 +21049,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -21071,12 +21067,12 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicMetadataTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Associate a key-value state ([metadata](/concepts/metadata.html)) to a **namespace** (V1, latest).
@@ -21162,9 +21158,9 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -21409,7 +21405,7 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicMetadataTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceMetadataTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -21429,7 +21425,7 @@ impl NamespaceMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -21441,7 +21437,7 @@ impl NamespaceMetadataTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -21455,7 +21451,7 @@ impl NamespaceMetadataTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -21471,7 +21467,7 @@ impl NamespaceMetadataTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -21510,8 +21506,8 @@ impl NamespaceMetadataTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -21549,7 +21545,7 @@ impl NamespaceMetadataTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -21565,7 +21561,7 @@ impl NamespaceMetadataTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -21582,7 +21578,7 @@ impl NamespaceMetadataTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -21610,12 +21606,12 @@ impl TraitSignature for NamespaceMetadataTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for NamespaceMetadataTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of NamespaceMetadataTransaction (V1, latest).
@@ -21688,9 +21684,9 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -21910,7 +21906,7 @@ impl TraitSignerVerifyingKey for NamespaceMetadataTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedNamespaceMetadataTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub target_address: UnresolvedAddress,
     pub scoped_metadata_key: u64,
@@ -21928,7 +21924,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         target_address: UnresolvedAddress,
         scoped_metadata_key: u64,
@@ -21937,7 +21933,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         value: Vec<u8>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             target_address,
             scoped_metadata_key,
@@ -21948,7 +21944,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             target_address: UnresolvedAddress::default(),
             scoped_metadata_key: u64::default(),
@@ -21961,7 +21957,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -21996,8 +21992,8 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -22030,7 +22026,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
             value.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             target_address,
             scoped_metadata_key,
@@ -22043,7 +22039,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -22057,7 +22053,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -22075,12 +22071,12 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedNamespaceMetadataTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedNamespaceMetadataTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 //name: MosaicNonce
@@ -22355,9 +22351,9 @@ impl MosaicSupplyChangeAction {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -22564,7 +22560,7 @@ impl MosaicSupplyChangeAction {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicDefinitionTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -22584,7 +22580,7 @@ impl MosaicDefinitionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -22596,7 +22592,7 @@ impl MosaicDefinitionTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -22610,7 +22606,7 @@ impl MosaicDefinitionTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -22626,7 +22622,7 @@ impl MosaicDefinitionTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -22664,8 +22660,8 @@ impl MosaicDefinitionTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -22695,7 +22691,7 @@ impl MosaicDefinitionTransactionV1 {
         payload = &payload[1..];
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -22711,7 +22707,7 @@ impl MosaicDefinitionTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -22727,7 +22723,7 @@ impl MosaicDefinitionTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -22754,12 +22750,12 @@ impl TraitSignature for MosaicDefinitionTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicDefinitionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicDefinitionTransaction (V1, latest).
@@ -22832,9 +22828,9 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -23016,7 +23012,7 @@ impl TraitSignerVerifyingKey for MosaicDefinitionTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicDefinitionTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub id: MosaicId,
     pub duration: BlockDuration,
@@ -23034,7 +23030,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         id: MosaicId,
         duration: BlockDuration,
@@ -23043,7 +23039,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         divisibility: u8,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             id,
             duration,
@@ -23054,7 +23050,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             id: MosaicId::default(),
             duration: BlockDuration::default(),
@@ -23067,7 +23063,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -23101,8 +23097,8 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -23127,7 +23123,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         let divisibility = u8::from_le_bytes(payload[..1].try_into()?);
         payload = &payload[1..];
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             id,
             duration,
@@ -23140,7 +23136,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -23153,7 +23149,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -23170,12 +23166,12 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicDefinitionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Change the total supply of a mosaic (V1, latest).
@@ -23260,9 +23256,9 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -23439,7 +23435,7 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicDefinitionTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicSupplyChangeTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -23457,7 +23453,7 @@ impl MosaicSupplyChangeTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -23467,7 +23463,7 @@ impl MosaicSupplyChangeTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -23479,7 +23475,7 @@ impl MosaicSupplyChangeTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -23493,7 +23489,7 @@ impl MosaicSupplyChangeTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -23529,8 +23525,8 @@ impl MosaicSupplyChangeTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -23556,7 +23552,7 @@ impl MosaicSupplyChangeTransactionV1 {
         (action, payload) = MosaicSupplyChangeAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -23570,7 +23566,7 @@ impl MosaicSupplyChangeTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -23584,7 +23580,7 @@ impl MosaicSupplyChangeTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -23609,12 +23605,12 @@ impl TraitSignature for MosaicSupplyChangeTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicSupplyChangeTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicSupplyChangeTransaction (V1, latest).
@@ -23687,9 +23683,9 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -23841,7 +23837,7 @@ impl TraitSignerVerifyingKey for MosaicSupplyChangeTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicSupplyChangeTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub mosaic_id: UnresolvedMosaicId,
     pub delta: Amount,
@@ -23857,14 +23853,14 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         mosaic_id: UnresolvedMosaicId,
         delta: Amount,
         action: MosaicSupplyChangeAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic_id,
             delta,
@@ -23873,7 +23869,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             mosaic_id: UnresolvedMosaicId::default(),
             delta: Amount::default(),
@@ -23884,7 +23880,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -23916,8 +23912,8 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -23938,7 +23934,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         let action;
         (action, payload) = MosaicSupplyChangeAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic_id,
             delta,
@@ -23949,7 +23945,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -23960,7 +23956,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -23975,12 +23971,12 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicSupplyChangeTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Revoke mosaic (V1, latest).
@@ -24065,9 +24061,9 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -24232,7 +24228,7 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicSupplyRevocationTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -24249,7 +24245,7 @@ impl MosaicSupplyRevocationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -24258,7 +24254,7 @@ impl MosaicSupplyRevocationTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -24269,7 +24265,7 @@ impl MosaicSupplyRevocationTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -24282,7 +24278,7 @@ impl MosaicSupplyRevocationTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -24317,8 +24313,8 @@ impl MosaicSupplyRevocationTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -24342,7 +24338,7 @@ impl MosaicSupplyRevocationTransactionV1 {
         (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -24355,7 +24351,7 @@ impl MosaicSupplyRevocationTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -24368,7 +24364,7 @@ impl MosaicSupplyRevocationTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -24392,12 +24388,12 @@ impl TraitSignature for MosaicSupplyRevocationTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicSupplyRevocationTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicSupplyRevocationTransaction (V1, latest).
@@ -24470,9 +24466,9 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -24612,7 +24608,7 @@ impl TraitSignerVerifyingKey for MosaicSupplyRevocationTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicSupplyRevocationTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub source_address: UnresolvedAddress,
     pub mosaic: UnresolvedMosaic,
@@ -24627,13 +24623,13 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         source_address: UnresolvedAddress,
         mosaic: UnresolvedMosaic,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             source_address,
             mosaic,
@@ -24641,7 +24637,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             source_address: UnresolvedAddress::default(),
             mosaic: UnresolvedMosaic::default(),
@@ -24651,7 +24647,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -24682,8 +24678,8 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -24702,7 +24698,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         let mosaic;
         (mosaic, payload) = UnresolvedMosaic::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             source_address,
             mosaic,
@@ -24712,7 +24708,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -24722,7 +24718,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -24736,12 +24732,12 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Create or modify a [multi-signature](/concepts/multisig-account.html) account (V1, latest).
@@ -24827,9 +24823,9 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -25100,7 +25096,7 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MultisigAccountModificationTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -25119,7 +25115,7 @@ impl MultisigAccountModificationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -25130,7 +25126,7 @@ impl MultisigAccountModificationTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -25143,7 +25139,7 @@ impl MultisigAccountModificationTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -25158,7 +25154,7 @@ impl MultisigAccountModificationTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -25206,8 +25202,8 @@ impl MultisigAccountModificationTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -25255,7 +25251,7 @@ impl MultisigAccountModificationTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -25270,7 +25266,7 @@ impl MultisigAccountModificationTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -25296,7 +25292,7 @@ impl MultisigAccountModificationTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -25325,12 +25321,12 @@ impl TraitSignature for MultisigAccountModificationTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MultisigAccountModificationTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MultisigAccountModificationTransaction (V1, latest).
@@ -25403,9 +25399,9 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -25651,7 +25647,7 @@ impl TraitSignerVerifyingKey for MultisigAccountModificationTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMultisigAccountModificationTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub min_removal_delta: i8,
     pub min_approval_delta: i8,
@@ -25668,7 +25664,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         min_removal_delta: i8,
         min_approval_delta: i8,
@@ -25676,7 +25672,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         address_deletions: Vec<UnresolvedAddress>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             min_removal_delta,
             min_approval_delta,
@@ -25686,7 +25682,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             min_removal_delta: i8::default(),
             min_approval_delta: i8::default(),
@@ -25698,7 +25694,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -25742,8 +25738,8 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -25786,7 +25782,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
             address_deletions.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             min_removal_delta,
             min_approval_delta,
@@ -25798,7 +25794,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -25821,7 +25817,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -25840,12 +25836,12 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMultisigAccountModificationTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Attach or detach a [namespace](/concepts/namespace.html) (alias) to an account address (V1, latest).
@@ -25931,9 +25927,9 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -26110,7 +26106,7 @@ impl TraitSignerVerifyingKey for EmbeddedMultisigAccountModificationTransactionV
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AddressAliasTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -26128,7 +26124,7 @@ impl AddressAliasTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -26138,7 +26134,7 @@ impl AddressAliasTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -26150,7 +26146,7 @@ impl AddressAliasTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -26164,7 +26160,7 @@ impl AddressAliasTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -26200,8 +26196,8 @@ impl AddressAliasTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -26227,7 +26223,7 @@ impl AddressAliasTransactionV1 {
         (alias_action, payload) = AliasAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -26241,7 +26237,7 @@ impl AddressAliasTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -26255,7 +26251,7 @@ impl AddressAliasTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -26280,12 +26276,12 @@ impl TraitSignature for AddressAliasTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AddressAliasTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of AddressAliasTransaction (V1, latest).
@@ -26358,9 +26354,9 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -26512,7 +26508,7 @@ impl TraitSignerVerifyingKey for AddressAliasTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAddressAliasTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub namespace_id: NamespaceId,
     pub address: Address,
@@ -26528,14 +26524,14 @@ impl EmbeddedAddressAliasTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         namespace_id: NamespaceId,
         address: Address,
         alias_action: AliasAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             namespace_id,
             address,
@@ -26544,7 +26540,7 @@ impl EmbeddedAddressAliasTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             namespace_id: NamespaceId::default(),
             address: Address::default(),
@@ -26555,7 +26551,7 @@ impl EmbeddedAddressAliasTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -26587,8 +26583,8 @@ impl EmbeddedAddressAliasTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -26609,7 +26605,7 @@ impl EmbeddedAddressAliasTransactionV1 {
         let alias_action;
         (alias_action, payload) = AliasAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             namespace_id,
             address,
@@ -26620,7 +26616,7 @@ impl EmbeddedAddressAliasTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -26631,7 +26627,7 @@ impl EmbeddedAddressAliasTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -26646,12 +26642,12 @@ impl EmbeddedAddressAliasTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedAddressAliasTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Attach or detach a [namespace](/concepts/namespace.html) to a Mosaic.(V1, latest)
@@ -26737,9 +26733,9 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -26916,7 +26912,7 @@ impl TraitSignerVerifyingKey for EmbeddedAddressAliasTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicAliasTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -26934,7 +26930,7 @@ impl MosaicAliasTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -26944,7 +26940,7 @@ impl MosaicAliasTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -26956,7 +26952,7 @@ impl MosaicAliasTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -26970,7 +26966,7 @@ impl MosaicAliasTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -27006,8 +27002,8 @@ impl MosaicAliasTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -27033,7 +27029,7 @@ impl MosaicAliasTransactionV1 {
         (alias_action, payload) = AliasAction::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -27047,7 +27043,7 @@ impl MosaicAliasTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -27061,7 +27057,7 @@ impl MosaicAliasTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -27086,12 +27082,12 @@ impl TraitSignature for MosaicAliasTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicAliasTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicAliasTransaction (V1, latest).
@@ -27164,9 +27160,9 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -27318,7 +27314,7 @@ impl TraitSignerVerifyingKey for MosaicAliasTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicAliasTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub namespace_id: NamespaceId,
     pub mosaic_id: MosaicId,
@@ -27334,14 +27330,14 @@ impl EmbeddedMosaicAliasTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         namespace_id: NamespaceId,
         mosaic_id: MosaicId,
         alias_action: AliasAction,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             namespace_id,
             mosaic_id,
@@ -27350,7 +27346,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             namespace_id: NamespaceId::default(),
             mosaic_id: MosaicId::default(),
@@ -27361,7 +27357,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -27393,8 +27389,8 @@ impl EmbeddedMosaicAliasTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -27415,7 +27411,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
         let alias_action;
         (alias_action, payload) = AliasAction::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             namespace_id,
             mosaic_id,
@@ -27426,7 +27422,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -27437,7 +27433,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -27452,12 +27448,12 @@ impl EmbeddedMosaicAliasTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicAliasTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Register (or renew a registration for) a [namespace](/concepts/namespace.html) (V1, latest).
@@ -27543,9 +27539,9 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -27784,7 +27780,7 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicAliasTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NamespaceRegistrationTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -27804,7 +27800,7 @@ impl NamespaceRegistrationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -27816,7 +27812,7 @@ impl NamespaceRegistrationTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -27830,7 +27826,7 @@ impl NamespaceRegistrationTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -27846,7 +27842,7 @@ impl NamespaceRegistrationTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -27885,8 +27881,8 @@ impl NamespaceRegistrationTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -27924,7 +27920,7 @@ impl NamespaceRegistrationTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -27940,7 +27936,7 @@ impl NamespaceRegistrationTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -27957,7 +27953,7 @@ impl NamespaceRegistrationTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -27985,12 +27981,12 @@ impl TraitSignature for NamespaceRegistrationTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for NamespaceRegistrationTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of NamespaceRegistrationTransaction (V1, latest).
@@ -28063,9 +28059,9 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -28279,7 +28275,7 @@ impl TraitSignerVerifyingKey for NamespaceRegistrationTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedNamespaceRegistrationTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub duration: BlockDuration,
     pub parent_id: NamespaceId,
@@ -28297,7 +28293,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         duration: BlockDuration,
         parent_id: NamespaceId,
@@ -28306,7 +28302,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         name: Vec<u8>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             duration,
             parent_id,
@@ -28317,7 +28313,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             duration: BlockDuration::default(),
             parent_id: NamespaceId::default(),
@@ -28330,7 +28326,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -28365,8 +28361,8 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -28399,7 +28395,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
             name.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             duration,
             parent_id,
@@ -28412,7 +28408,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -28426,7 +28422,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -28444,12 +28440,12 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedNamespaceRegistrationTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedNamespaceRegistrationTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Enumeration of account restriction flags.
@@ -28623,9 +28619,9 @@ impl AccountRestrictionFlags {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -28872,7 +28868,7 @@ impl AccountRestrictionFlags {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountAddressRestrictionTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -28890,7 +28886,7 @@ impl AccountAddressRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -28900,7 +28896,7 @@ impl AccountAddressRestrictionTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -28912,7 +28908,7 @@ impl AccountAddressRestrictionTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -28926,7 +28922,7 @@ impl AccountAddressRestrictionTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -28973,8 +28969,8 @@ impl AccountAddressRestrictionTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -29020,7 +29016,7 @@ impl AccountAddressRestrictionTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -29034,7 +29030,7 @@ impl AccountAddressRestrictionTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -29059,7 +29055,7 @@ impl AccountAddressRestrictionTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -29087,12 +29083,12 @@ impl TraitSignature for AccountAddressRestrictionTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AccountAddressRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of AccountAddressRestrictionTransaction (V1, latest).
@@ -29165,9 +29161,9 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -29389,7 +29385,7 @@ impl TraitSignerVerifyingKey for AccountAddressRestrictionTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountAddressRestrictionTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub restriction_flags: AccountRestrictionFlags,
     pub restriction_additions: Vec<UnresolvedAddress>,
@@ -29405,14 +29401,14 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         restriction_flags: AccountRestrictionFlags,
         restriction_additions: Vec<UnresolvedAddress>,
         restriction_deletions: Vec<UnresolvedAddress>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             restriction_flags,
             restriction_additions,
@@ -29421,7 +29417,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             restriction_flags: AccountRestrictionFlags::default(),
             restriction_additions: Vec::new(),
@@ -29432,7 +29428,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -29475,8 +29471,8 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -29517,7 +29513,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
             restriction_deletions.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             restriction_flags,
             restriction_additions,
@@ -29528,7 +29524,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -29550,7 +29546,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -29568,12 +29564,12 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedAccountAddressRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Allow or block incoming transactions containing a given set of mosaics (V1, latest).
@@ -29658,9 +29654,9 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -29907,7 +29903,7 @@ impl TraitSignerVerifyingKey for EmbeddedAccountAddressRestrictionTransactionV1 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountMosaicRestrictionTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -29925,7 +29921,7 @@ impl AccountMosaicRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -29935,7 +29931,7 @@ impl AccountMosaicRestrictionTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -29947,7 +29943,7 @@ impl AccountMosaicRestrictionTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -29961,7 +29957,7 @@ impl AccountMosaicRestrictionTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -30008,8 +30004,8 @@ impl AccountMosaicRestrictionTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -30055,7 +30051,7 @@ impl AccountMosaicRestrictionTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -30069,7 +30065,7 @@ impl AccountMosaicRestrictionTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -30094,7 +30090,7 @@ impl AccountMosaicRestrictionTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -30122,12 +30118,12 @@ impl TraitSignature for AccountMosaicRestrictionTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AccountMosaicRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of AccountMosaicRestrictionTransaction (V1, latest).
@@ -30200,9 +30196,9 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -30424,7 +30420,7 @@ impl TraitSignerVerifyingKey for AccountMosaicRestrictionTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountMosaicRestrictionTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub restriction_flags: AccountRestrictionFlags,
     pub restriction_additions: Vec<UnresolvedMosaicId>,
@@ -30440,14 +30436,14 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         restriction_flags: AccountRestrictionFlags,
         restriction_additions: Vec<UnresolvedMosaicId>,
         restriction_deletions: Vec<UnresolvedMosaicId>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             restriction_flags,
             restriction_additions,
@@ -30456,7 +30452,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             restriction_flags: AccountRestrictionFlags::default(),
             restriction_additions: Vec::new(),
@@ -30467,7 +30463,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -30510,8 +30506,8 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -30552,7 +30548,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
             restriction_deletions.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             restriction_flags,
             restriction_additions,
@@ -30563,7 +30559,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -30585,7 +30581,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -30603,12 +30599,12 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Allow or block outgoing transactions depending on their transaction type (V1, latest).
@@ -30693,9 +30689,9 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -30942,7 +30938,7 @@ impl TraitSignerVerifyingKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AccountOperationRestrictionTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -30960,7 +30956,7 @@ impl AccountOperationRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -30970,7 +30966,7 @@ impl AccountOperationRestrictionTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -30982,7 +30978,7 @@ impl AccountOperationRestrictionTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -30996,7 +30992,7 @@ impl AccountOperationRestrictionTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -31043,8 +31039,8 @@ impl AccountOperationRestrictionTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -31090,7 +31086,7 @@ impl AccountOperationRestrictionTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -31104,7 +31100,7 @@ impl AccountOperationRestrictionTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -31129,7 +31125,7 @@ impl AccountOperationRestrictionTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -31157,12 +31153,12 @@ impl TraitSignature for AccountOperationRestrictionTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for AccountOperationRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of AccountOperationRestrictionTransaction (V1, latest).
@@ -31235,9 +31231,9 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -31459,7 +31455,7 @@ impl TraitSignerVerifyingKey for AccountOperationRestrictionTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedAccountOperationRestrictionTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub restriction_flags: AccountRestrictionFlags,
     pub restriction_additions: Vec<TransactionType>,
@@ -31475,14 +31471,14 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         restriction_flags: AccountRestrictionFlags,
         restriction_additions: Vec<TransactionType>,
         restriction_deletions: Vec<TransactionType>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             restriction_flags,
             restriction_additions,
@@ -31491,7 +31487,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             restriction_flags: AccountRestrictionFlags::default(),
             restriction_additions: Vec::new(),
@@ -31502,7 +31498,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -31545,8 +31541,8 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -31587,7 +31583,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
             restriction_deletions.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             restriction_flags,
             restriction_additions,
@@ -31598,7 +31594,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -31620,7 +31616,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -31638,12 +31634,12 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedAccountOperationRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Set address specific rules to transfer a restrictable mosaic (V1, latest).
@@ -31728,9 +31724,9 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -31949,7 +31945,7 @@ impl TraitSignerVerifyingKey for EmbeddedAccountOperationRestrictionTransactionV
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicAddressRestrictionTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -31969,7 +31965,7 @@ impl MosaicAddressRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -31981,7 +31977,7 @@ impl MosaicAddressRestrictionTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -31995,7 +31991,7 @@ impl MosaicAddressRestrictionTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -32011,7 +32007,7 @@ impl MosaicAddressRestrictionTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -32049,8 +32045,8 @@ impl MosaicAddressRestrictionTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -32080,7 +32076,7 @@ impl MosaicAddressRestrictionTransactionV1 {
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -32096,7 +32092,7 @@ impl MosaicAddressRestrictionTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -32112,7 +32108,7 @@ impl MosaicAddressRestrictionTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -32139,12 +32135,12 @@ impl TraitSignature for MosaicAddressRestrictionTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicAddressRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicAddressRestrictionTransaction (V1, latest).
@@ -32217,9 +32213,9 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -32413,7 +32409,7 @@ impl TraitSignerVerifyingKey for MosaicAddressRestrictionTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub mosaic_id: UnresolvedMosaicId,
     pub restriction_key: u64,
@@ -32431,7 +32427,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         mosaic_id: UnresolvedMosaicId,
         restriction_key: u64,
@@ -32440,7 +32436,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         target_address: UnresolvedAddress,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic_id,
             restriction_key,
@@ -32451,7 +32447,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             mosaic_id: UnresolvedMosaicId::default(),
             restriction_key: u64::default(),
@@ -32464,7 +32460,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -32498,8 +32494,8 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -32524,7 +32520,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         let target_address;
         (target_address, payload) = UnresolvedAddress::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic_id,
             restriction_key,
@@ -32537,7 +32533,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -32550,7 +32546,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -32567,12 +32563,12 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicAddressRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicAddressRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 //name: MosaicRestrictionKey
@@ -32783,9 +32779,9 @@ impl MosaicRestrictionType {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -33028,7 +33024,7 @@ impl MosaicRestrictionType {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MosaicGlobalRestrictionTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -33050,7 +33046,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -33064,7 +33060,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -33080,7 +33076,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -33098,7 +33094,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -33138,8 +33134,8 @@ impl MosaicGlobalRestrictionTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -33173,7 +33169,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
         (new_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -33191,7 +33187,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -33209,7 +33205,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -33238,12 +33234,12 @@ impl TraitSignature for MosaicGlobalRestrictionTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for MosaicGlobalRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Embedded version of MosaicGlobalRestrictionTransaction (V1, latest).
@@ -33316,9 +33312,9 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -33536,7 +33532,7 @@ impl TraitSignerVerifyingKey for MosaicGlobalRestrictionTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub mosaic_id: UnresolvedMosaicId,
     pub reference_mosaic_id: UnresolvedMosaicId,
@@ -33556,7 +33552,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         mosaic_id: UnresolvedMosaicId,
         reference_mosaic_id: UnresolvedMosaicId,
@@ -33567,7 +33563,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         new_restriction_type_: MosaicRestrictionType,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic_id,
             reference_mosaic_id,
@@ -33580,7 +33576,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             mosaic_id: UnresolvedMosaicId::default(),
             reference_mosaic_id: UnresolvedMosaicId::default(),
@@ -33595,7 +33591,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -33631,8 +33627,8 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -33661,7 +33657,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         let new_restriction_type_;
         (new_restriction_type_, payload) = MosaicRestrictionType::deserialize(payload)?;
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             mosaic_id,
             reference_mosaic_id,
@@ -33676,7 +33672,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -33691,7 +33687,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -33710,12 +33706,12 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 ///Send mosaics and messages between two accounts (V1, latest).
@@ -33800,9 +33796,9 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: None
 //        *size: None
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -34079,7 +34075,7 @@ impl TraitSignerVerifyingKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TransferTransactionV1 {
     pub signature: Signature,
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub fee: Amount,
     pub deadline: Timestamp,
@@ -34097,7 +34093,7 @@ impl TransferTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         fee: Amount,
         deadline: Timestamp,
@@ -34107,7 +34103,7 @@ impl TransferTransactionV1 {
     ) -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -34119,7 +34115,7 @@ impl TransferTransactionV1 {
     pub fn default() -> Self {
         Self {
             signature: Signature::default(),
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             fee: Amount::default(),
             deadline: Timestamp::default(),
@@ -34133,7 +34129,7 @@ impl TransferTransactionV1 {
         size += 4;
         size += 4;
         size += self.signature.size();
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -34173,8 +34169,8 @@ impl TransferTransactionV1 {
         }
         let signature;
         (signature, payload) = Signature::deserialize(payload)?;
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -34228,7 +34224,7 @@ impl TransferTransactionV1 {
         }
         let self_ = Self {
             signature,
-            signer_verifying_key,
+            signer_public_key,
             network,
             fee,
             deadline,
@@ -34242,7 +34238,7 @@ impl TransferTransactionV1 {
         let size = self.size().to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -34260,7 +34256,7 @@ impl TransferTransactionV1 {
             size.iter(),
             verifiable_entity_header_reserved_1.iter(),
             signature.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -34289,12 +34285,12 @@ impl TraitSignature for TransferTransactionV1 {
         self.signature = signature;
     }
 }
-impl TraitSignerVerifyingKey for TransferTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for TransferTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 impl TraitMessage for TransferTransactionV1 {
@@ -34375,9 +34371,9 @@ impl TraitMessage for TransferTransactionV1 {
 //        *is_size_reference: False
 //        *is_unsigned: True
 //        *size: 4
-//    signer_verifying_key = VerifyingKey
-//        name: signer_verifying_key
-//        field_type: VerifyingKey
+//    signer_public_key = PublicKey
+//        name: signer_public_key
+//        field_type: PublicKey
 //        value: None
 //        disposition: None
 //        attributes: None
@@ -34629,7 +34625,7 @@ impl TraitMessage for TransferTransactionV1 {
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EmbeddedTransferTransactionV1 {
-    pub signer_verifying_key: VerifyingKey,
+    pub signer_public_key: PublicKey,
     pub network: NetworkType,
     pub recipient_address: UnresolvedAddress,
     pub mosaics: Vec<UnresolvedMosaic>,
@@ -34645,14 +34641,14 @@ impl EmbeddedTransferTransactionV1 {
         Self::TRANSACTION_TYPE
     }
     pub fn new(
-        signer_verifying_key: VerifyingKey,
+        signer_public_key: PublicKey,
         network: NetworkType,
         recipient_address: UnresolvedAddress,
         mosaics: Vec<UnresolvedMosaic>,
         message: Vec<u8>,
     ) -> Self {
         Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             recipient_address,
             mosaics,
@@ -34661,7 +34657,7 @@ impl EmbeddedTransferTransactionV1 {
     }
     pub fn default() -> Self {
         Self {
-            signer_verifying_key: VerifyingKey::default(),
+            signer_public_key: PublicKey::default(),
             network: NetworkType::default(),
             recipient_address: UnresolvedAddress::default(),
             mosaics: Vec::new(),
@@ -34672,7 +34668,7 @@ impl EmbeddedTransferTransactionV1 {
         let mut size = 0;
         size += 4;
         size += 4;
-        size += self.signer_verifying_key.size();
+        size += self.signer_public_key.size();
         size += 4;
         size += 1;
         size += self.network.size();
@@ -34708,8 +34704,8 @@ impl EmbeddedTransferTransactionV1 {
                 embedded_transaction_header_reserved_1 as u32,
             ));
         }
-        let signer_verifying_key;
-        (signer_verifying_key, payload) = VerifyingKey::deserialize(payload)?;
+        let signer_public_key;
+        (signer_public_key, payload) = PublicKey::deserialize(payload)?;
         let entity_body_reserved_1 = u32::from_le_bytes(payload[..4].try_into()?);
         payload = &payload[4..];
         if entity_body_reserved_1 != 0 {
@@ -34758,7 +34754,7 @@ impl EmbeddedTransferTransactionV1 {
             message.push(element);
         }
         let self_ = Self {
-            signer_verifying_key,
+            signer_public_key,
             network,
             recipient_address,
             mosaics,
@@ -34769,7 +34765,7 @@ impl EmbeddedTransferTransactionV1 {
     pub fn serialize(&self) -> Vec<u8> {
         let size = self.size().to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
-        let signer_verifying_key = self.signer_verifying_key.serialize();
+        let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
         let version = self.version().to_le_bytes();
         let network = self.network.serialize();
@@ -34784,7 +34780,7 @@ impl EmbeddedTransferTransactionV1 {
         [
             size.iter(),
             embedded_transaction_header_reserved_1.iter(),
-            signer_verifying_key.iter(),
+            signer_public_key.iter(),
             entity_body_reserved_1.iter(),
             version.iter(),
             network.iter(),
@@ -34803,12 +34799,12 @@ impl EmbeddedTransferTransactionV1 {
         .collect()
     }
 }
-impl TraitSignerVerifyingKey for EmbeddedTransferTransactionV1 {
-    fn get_signer_verifying_key(&self) -> &VerifyingKey {
-        &self.signer_verifying_key
+impl TraitSignerPublicKey for EmbeddedTransferTransactionV1 {
+    fn get_signer_public_key(&self) -> &PublicKey {
+        &self.signer_public_key
     }
-    fn set_signer_verifying_key(&mut self, signer_verifying_key: VerifyingKey) {
-        self.signer_verifying_key = signer_verifying_key;
+    fn set_signer_public_key(&mut self, signer_public_key: PublicKey) {
+        self.signer_public_key = signer_public_key;
     }
 }
 impl TraitMessage for EmbeddedTransferTransactionV1 {

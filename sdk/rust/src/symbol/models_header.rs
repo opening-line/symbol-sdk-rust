@@ -38,8 +38,8 @@ impl From<ed25519::Error> for SymbolError {
 }
 
 pub use ed25519_dalek::Signature;
-pub use ed25519_dalek::SigningKey;
-pub use ed25519_dalek::VerifyingKey;
+pub use ed25519_dalek::SigningKey as PrivateKey;
+pub use ed25519_dalek::VerifyingKey as PublicKey;
 
 pub trait ModelsSignature
 where
@@ -83,7 +83,7 @@ impl ModelsSignature for Signature {
     }
 }
 
-pub trait ModelsVerifyingKey
+pub trait ModelsPublicKey
 where
     Self: Sized,
 {
@@ -94,9 +94,9 @@ where
     fn serialize(&self) -> Vec<u8>;
     fn to_string(&self) -> String;
 }
-impl ModelsVerifyingKey for VerifyingKey {
+impl ModelsPublicKey for PublicKey {
     const SIZE: usize = 32;
-    fn new(verifyingkey: [u8; 32]) -> VerifyingKey {
+    fn new(verifyingkey: [u8; 32]) -> PublicKey {
         Self::from_bytes(&verifyingkey).unwrap()
     }
     fn size(&self) -> usize {

@@ -24,7 +24,7 @@ where
     ) -> Result<(), SymbolError>;
 }
 
-impl ExtentionVerifyingKey for VerifyingKey {
+impl ExtentionVerifyingKey for PublicKey {
     fn from_str(str: &str) -> Result<Self, SymbolError> {
         Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?)?)
     }
@@ -36,25 +36,27 @@ impl ExtentionVerifyingKey for VerifyingKey {
     }
 }
 
-pub trait ExtentionSigningKey<T>
+pub trait ExtentionSigningKey
 where
     Self: Sized,
-    T: TraitMessage + TraitSignature,
 {
-    fn sign_transaction(&self, transaction: T) -> T;
-    fn verify_transaction(&self, transaction: &T) -> Result<(), SymbolError>;
+    fn from_str(str: &str) -> Result<Self, SymbolError>;
+    fn sign_transaction<T: TraitMessage + TraitSignature>(&self, transaction: T) -> T;
+    fn verify_transaction<T: TraitMessage + TraitSignature>(&self, transaction: &T) -> Result<(), SymbolError>;
 }
 
-impl<T> ExtentionSigningKey<T> for SigningKey
-where
-    T: TraitMessage + TraitSignature,
+impl ExtentionSigningKey for PrivateKey
 {
-    fn sign_transaction(&self, mut transaction: T) -> T {
+    fn from_str(str: &str) -> Result<Self, SymbolError> {
+        Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?))
+    }
+    fn sign_transaction<T: TraitMessage + TraitSignature>(&self, mut transaction: T) -> T 
+    {
         let signature = self.sign(transaction.get_message());
         transaction.set_signature(signature);
         transaction
     }
-    fn verify_transaction(&self, transaction: &T) -> Result<(), SymbolError> {
+    fn verify_transaction<T: TraitMessage + TraitSignature>(&self, transaction: &T) -> Result<(), SymbolError> {
         self.verifying_key().verify_transaction(transaction)
     }
 }
