@@ -605,9 +605,9 @@ def generate_enum(ast_model):
         ret += '}'
 
     ## to_string
-    ret += f'pub fn to_string(&self) -> String {{'
-    ret += f'format!("{ast_model.name}::{{:?}}", self)'
-    ret += '}'
+    # ret += f'pub fn to_string(&self) -> String {{'
+    # ret += f'format!("{ast_model.name}::{{:?}}", self)'
+    # ret += '}'
 
     # end
     ret += '}'
@@ -660,9 +660,9 @@ def generate_bytearray(ast_model):
     ret += '}'
 
     ## to_string
-    ret += 'pub fn to_string(&self) -> String {'
-    ret += 'format!("0x{}", hex::encode(self.0))'
-    ret += '}'
+    # ret += 'pub fn to_string(&self) -> String {'
+    # ret += 'format!("0x{}", hex::encode(self.0))'
+    # ret += '}'
 
     # end
     ret += '}'
@@ -719,9 +719,9 @@ def generate_integer(ast_model):
     ret += '}'
 
     ## to_string
-    ret += 'pub fn to_string(&self) -> String {'
-    ret += f'format!("0x{{:0{ast_model.size * 2}x}}", self.0)'
-    ret += '}'
+    # ret += 'pub fn to_string(&self) -> String {'
+    # ret += f'format!("0x{{:0{ast_model.size * 2}x}}", self.0)'
+    # ret += '}'
 
     # end
     ret += '}'

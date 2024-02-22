@@ -51,9 +51,6 @@ impl Amount {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///A time lapse, expressed in number of blocks.
 //name: BlockDuration
@@ -92,9 +89,6 @@ impl BlockDuration {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
     }
 }
 ///Multiplier applied to the size of a transaction to obtain its fee, in [absolute units](/concepts/mosaic.html#divisibility).
@@ -135,9 +129,6 @@ impl BlockFeeMultiplier {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{:08x}", self.0)
     }
 }
 ///How hard it was to harvest this block.
@@ -181,9 +172,6 @@ impl Difficulty {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///Index of a [finalization](/concepts/block.html#finalization) epoch.
 ///The first epoch is number 1 and contains only the first block (the [Nemesis](/concepts/block.html#block-creation) block). Epoch duration (in blocks) is defined by the `votingSetGrouping` network property.
@@ -223,9 +211,6 @@ impl FinalizationEpoch {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{:08x}", self.0)
     }
 }
 ///A particular point in time inside a [finalization](/concepts/block.html#finalization) epoch.
@@ -267,9 +252,6 @@ impl FinalizationPoint {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:08x}", self.0)
-    }
 }
 ///Index of a block in the blockchain.
 ///The first block (the [Nemesis](/concepts/block.html#block-creation) block) has height 1 and each subsequent block increases height by 1.
@@ -309,9 +291,6 @@ impl Height {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
     }
 }
 ///[Importance score](/concepts/consensus-algorithm.html#importance-score) for an account.
@@ -353,9 +332,6 @@ impl Importance {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///Block height at which an Importance was calculated.
 //name: ImportanceHeight
@@ -394,9 +370,6 @@ impl ImportanceHeight {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
     }
 }
 ///Either a MosaicId or a NamespaceId.
@@ -438,9 +411,6 @@ impl UnresolvedMosaicId {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///A [Mosaic](/concepts/mosaic.html) identifier.
 //name: MosaicId
@@ -479,9 +449,6 @@ impl MosaicId {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
     }
 }
 ///Number of milliseconds elapsed since the creation of the [Nemesis](/concepts/block.html#block-creation) block.
@@ -523,9 +490,6 @@ impl Timestamp {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///Either an Address or a NamespaceId.
 ///The **least**-significant bit of the first byte is 0 for Addresses and 1 for NamespaceId's.
@@ -563,9 +527,6 @@ impl UnresolvedAddress {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
 }
 ///An [address](/concepts/cryptography.html#address) identifies an account and is derived from its PublicKey.
 //name: Address
@@ -601,9 +562,6 @@ impl Address {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
     }
 }
 ///A 32-byte (256 bit) hash.
@@ -642,9 +600,6 @@ impl Hash256 {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
 }
 ///A 64-byte (512 bit) hash.
 ///The exact algorithm is unspecified as it can change depending on where it is used.
@@ -682,9 +637,6 @@ impl Hash512 {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
 }
 ///A PublicKey used for voting during the [finalization process](/concepts/block.html#finalization).
 //name: VotingPublicKey
@@ -720,9 +672,6 @@ impl VotingPublicKey {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
     }
 }
 ///A quantity of a certain mosaic.
@@ -939,9 +888,6 @@ impl LinkAction {
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("LinkAction::{:?}", self)
-    }
 }
 ///Enumeration of network types.
 //name: NetworkType
@@ -998,9 +944,6 @@ impl NetworkType {
     }
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("NetworkType::{:?}", self)
     }
 }
 ///Enumeration of Transaction types
@@ -1173,9 +1116,6 @@ impl TransactionType {
     }
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u16).to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("TransactionType::{:?}", self)
     }
 }
 ///binary layout for a transaction
@@ -3620,9 +3560,6 @@ impl ProofGamma {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
 }
 //name: ProofVerificationHash
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
@@ -3658,9 +3595,6 @@ impl ProofVerificationHash {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
-    }
 }
 //name: ProofScalar
 //linked_type: <class 'catparser.ast.FixedSizeBuffer'>
@@ -3695,9 +3629,6 @@ impl ProofScalar {
     }
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
     }
 }
 ///enumeration of block types
@@ -3760,9 +3691,6 @@ impl BlockType {
     }
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u16).to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("BlockType::{:?}", self)
     }
 }
 ///verfiable random function proof
@@ -6695,9 +6623,6 @@ impl ReceiptType {
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u16).to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("ReceiptType::{:?}", self)
-    }
 }
 ///Receipts provide proof for every state change not retrievable from the block.
 //name: Receipt
@@ -9158,9 +9083,6 @@ impl NamespaceId {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///Enumeration of namespace registration types.
 //name: NamespaceRegistrationType
@@ -9218,9 +9140,6 @@ impl NamespaceRegistrationType {
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("NamespaceRegistrationType::{:?}", self)
-    }
 }
 ///Enumeration of alias actions.
 //name: AliasAction
@@ -9277,9 +9196,6 @@ impl AliasAction {
     }
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("AliasAction::{:?}", self)
     }
 }
 ///Receipt generated when a [namespace](/concepts/namespace.html) expires.
@@ -17274,9 +17190,6 @@ impl LockHashAlgorithm {
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("LockHashAlgorithm::{:?}", self)
-    }
 }
 ///Start a token swap between different chains (V1, latest).
 ///Use a SecretLockTransaction to transfer mosaics between two accounts. The mosaics sent remain locked until a valid SecretProofTransaction unlocks them.
@@ -22116,9 +22029,6 @@ impl MosaicNonce {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:08x}", self.0)
-    }
 }
 ///Enumeration of mosaic property flags.
 //name: MosaicFlags
@@ -22205,9 +22115,6 @@ impl MosaicFlags {
             Self::X(x) => x.to_le_bytes().to_vec(),
         }
     }
-    pub fn to_string(&self) -> String {
-        format!("MosaicFlags::{:?}", self)
-    }
 }
 ///Enumeration of mosaic supply change actions.
 //name: MosaicSupplyChangeAction
@@ -22264,9 +22171,6 @@ impl MosaicSupplyChangeAction {
     }
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("MosaicSupplyChangeAction::{:?}", self)
     }
 }
 ///Create a new  [mosaic](/concepts/mosaic.html) (V1, latest).
@@ -28533,9 +28437,6 @@ impl AccountRestrictionFlags {
             Self::X(x) => x.to_le_bytes().to_vec(),
         }
     }
-    pub fn to_string(&self) -> String {
-        format!("AccountRestrictionFlags::{:?}", self)
-    }
 }
 ///Allow or block incoming and outgoing transactions for a given a set of addresses (V1, latest).
 //name: AccountAddressRestrictionTransactionV1
@@ -32608,9 +32509,6 @@ impl MosaicRestrictionKey {
     pub fn serialize(&self) -> Vec<u8> {
         self.0.to_le_bytes().to_vec()
     }
-    pub fn to_string(&self) -> String {
-        format!("0x{:016x}", self.0)
-    }
 }
 ///Enumeration of mosaic restriction types.
 //name: MosaicRestrictionType
@@ -32692,9 +32590,6 @@ impl MosaicRestrictionType {
     }
     pub fn serialize(&self) -> Vec<u8> {
         (self.clone() as u8).to_le_bytes().to_vec()
-    }
-    pub fn to_string(&self) -> String {
-        format!("MosaicRestrictionType::{:?}", self)
     }
 }
 ///Set global rules to transfer a restrictable mosaic (V1, latest).
