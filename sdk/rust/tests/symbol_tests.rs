@@ -81,27 +81,29 @@ fn test1_keys() {
     }
 }
 
-// #[test]
-// fn test1_address() {
-//     #[derive(Deserialize)]
-//     #[derive(Debug)]
-//     #[allow(non_snake_case)]
-//     struct Test {
-//         publicKey: String,
-//         address_Public: String,
-//         address_PublicTest: String,
-//         address_Private: String,
-//         address_PrivateTest: String,
-//     }
+#[test]
+fn test1_address() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        publicKey: String,
+        address_Public: String,
+        address_PublicTest: String,
+        // address_Private: String, // TODO:
+        // address_PrivateTest: String, // TODO:
+    }
 
-//     let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-address.json";
-//     let tests_json_str = read_to_string(tests_path).unwrap();
-//     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-address.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
-//     for test in tests {
-//         let data = hex::decode(test.address_Public).unwrap();
-//         let a = Address::deserialize(&data).unwrap();
-//         dbg!(a);
-//         assert!(false)
-//     }
-// }
+    for test in tests {
+        let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
+        
+        let address_public = pubilc_key.address(NetworkType::MAINNET);
+        assert_eq!(address_public.to_string(), test.address_Public);
+
+        let address_public_test = pubilc_key.address(NetworkType::TESTNET);
+        assert_eq!(address_public_test.to_string(), test.address_PublicTest);
+    }
+}
