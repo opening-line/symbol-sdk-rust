@@ -51,7 +51,6 @@ where
     fn size(&self) -> usize;
     fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError>;
     fn serialize(&self) -> Vec<u8>;
-    fn to_string(&self) -> String;
 }
 
 impl ModelsSignature for Signature {
@@ -78,9 +77,6 @@ impl ModelsSignature for Signature {
     fn serialize(&self) -> Vec<u8> {
         self.to_vec()
     }
-    fn to_string(&self) -> String {
-        format!("0x{}", self)
-    }
 }
 
 pub trait ModelsPublicKey
@@ -92,7 +88,6 @@ where
     fn size(&self) -> usize;
     fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError>;
     fn serialize(&self) -> Vec<u8>;
-    fn to_string(&self) -> String;
 }
 impl ModelsPublicKey for PublicKey {
     const SIZE: usize = 32;
@@ -114,8 +109,5 @@ impl ModelsPublicKey for PublicKey {
     }
     fn serialize(&self) -> Vec<u8> {
         self.to_bytes().to_vec()
-    }
-    fn to_string(&self) -> String {
-        format!("0x{}", hex::encode(self))
     }
 }
