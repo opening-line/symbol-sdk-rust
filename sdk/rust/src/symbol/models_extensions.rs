@@ -1,9 +1,7 @@
-use std::io::Read;
-
 pub use ed25519_dalek::{Signer, Verifier};
-use hex::{decode, encode};
-use ripemd::{Digest as Ripemd_Digest, Ripemd160, Ripemd320};
-use sha3::{Digest as Sha3_Digest, Sha3_256};
+use hex;
+use ripemd::{Digest, Ripemd160};
+use sha3::Sha3_256;
 
 pub use crate::symbol::models::*;
 
@@ -21,11 +19,6 @@ where
         transaction: &T,
     ) -> Result<(), SymbolError>;
 }
-
-// "NATNE7Q5BITMUTRRN6IB4I7FLSDRDWZA34SQ33Y"
-// "TATNE7Q5BITMUTRRN6IB4I7FLSDRDWZA37JGO5Q"
-// "PATNE7Q5BITMUTRRN6IB4I7FLSDRDWZA35OETNI"
-// "VATNE7Q5BITMUTRRN6IB4I7FLSDRDWZA35C4KNQ"
 
 impl ExtentionVerifyingKey for PublicKey {
     fn from_str(str: &str) -> Result<Self, SymbolError> {

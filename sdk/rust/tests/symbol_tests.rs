@@ -99,7 +99,7 @@ fn test1_address() {
 
     for test in tests {
         let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
-        
+
         let address_public = pubilc_key.address(MAINNET);
         assert_eq!(address_public.to_string(), test.address_Public);
 
@@ -134,7 +134,7 @@ fn test2_sign() {
 
         let signature = private_key.sign(&data);
         assert_eq!(signature.to_string(), test.signature);
-        
+
         public_key.verify(&data, &signature).unwrap();
     }
 }
