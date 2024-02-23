@@ -107,3 +107,34 @@ fn test1_address() {
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
     }
 }
+
+#[test]
+fn test2_sign() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        privateKey: String,
+        publicKey: String,
+        length: usize,
+        data: String,
+        signature: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/2.test-sign.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests {
+        let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
+        let public_key = PublicKey::from_str(&test.publicKey).unwrap();
+        assert_eq!(private_key.pubilc_key(), public_key);
+
+        let data = decode(test.data).expect("Decoding failed");
+        assert_eq!(data.len(), test.length);
+
+        let signature = private_key.sign(&data);
+        assert_eq!(signature.to_string(), test.signature);
+        
+        public_key.verify(&data, &signature).unwrap();
+    }
+}
