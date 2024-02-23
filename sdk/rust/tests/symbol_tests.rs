@@ -100,10 +100,10 @@ fn test1_address() {
     for test in tests {
         let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
         
-        let address_public = pubilc_key.address(NetworkType::MAINNET);
+        let address_public = pubilc_key.address(MAINNET);
         assert_eq!(address_public.to_string(), test.address_Public);
 
-        let address_public_test = pubilc_key.address(NetworkType::TESTNET);
+        let address_public_test = pubilc_key.address(TESTNET);
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
     }
 }

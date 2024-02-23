@@ -7,6 +7,9 @@ use sha3::{Digest as Sha3_Digest, Sha3_256};
 
 pub use crate::symbol::models::*;
 
+pub const MAINNET: NetworkType = NetworkType::MAINNET;
+pub const TESTNET: NetworkType = NetworkType::TESTNET;
+
 pub trait ExtentionVerifyingKey
 where
     Self: Sized,
