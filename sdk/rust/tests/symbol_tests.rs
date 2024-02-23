@@ -28,9 +28,9 @@ fn test0_keccak_256() {
 
         let mut hasher = Keccak256::new();
         hasher.update(&data);
-        let result = hasher.finalize();
-        let result_hex = encode(result);
-        assert_eq!(result_hex, test.hash.to_lowercase());
+        let hash = hasher.finalize();
+        let hash_hex = encode(hash);
+        assert_eq!(hash_hex, test.hash.to_lowercase());
     }
 }
 
@@ -55,9 +55,9 @@ fn test0_sha3_256() {
 
         let mut hasher = Sha3_256::new();
         hasher.update(&data);
-        let result = hasher.finalize();
-        let result_hex = encode(result);
-        assert_eq!(result_hex, test.hash.to_lowercase());
+        let hash = hasher.finalize();
+        let hash_hex = encode(hash);
+        assert_eq!(hash_hex, test.hash.to_lowercase());
     }
 }
 
@@ -77,7 +77,7 @@ fn test1_keys() {
     for test in tests {
         let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
         let public_key = PublicKey::from_str(&test.publicKey).unwrap();
-        assert_eq!(private_key.verifying_key(), public_key);
+        assert_eq!(private_key.pubilc_key(), public_key);
     }
 }
 

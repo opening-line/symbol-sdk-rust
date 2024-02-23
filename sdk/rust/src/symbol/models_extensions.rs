@@ -69,6 +69,7 @@ where
         &self,
         transaction: &T,
     ) -> Result<(), SymbolError>;
+    fn pubilc_key(&self) -> PublicKey;
 }
 
 impl ExtentionSigningKey for PrivateKey {
@@ -85,6 +86,9 @@ impl ExtentionSigningKey for PrivateKey {
         transaction: &T,
     ) -> Result<(), SymbolError> {
         self.verifying_key().verify_transaction(transaction)
+    }
+    fn pubilc_key(&self) -> PublicKey {
+        self.verifying_key()
     }
 }
 
