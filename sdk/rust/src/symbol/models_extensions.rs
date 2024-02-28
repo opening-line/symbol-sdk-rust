@@ -1,12 +1,16 @@
 pub use ed25519_dalek::{Signer, Verifier};
-use hex;
 use ripemd::{Digest, Ripemd160};
 use sha3::Sha3_256;
+// use hkdf::Hkdf;
 
 pub use crate::symbol::models::*;
 
 pub const MAINNET: NetworkType = NetworkType::MAINNET;
 pub const TESTNET: NetworkType = NetworkType::TESTNET;
+
+// pub struct SharedKey {
+    
+// }
 
 pub trait ExtentionVerifyingKey
 where
@@ -37,10 +41,10 @@ impl ExtentionVerifyingKey for PublicKey {
 
         let mut part_three_hasher = Sha3_256::new();
         part_three_hasher.update(&version);
-        let checksum = part_three_hasher.finalize()[0..4].to_vec();
+        let mut checksum = part_three_hasher.finalize()[0..3].to_vec();
 
         let mut address = version;
-        address.append(&mut checksum[0..3].to_vec());
+        address.append(&mut checksum);
 
         Address::new(address.try_into().unwrap())
     }
