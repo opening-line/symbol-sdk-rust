@@ -1,18 +1,20 @@
 use hex::{decode, encode};
 use serde::Deserialize;
-use std::fs::read_to_string;
+use std::{fs::read_to_string, str::FromStr};
 
 use symbol::symbol::models_extensions::*;
 
 const TEST_VECTERS_PATH: &str = "../../tests/vectors/symbol";
 
 #[cfg(test)]
-fn get_hash<Hasher: digest::Digest> (data: impl AsRef<[u8]>) -> Vec<u8> {
+fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {
     Hasher::new().chain_update(data).finalize().to_vec()
 }
 
 #[test]
 fn test0_keccak_256() {
+    use sha3::Keccak256;
+
     #[derive(Deserialize)]
     struct Test {
         hash: String,
@@ -28,7 +30,7 @@ fn test0_keccak_256() {
         let data = decode(test.data).expect("Decoding failed");
         assert_eq!(data.len(), test.length);
 
-        let hash = get_hash::<sha3::Keccak256>(&data);
+        let hash = get_hash::<Keccak256>(&data);
         let hash_hex = encode(hash);
         assert_eq!(hash_hex, test.hash.to_lowercase());
     }
@@ -36,6 +38,8 @@ fn test0_keccak_256() {
 
 #[test]
 fn test0_sha3_256() {
+    use sha3::Sha3_256;
+
     #[derive(Deserialize)]
     struct Test {
         hash: String,
@@ -51,7 +55,7 @@ fn test0_sha3_256() {
         let data = decode(test.data).expect("Decoding failed");
         assert_eq!(data.len(), test.length);
 
-        let hash = get_hash::<sha3::Sha3_256>(&data);
+        let hash = get_hash::<Sha3_256>(&data);
         let hash_hex = encode(hash);
         assert_eq!(hash_hex, test.hash.to_lowercase());
     }
@@ -101,11 +105,17 @@ fn test1_address() {
 
         let address_public_test = pubilc_key.address(TESTNET);
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
+        assert_eq!(
+            address_public_test,
+            Address::from_str(&test.address_PublicTest).unwrap()
+        );
     }
 }
 
 #[test]
 fn test2_sign() {
+    use ed25519_dalek::{Signer, Verifier};
+
     #[derive(Deserialize, Debug)]
     #[allow(non_snake_case)]
     struct Test {
@@ -129,7 +139,7 @@ fn test2_sign() {
         assert_eq!(data.len(), test.length);
 
         let signature = private_key.sign(&data);
-        assert_eq!(signature.to_string(), test.signature);
+        assert_eq!(signature, Signature::from_str(&test.signature).unwrap());
 
         public_key.verify(&data, &signature).unwrap();
     }
@@ -137,12 +147,6 @@ fn test2_sign() {
 
 #[test]
 fn test3_derive_hkdf() {
-    use hkdf::Hkdf;
-    use sha2::Sha512;
-    use sha2::Sha256;
-    use curve25519_dalek::scalar::Scalar;
-    use curve25519_dalek::edwards::CompressedEdwardsY;
-
     #[derive(Deserialize, Debug)]
     #[allow(non_snake_case)]
     struct Test {
@@ -163,25 +167,15 @@ fn test3_derive_hkdf() {
         let other_public_key = PublicKey::from_str(&test.otherPublicKey).unwrap();
         assert_ne!(private_key.pubilc_key(), other_public_key);
 
-        let unpacked_pub = CompressedEdwardsY(other_public_key.to_bytes()).decompress().unwrap();
+        let shared_key = private_key.shared_key(other_public_key);
 
-        let mut scalar = get_hash::<Sha512>(private_key.as_bytes())[..32].to_vec();
-        scalar[0] &= 248;
-        scalar[31] &= 127;
-        scalar[31] |= 64;
-
-        #[allow(deprecated)]
-        // This scalar is used only for multiplication with EdwardsPoint.
-        let scalar = Scalar::from_bits(scalar.as_slice().try_into().unwrap());
-
-        let shared_secret = (scalar * unpacked_pub).compress();
-
-        let hkdf = Hkdf::<Sha256>::new(None, &shared_secret.to_bytes());
-        let mut shared_key = [0u8; 32];
-        hkdf.expand(b"catapult", &mut shared_key).unwrap();
-
-        let expected = decode(test.sharedKey).unwrap();
+        let expected = SharedKey(
+            decode(test.sharedKey)
+                .unwrap()
+                .as_slice()
+                .try_into()
+                .unwrap(),
+        );
         assert_eq!(expected, shared_key);
     }
 }
-
