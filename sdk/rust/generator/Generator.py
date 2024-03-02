@@ -525,6 +525,8 @@ def generate_enum(ast_model):
     # structure
     ret += '#[allow(non_camel_case_types)]'
     ret += f'#[repr({value_type})]'
+    if ast_model.name == 'NetworkType':
+        ret += '#[cfg(not(feature = "private_network"))]'
     ret += f'pub enum {ast_model.name} {{'
     ret += ''.join(
         list(
@@ -539,6 +541,8 @@ def generate_enum(ast_model):
     ret += '}'
 
     # implement
+    if ast_model.name == 'NetworkType':
+        ret += '#[cfg(not(feature = "private_network"))]'
     ret += 'impl ' + ast_model.name + ' {'
     
     ## SIZE

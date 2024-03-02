@@ -111,3 +111,31 @@ impl ModelsPublicKey for PublicKey {
         self.to_bytes().to_vec()
     }
 }
+
+#[cfg(feature = "private_network")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct NetworkType(pub u8);
+
+#[cfg(feature = "private_network")]
+impl NetworkType {
+    pub const SIZE: usize = 1;
+    pub fn default() -> Self {
+        Self(u8::default())
+    }
+    pub fn size(&self) -> usize {
+        Self::SIZE
+    }
+    pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
+        if payload.len() < Self::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: Self::SIZE,
+                real: payload.len(),
+            });
+        }
+        let (bytes, rest) = payload.split_at(Self::SIZE);
+        Ok((NetworkType(u8::from_le_bytes(bytes.try_into()?)), rest))
+    }
+    pub fn serialize(&self) -> Vec<u8> {
+        (self.0 as u8).to_le_bytes().to_vec()
+    }
+}

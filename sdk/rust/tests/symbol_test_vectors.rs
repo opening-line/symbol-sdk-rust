@@ -82,15 +82,14 @@ fn test1_keys() {
 }
 
 #[test]
-fn test1_address() {
+#[cfg(not(feature = "private_network"))]
+fn test1_address_with_public_network() {
     #[derive(Deserialize, Debug)]
     #[allow(non_snake_case)]
     struct Test {
         publicKey: String,
         address_Public: String,
         address_PublicTest: String,
-        // address_Private: String, // TODO:
-        // address_PrivateTest: String, // TODO:
     }
 
     let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-address.json";
@@ -102,12 +101,53 @@ fn test1_address() {
 
         let address_public = pubilc_key.address(MAINNET);
         assert_eq!(address_public.to_string(), test.address_Public);
+        assert_eq!(
+            address_public,
+            Address::from_str(&test.address_Public).unwrap()
+        );
 
         let address_public_test = pubilc_key.address(TESTNET);
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
         assert_eq!(
             address_public_test,
             Address::from_str(&test.address_PublicTest).unwrap()
+        );
+    }
+}
+
+#[test]
+#[cfg(feature = "private_network")]
+fn test1_address_with_private_network() {
+    const MAINNET: NetworkType = NetworkType(0x78);
+    const TESTNET: NetworkType = NetworkType(0xA8);
+
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        publicKey: String,
+        address_Private: String,
+        address_PrivateTest: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-address.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests {
+        let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
+
+        let address_public = pubilc_key.address(MAINNET);
+        assert_eq!(address_public.to_string(), test.address_Private);
+        assert_eq!(
+            address_public,
+            Address::from_str(&test.address_Private).unwrap()
+        );
+
+        let address_public_test = pubilc_key.address(TESTNET);
+        assert_eq!(address_public_test.to_string(), test.address_PrivateTest);
+        assert_eq!(
+            address_public_test,
+            Address::from_str(&test.address_PrivateTest).unwrap()
         );
     }
 }

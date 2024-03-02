@@ -1,6 +1,8 @@
 pub use crate::symbol::models::*;
 
+#[cfg(not(feature = "private_network"))]
 pub const MAINNET: NetworkType = NetworkType::MAINNET;
+#[cfg(not(feature = "private_network"))]
 pub const TESTNET: NetworkType = NetworkType::TESTNET;
 
 fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {

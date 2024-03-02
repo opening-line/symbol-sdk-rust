@@ -916,10 +916,12 @@ impl LinkAction {
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 #[repr(u8)]
+#[cfg(not(feature = "private_network"))]
 pub enum NetworkType {
     MAINNET = 104,
     TESTNET = 152,
 }
+#[cfg(not(feature = "private_network"))]
 impl NetworkType {
     pub const SIZE: usize = 1;
     pub fn default() -> Self {
