@@ -147,3 +147,35 @@ impl ExtentionAddress for Address {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SharedKey(pub [u8; 32]);
+
+impl SharedKey {
+    #[inline]
+    pub fn to_bytes(&self) -> [u8; 32] {
+        self.0
+    }
+
+    #[inline]
+    pub fn as_bytes(&self) -> &[u8; 32] {
+        &self.0
+    }
+}
+
+use aes_gcm::{aead::generic_array::GenericArray, aead::Aead, Aes256Gcm};
+use cipher::KeyInit;
+
+pub struct Cipher(Aes256Gcm);
+
+impl Cipher {
+    pub fn new(shared_key: SharedKey) -> Self {
+        let key = GenericArray::from_slice(shared_key.as_bytes());
+        Self(Aes256Gcm::new(key))
+    }
+    pub fn encrypt(&self, clear_text: &[u8], nonce: &[u8]) -> Result<Vec<u8>, aes_gcm::Error> {
+        let nonce = GenericArray::from_slice(nonce);
+        self.0.encrypt(nonce, clear_text)
+    }
+    pub fn decrypt(&self, cipher_text: &[u8], nonce: &[u8]) -> Result<Vec<u8>, aes_gcm::Error> {
+        let nonce = GenericArray::from_slice(nonce);
+        self.0.decrypt(nonce, cipher_text)
+    }
+}

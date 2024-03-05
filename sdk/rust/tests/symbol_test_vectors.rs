@@ -219,3 +219,50 @@ fn test3_derive_hkdf() {
         assert_eq!(expected, shared_key);
     }
 }
+
+#[test]
+fn test4_cipher() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        privateKey: String,
+        otherPublicKey: String,
+        tag: String,
+        iv: String,
+        cipherText: String,
+        clearText: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/4.test-cipher.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests {
+        let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
+        let other_public_key = PublicKey::from_str(&test.otherPublicKey).unwrap();
+        assert_ne!(private_key.pubilc_key(), other_public_key);
+
+        let shared_key = private_key.shared_key(other_public_key);
+
+        let tag_str = test.tag;
+        let iv_str = test.iv;
+        let chiper_text_str = test.cipherText;
+        let clear_text_str = test.clearText;
+
+        let iv_hex = decode(&iv_str).unwrap();
+        let clear_text_hex = decode(&clear_text_str).unwrap();
+        let chiper_text_hex = decode(chiper_text_str + &tag_str).unwrap();
+
+        let cipher = Cipher::new(shared_key);
+
+        let encrypted_data = cipher
+            .encrypt(&clear_text_hex, &iv_hex)
+            .expect("encryption failure");
+        let decrypted_data = cipher
+            .decrypt(&chiper_text_hex, &iv_hex)
+            .expect("decryption failure");
+
+        assert_eq!(chiper_text_hex, encrypted_data);
+        assert_eq!(clear_text_hex, decrypted_data);
+    }
+}
