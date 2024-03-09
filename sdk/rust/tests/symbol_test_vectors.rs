@@ -99,14 +99,14 @@ fn test1_address_with_public_network() {
     for test in tests {
         let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
 
-        let address_public = pubilc_key.address(MAINNET);
+        let address_public = pubilc_key.address(NetworkType::MAINNET);
         assert_eq!(address_public.to_string(), test.address_Public);
         assert_eq!(
             address_public,
             Address::from_str(&test.address_Public).unwrap()
         );
 
-        let address_public_test = pubilc_key.address(TESTNET);
+        let address_public_test = pubilc_key.address(NetworkType::TESTNET);
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
         assert_eq!(
             address_public_test,
@@ -118,8 +118,8 @@ fn test1_address_with_public_network() {
 #[test]
 #[cfg(feature = "private_network")]
 fn test1_address_with_private_network() {
-    const MAINNET: NetworkType = NetworkType(0x78);
-    const TESTNET: NetworkType = NetworkType(0xA8);
+    const MAIN_NETWORKTYPE: NetworkType = NetworkType(0x78);
+    const TEST_NETWORKTYPE: NetworkType = NetworkType(0xA8);
 
     #[derive(Deserialize, Debug)]
     #[allow(non_snake_case)]
@@ -136,14 +136,14 @@ fn test1_address_with_private_network() {
     for test in tests {
         let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
 
-        let address_public = pubilc_key.address(MAINNET);
+        let address_public = pubilc_key.address(MAIN_NETWORKTYPE);
         assert_eq!(address_public.to_string(), test.address_Private);
         assert_eq!(
             address_public,
             Address::from_str(&test.address_Private).unwrap()
         );
 
-        let address_public_test = pubilc_key.address(TESTNET);
+        let address_public_test = pubilc_key.address(TEST_NETWORKTYPE);
         assert_eq!(address_public_test.to_string(), test.address_PrivateTest);
         assert_eq!(
             address_public_test,
@@ -264,5 +264,96 @@ fn test4_cipher() {
 
         assert_eq!(chiper_text_hex, encrypted_data);
         assert_eq!(clear_text_hex, decrypted_data);
+    }
+}
+
+#[test]
+#[cfg(not(feature = "private_network"))]
+fn test5_mosaic_with_public_network() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        mosaicNonce: u32,
+        publicKey: String,
+        address_Public: String,
+        address_PublicTest: String,
+        mosaicId_Public: String,
+        mosaicId_PublicTest: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/5.test-mosaic-id.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests {
+        let mosaic_nonce = MosaicNonce(test.mosaicNonce);
+        let public_key = PublicKey::from_str(&test.publicKey).unwrap();
+        let address = public_key.address(NetworkType::MAINNET);
+        let test_address = public_key.address(NetworkType::TESTNET);
+
+        assert_eq!(Address::from_str(&test.address_Public).unwrap(), address);
+        assert_eq!(
+            Address::from_str(&test.address_PublicTest).unwrap(),
+            test_address
+        );
+
+        let mosaic_id_public = address.mosaic_id(&mosaic_nonce);
+        let mosaic_id_public_test = test_address.mosaic_id(&mosaic_nonce);
+
+        assert_eq!(
+            MosaicId::from_str(&test.mosaicId_Public).unwrap(),
+            mosaic_id_public
+        );
+        assert_eq!(
+            MosaicId::from_str(&test.mosaicId_PublicTest).unwrap(),
+            mosaic_id_public_test
+        );
+    }
+}
+
+#[test]
+#[cfg(feature = "private_network")]
+fn test5_mosaic_with_private_network() {
+    const MAIN_NETWORKTYPE: NetworkType = NetworkType(0x78);
+    const TEST_NETWORKTYPE: NetworkType = NetworkType(0x80);
+
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        mosaicNonce: u32,
+        publicKey: String,
+        address_Private: String,
+        address_PrivateTest: String,
+        mosaicId_Private: String,
+        mosaicId_PrivateTest: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/5.test-mosaic-id.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests {
+        let mosaic_nonce = MosaicNonce(test.mosaicNonce);
+        let public_key = PublicKey::from_str(&test.publicKey).unwrap();
+        let address = public_key.address(MAIN_NETWORKTYPE);
+        let test_address = public_key.address(TEST_NETWORKTYPE);
+
+        assert_eq!(Address::from_str(&test.address_Private).unwrap(), address);
+        assert_eq!(
+            Address::from_str(&test.address_PrivateTest).unwrap(),
+            test_address
+        );
+
+        let mosaic_id_public = address.mosaic_id(&mosaic_nonce);
+        let mosaic_id_public_test = test_address.mosaic_id(&mosaic_nonce);
+
+        assert_eq!(
+            MosaicId::from_str(&test.mosaicId_Private).unwrap(),
+            mosaic_id_public
+        );
+        assert_eq!(
+            MosaicId::from_str(&test.mosaicId_PrivateTest).unwrap(),
+            mosaic_id_public_test
+        );
     }
 }

@@ -1,4 +1,4 @@
-use data_encoding::DecodeError;
+// use data_encoding::DecodeError;
 use ed25519_dalek::ed25519;
 use hex::FromHexError;
 use std::array::TryFromSliceError;
@@ -6,12 +6,14 @@ use std::array::TryFromSliceError;
 #[derive(Debug)]
 pub enum SymbolError {
     FromHexError(FromHexError),
-    Base32DecodeError(DecodeError),
+    Base32DecodeError(String),
+    // Base32DecodeError(DecodeError),
     TryFromSliceError(TryFromSliceError),
     SizeError { expect: usize, real: usize },
     ReservedIsNotZeroError(u32),
     MismatchError { pattern: Vec<u32>, place: String },
     Ed25519Error(ed25519::Error),
+    AesGcmError(aes_gcm::Error),
 }
 
 impl From<FromHexError> for SymbolError {
@@ -20,11 +22,11 @@ impl From<FromHexError> for SymbolError {
     }
 }
 
-impl From<DecodeError> for SymbolError {
-    fn from(err: DecodeError) -> Self {
-        SymbolError::Base32DecodeError(err)
-    }
-}
+// impl From<DecodeError> for SymbolError {
+//     fn from(err: DecodeError) -> Self {
+//         SymbolError::Base32DecodeError(err)
+//     }
+// }
 
 impl From<TryFromSliceError> for SymbolError {
     fn from(err: TryFromSliceError) -> SymbolError {
@@ -34,6 +36,11 @@ impl From<TryFromSliceError> for SymbolError {
 impl From<ed25519::Error> for SymbolError {
     fn from(err: ed25519::Error) -> SymbolError {
         SymbolError::Ed25519Error(err)
+    }
+}
+impl From<aes_gcm::Error> for SymbolError {
+    fn from(err: aes_gcm::Error) -> SymbolError {
+        SymbolError::AesGcmError(err)
     }
 }
 

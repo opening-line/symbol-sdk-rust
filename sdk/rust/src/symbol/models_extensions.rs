@@ -1,9 +1,6 @@
 pub use crate::symbol::models::*;
 
-#[cfg(not(feature = "private_network"))]
-pub const MAINNET: NetworkType = NetworkType::MAINNET;
-#[cfg(not(feature = "private_network"))]
-pub const TESTNET: NetworkType = NetworkType::TESTNET;
+use hex::decode;
 
 fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {
     Hasher::new().chain_update(data).finalize().to_vec()
@@ -33,7 +30,7 @@ impl ExtentionVerifyingKey for PublicKey {
         let part_two_hash = get_hash::<Ripemd160>(part_one_hash);
 
         let mut version = network_type.serialize();
-        version.append(&mut part_two_hash.to_vec());
+        version.extend_from_slice(&part_two_hash);
 
         let mut checksum = get_hash::<Sha3_256>(&version)[0..3].to_vec();
 
@@ -113,35 +110,48 @@ impl ExtentionSigningKey for PrivateKey {
         SharedKey(shared_key)
     }
 }
-
 pub trait ExtentionAddress
 where
     Self: Sized,
 {
     fn to_string(&self) -> String;
-    fn from_str(s: &str) -> Result<Address, String>;
+    fn from_str(s: &str) -> Result<Address, SymbolError>;
+    fn mosaic_id(&self, nonce: &MosaicNonce) -> MosaicId;
 }
 
 impl ExtentionAddress for Address {
     fn to_string(&self) -> String {
         base32::encode(base32::Alphabet::RFC4648 { padding: false }, &self.0)
     }
-    fn from_str(s: &str) -> Result<Address, String> {
+    fn from_str(s: &str) -> Result<Address, SymbolError> {
         match base32::decode(base32::Alphabet::RFC4648 { padding: false }, s) {
             Some(bytes) => {
-                if bytes.len() == 24 {
-                    let mut arr = [0u8; 24];
-                    arr.copy_from_slice(&bytes[0..24]);
+                if bytes.len() == Address::SIZE {
+                    let mut arr = [0u8; Address::SIZE];
+                    arr.copy_from_slice(&bytes[0..Address::SIZE]);
                     Ok(Address(arr))
                 } else {
-                    Err(format!(
-                        "Invalid input length: expected 24 bytes, got {}",
-                        bytes.len()
-                    ))
+                    Err(SymbolError::SizeError {
+                        expect: Address::SIZE,
+                        real: bytes.len(),
+                    })
                 }
             }
-            None => Err("Base32 decoding failed".to_string()),
+            None => Err(SymbolError::Base32DecodeError(
+                "Base32 decoding failed".to_string(),
+            )),
         }
+    }
+    fn mosaic_id(&self, nonce: &MosaicNonce) -> MosaicId {
+        use sha3::Sha3_256;
+
+        let mut data = nonce.0.to_le_bytes().to_vec();
+        data.extend_from_slice(&self.0);
+
+        let hash = get_hash::<Sha3_256>(data).to_vec();
+        let hash = u64::from_le_bytes(hash[0..MosaicId::SIZE].try_into().unwrap());
+        let mosaic_id = hash & 0x7FFF_FFFF_FFFF_FFFF;
+        MosaicId(mosaic_id)
     }
 }
 
@@ -163,19 +173,33 @@ impl SharedKey {
 use aes_gcm::{aead::generic_array::GenericArray, aead::Aead, Aes256Gcm};
 use cipher::KeyInit;
 
-pub struct Cipher(Aes256Gcm);
+pub struct Cipher(aes_gcm::Aes256Gcm);
 
 impl Cipher {
     pub fn new(shared_key: SharedKey) -> Self {
         let key = GenericArray::from_slice(shared_key.as_bytes());
         Self(Aes256Gcm::new(key))
     }
-    pub fn encrypt(&self, clear_text: &[u8], nonce: &[u8]) -> Result<Vec<u8>, aes_gcm::Error> {
+    pub fn encrypt(&self, clear_text: &[u8], nonce: &[u8]) -> Result<Vec<u8>, SymbolError> {
         let nonce = GenericArray::from_slice(nonce);
-        self.0.encrypt(nonce, clear_text)
+        Ok(self.0.encrypt(nonce, clear_text)?)
     }
-    pub fn decrypt(&self, cipher_text: &[u8], nonce: &[u8]) -> Result<Vec<u8>, aes_gcm::Error> {
+    pub fn decrypt(&self, cipher_text: &[u8], nonce: &[u8]) -> Result<Vec<u8>, SymbolError> {
         let nonce = GenericArray::from_slice(nonce);
-        self.0.decrypt(nonce, cipher_text)
+        Ok(self.0.decrypt(nonce, cipher_text)?)
+    }
+}
+
+impl MosaicId {
+    pub fn from_str(str: &str) -> Result<Self, SymbolError> {
+        let bytes = decode(str)?;
+        if bytes.len() != MosaicId::SIZE {
+            return Err(SymbolError::SizeError {
+                expect: 8,
+                real: bytes.len(),
+            });
+        }
+        let mosaic_id = Self(u64::from_be_bytes(bytes.try_into().unwrap()));
+        Ok(mosaic_id)
     }
 }
