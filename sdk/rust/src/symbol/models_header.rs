@@ -146,3 +146,7 @@ impl NetworkType {
         (self.0 as u8).to_le_bytes().to_vec()
     }
 }
+
+pub(crate) fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {
+    Hasher::new().chain_update(data).finalize().to_vec()
+}

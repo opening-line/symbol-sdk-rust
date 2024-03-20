@@ -2,7 +2,7 @@ use hex::{decode, encode};
 use serde::Deserialize;
 use std::{fs::read_to_string, str::FromStr};
 
-use symbol::symbol::models_extensions::*;
+use symbol::symbol::prelude::*;
 
 const TEST_VECTERS_PATH: &str = "../../tests/vectors/symbol";
 
@@ -355,5 +355,92 @@ fn test5_mosaic_with_private_network() {
             MosaicId::from_str(&test.mosaicId_PrivateTest).unwrap(),
             mosaic_id_public_test
         );
+    }
+}
+
+#[test]
+fn test6_bip32_derivation() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        public_net: Vec<NetTest>,
+        test_net: Vec<NetTest>,
+        test_vectors: Vec<NetTest>,
+    }
+
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct NetTest {
+        seed: String,
+        rootPublicKey: String,
+        childAccounts: Vec<ChildAccount>,
+    }
+
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct ChildAccount {
+        path: Vec<u32>,
+        publicKey: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/6.test-hd-derivation.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Test = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests
+        .public_net
+        .into_iter()
+        .chain(tests.test_net)
+        .chain(tests.test_vectors)
+    {
+        let seed = decode(test.seed).unwrap();
+
+        let root_node = Bip32Node::from_seed(&seed).unwrap();
+        assert_eq!(
+            root_node.public_key(),
+            PublicKey::from_str(&test.rootPublicKey).unwrap()
+        );
+
+        for case in test.childAccounts {
+            let path = case.path;
+            let expected_public_key = PublicKey::from_str(&case.publicKey).unwrap();
+            let public_key = root_node.derive_path(&path).unwrap().public_key();
+
+            assert_eq!(public_key, expected_public_key);
+        }
+    }
+}
+
+#[test]
+fn test6_bip39_derivation() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        public_net: Vec<NetTest>,
+        test_net: Vec<NetTest>,
+    }
+
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct NetTest {
+        mnemonic: Option<String>,
+        passphrase: Option<String>,
+        seed: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/6.test-hd-derivation.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Test = serde_json::from_str(&tests_json_str).unwrap();
+
+    for test in tests.public_net.into_iter().chain(tests.test_net) {
+        let mnemonic = test.mnemonic;
+        let seed = decode(test.seed).unwrap();
+        let passphrase = test.passphrase;
+
+        if mnemonic.is_some() && passphrase.is_some() {
+            let mnemonic = Mnemonic::from_str(&mnemonic.unwrap()).unwrap();
+            let passphrase = passphrase.unwrap();
+            assert_eq!(&seed, &mnemonic.to_seed_normalized(&passphrase));
+        }
     }
 }
