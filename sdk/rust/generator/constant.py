@@ -1,0 +1,1 @@
+TRAITS = ("signature", "signer_public_key", "message")

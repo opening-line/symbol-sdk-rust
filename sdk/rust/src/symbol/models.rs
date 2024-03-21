@@ -28,6 +28,7 @@ pub trait TraitMessage {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct Amount(pub u64);
 impl Amount {
     pub const SIZE: usize = 8;
@@ -67,6 +68,7 @@ impl Amount {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct BlockDuration(pub u64);
 impl BlockDuration {
     pub const SIZE: usize = 8;
@@ -107,6 +109,7 @@ impl BlockDuration {
 //*is_unsigned: True
 //*size: 4
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct BlockFeeMultiplier(pub u32);
 impl BlockFeeMultiplier {
     pub const SIZE: usize = 4;
@@ -149,6 +152,7 @@ impl BlockFeeMultiplier {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct Difficulty(pub u64);
 impl Difficulty {
     pub const SIZE: usize = 8;
@@ -189,6 +193,7 @@ impl Difficulty {
 //*is_unsigned: True
 //*size: 4
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct FinalizationEpoch(pub u32);
 impl FinalizationEpoch {
     pub const SIZE: usize = 4;
@@ -229,6 +234,7 @@ impl FinalizationEpoch {
 //*is_unsigned: True
 //*size: 4
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct FinalizationPoint(pub u32);
 impl FinalizationPoint {
     pub const SIZE: usize = 4;
@@ -269,6 +275,7 @@ impl FinalizationPoint {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct Height(pub u64);
 impl Height {
     pub const SIZE: usize = 8;
@@ -309,6 +316,7 @@ impl Height {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct Importance(pub u64);
 impl Importance {
     pub const SIZE: usize = 8;
@@ -348,6 +356,7 @@ impl Importance {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct ImportanceHeight(pub u64);
 impl ImportanceHeight {
     pub const SIZE: usize = 8;
@@ -388,6 +397,7 @@ impl ImportanceHeight {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct UnresolvedMosaicId(pub u64);
 impl UnresolvedMosaicId {
     pub const SIZE: usize = 8;
@@ -427,6 +437,7 @@ impl UnresolvedMosaicId {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct MosaicId(pub u64);
 impl MosaicId {
     pub const SIZE: usize = 8;
@@ -467,6 +478,7 @@ impl MosaicId {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct Timestamp(pub u64);
 impl Timestamp {
     pub const SIZE: usize = 8;
@@ -505,6 +517,7 @@ impl Timestamp {
 //*is_unsigned: True
 //*size: 24
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct UnresolvedAddress(pub [u8; 24]);
 impl UnresolvedAddress {
     pub const SIZE: usize = 24;
@@ -541,6 +554,7 @@ impl UnresolvedAddress {
 //*is_unsigned: True
 //*size: 24
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct Address(pub [u8; 24]);
 impl Address {
     pub const SIZE: usize = 24;
@@ -578,6 +592,7 @@ impl Address {
 //*is_unsigned: True
 //*size: 32
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct Hash256(pub [u8; 32]);
 impl Hash256 {
     pub const SIZE: usize = 32;
@@ -615,6 +630,7 @@ impl Hash256 {
 //*is_unsigned: True
 //*size: 64
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct Hash512(pub [u8; 64]);
 impl Hash512 {
     pub const SIZE: usize = 64;
@@ -651,6 +667,7 @@ impl Hash512 {
 //*is_unsigned: True
 //*size: 32
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct VotingPublicKey(pub [u8; 32]);
 impl VotingPublicKey {
     pub const SIZE: usize = 32;
@@ -718,6 +735,7 @@ impl VotingPublicKey {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct Mosaic {
     pub mosaic_id: MosaicId,
     pub amount: Amount,
@@ -797,6 +815,7 @@ impl Mosaic {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct UnresolvedMosaic {
     pub mosaic_id: UnresolvedMosaicId,
     pub amount: Amount,
@@ -857,6 +876,7 @@ impl UnresolvedMosaic {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum LinkAction {
@@ -914,6 +934,7 @@ impl LinkAction {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 #[cfg(not(feature = "private_network"))]
@@ -1042,6 +1063,7 @@ impl NetworkType {
 //*is_unsigned: True
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u16)]
 pub enum TransactionType {
@@ -1316,6 +1338,7 @@ impl TransactionType {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_factory()
 pub enum Transaction {
     AccountKeyLinkTransactionV1(AccountKeyLinkTransactionV1),
     NodeKeyLinkTransactionV1(NodeKeyLinkTransactionV1),
@@ -2623,6 +2646,7 @@ impl From<TransferTransactionV1> for Transaction {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_factory()
 pub enum EmbeddedTransaction {
     EmbeddedAccountKeyLinkTransactionV1(EmbeddedAccountKeyLinkTransactionV1),
     EmbeddedNodeKeyLinkTransactionV1(EmbeddedNodeKeyLinkTransactionV1),
@@ -3540,6 +3564,7 @@ impl From<EmbeddedTransferTransactionV1> for EmbeddedTransaction {
 //*is_unsigned: True
 //*size: 32
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct ProofGamma(pub [u8; 32]);
 impl ProofGamma {
     pub const SIZE: usize = 32;
@@ -3575,6 +3600,7 @@ impl ProofGamma {
 //*is_unsigned: True
 //*size: 16
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct ProofVerificationHash(pub [u8; 16]);
 impl ProofVerificationHash {
     pub const SIZE: usize = 16;
@@ -3610,6 +3636,7 @@ impl ProofVerificationHash {
 //*is_unsigned: True
 //*size: 32
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_bytearray()
 pub struct ProofScalar(pub [u8; 32]);
 impl ProofScalar {
     pub const SIZE: usize = 32;
@@ -3661,6 +3688,7 @@ impl ProofScalar {
 //*is_unsigned: True
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u16)]
 pub enum BlockType {
@@ -3751,6 +3779,7 @@ impl BlockType {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct VrfProof {
     pub gamma: ProofGamma,
     pub verification_hash: ProofVerificationHash,
@@ -4095,6 +4124,7 @@ impl VrfProof {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_factory()
 pub enum Block {
     NemesisBlockV1(NemesisBlockV1),
     NormalBlockV1(NormalBlockV1),
@@ -4712,6 +4742,7 @@ impl From<ImportanceBlockV1> for Block {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NemesisBlockV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -5365,6 +5396,7 @@ impl TraitSignerPublicKey for NemesisBlockV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NormalBlockV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -6029,6 +6061,7 @@ impl TraitSignerPublicKey for NormalBlockV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct ImportanceBlockV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -6359,6 +6392,7 @@ impl TraitSignerPublicKey for ImportanceBlockV1 {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct FinalizationRound {
     pub epoch: FinalizationEpoch,
     pub point: FinalizationPoint,
@@ -6450,6 +6484,7 @@ impl FinalizationRound {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct FinalizedBlockHeader {
     pub round: FinalizationRound,
     pub height: Height,
@@ -6566,6 +6601,7 @@ impl FinalizedBlockHeader {
 //*is_unsigned: True
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u16)]
 pub enum ReceiptType {
@@ -6718,6 +6754,7 @@ impl ReceiptType {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_factory()
 pub enum Receipt {
     HarvestFeeReceipt(HarvestFeeReceipt),
     InflationReceipt(InflationReceipt),
@@ -7133,6 +7170,7 @@ impl From<NamespaceRentalFeeReceipt> for Receipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct HarvestFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -7328,6 +7366,7 @@ impl HarvestFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct InflationReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -7515,6 +7554,7 @@ impl InflationReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct LockHashCreatedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -7722,6 +7762,7 @@ impl LockHashCreatedFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct LockHashCompletedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -7929,6 +7970,7 @@ impl LockHashCompletedFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct LockHashExpiredFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -8136,6 +8178,7 @@ impl LockHashExpiredFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct LockSecretCreatedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -8343,6 +8386,7 @@ impl LockSecretCreatedFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct LockSecretCompletedFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -8550,6 +8594,7 @@ impl LockSecretCompletedFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct LockSecretExpiredFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -8745,6 +8790,7 @@ impl LockSecretExpiredFeeReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicExpiredReceipt {
     pub version: u16,
     pub artifact_id: MosaicId,
@@ -8955,6 +9001,7 @@ impl MosaicExpiredReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicRentalFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -9062,6 +9109,7 @@ impl MosaicRentalFeeReceipt {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct NamespaceId(pub u64);
 impl NamespaceId {
     pub const SIZE: usize = 8;
@@ -9111,6 +9159,7 @@ impl NamespaceId {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum NamespaceRegistrationType {
@@ -9168,6 +9217,7 @@ impl NamespaceRegistrationType {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum AliasAction {
@@ -9316,6 +9366,7 @@ impl AliasAction {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NamespaceExpiredReceipt {
     pub version: u16,
     pub artifact_id: NamespaceId,
@@ -9502,6 +9553,7 @@ impl NamespaceExpiredReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NamespaceDeletedReceipt {
     pub version: u16,
     pub artifact_id: NamespaceId,
@@ -9712,6 +9764,7 @@ impl NamespaceDeletedReceipt {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NamespaceRentalFeeReceipt {
     pub version: u16,
     pub mosaic: Mosaic,
@@ -9861,6 +9914,7 @@ impl NamespaceRentalFeeReceipt {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct ReceiptSource {
     pub primary_id: u32,
     pub secondary_id: u32,
@@ -9946,6 +10000,7 @@ impl ReceiptSource {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AddressResolutionEntry {
     pub source: ReceiptSource,
     pub resolved_value: Address,
@@ -10057,6 +10112,7 @@ impl AddressResolutionEntry {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AddressResolutionStatement {
     pub unresolved: UnresolvedAddress,
     pub resolution_entries: Vec<AddressResolutionEntry>,
@@ -10165,6 +10221,7 @@ impl AddressResolutionStatement {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicResolutionEntry {
     pub source: ReceiptSource,
     pub resolved_value: MosaicId,
@@ -10276,6 +10333,7 @@ impl MosaicResolutionEntry {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicResolutionStatement {
     pub unresolved: UnresolvedMosaicId,
     pub resolution_entries: Vec<MosaicResolutionEntry>,
@@ -10434,6 +10492,7 @@ impl MosaicResolutionStatement {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct TransactionStatement {
     pub primary_id: u32,
     pub secondary_id: u32,
@@ -10630,6 +10689,7 @@ impl TransactionStatement {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct BlockStatement {
     pub transaction_statements: Vec<TransactionStatement>,
     pub address_resolution_statements: Vec<AddressResolutionStatement>,
@@ -10991,6 +11051,7 @@ impl BlockStatement {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AccountKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -11372,6 +11433,7 @@ impl TraitSignerPublicKey for AccountKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedAccountKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -11753,6 +11815,7 @@ impl TraitSignerPublicKey for EmbeddedAccountKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NodeKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -12134,6 +12197,7 @@ impl TraitSignerPublicKey for NodeKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedNodeKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -12331,6 +12395,7 @@ impl TraitSignerPublicKey for EmbeddedNodeKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct Cosignature {
     pub version: u64,
     pub signer_public_key: PublicKey,
@@ -12480,6 +12545,7 @@ impl TraitSignature for Cosignature {
 //*is_size_implicit: None
 //*size: None
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct DetachedCosignature {
     pub version: u64,
     pub signer_public_key: PublicKey,
@@ -12886,6 +12952,7 @@ impl TraitSignature for DetachedCosignature {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AggregateCompleteTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -13422,6 +13489,7 @@ impl TraitSignerPublicKey for AggregateCompleteTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AggregateCompleteTransactionV2 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -13960,6 +14028,7 @@ impl TraitSignerPublicKey for AggregateCompleteTransactionV2 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AggregateBondedTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -14498,6 +14567,7 @@ impl TraitSignerPublicKey for AggregateBondedTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AggregateBondedTransactionV2 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -14984,6 +15054,7 @@ impl TraitSignerPublicKey for AggregateBondedTransactionV2 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct VotingKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -15409,6 +15480,7 @@ impl TraitSignerPublicKey for VotingKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedVotingKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -15811,6 +15883,7 @@ impl TraitSignerPublicKey for EmbeddedVotingKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct VrfKeyLinkTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -16192,6 +16265,7 @@ impl TraitSignerPublicKey for VrfKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedVrfKeyLinkTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -16588,6 +16662,7 @@ impl TraitSignerPublicKey for EmbeddedVrfKeyLinkTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct HashLockTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -16991,6 +17066,7 @@ impl TraitSignerPublicKey for HashLockTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedHashLockTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -17159,6 +17235,7 @@ impl TraitSignerPublicKey for EmbeddedHashLockTransactionV1 {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum LockHashAlgorithm {
@@ -17481,6 +17558,7 @@ impl LockHashAlgorithm {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct SecretLockTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -17928,6 +18006,7 @@ impl TraitSignerPublicKey for SecretLockTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedSecretLockTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -18396,6 +18475,7 @@ impl TraitSignerPublicKey for EmbeddedSecretLockTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct SecretProofTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -18864,6 +18944,7 @@ impl TraitSignerPublicKey for SecretProofTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedSecretProofTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -19345,6 +19426,7 @@ impl TraitSignerPublicKey for EmbeddedSecretProofTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AccountMetadataTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -19825,6 +19907,7 @@ impl TraitSignerPublicKey for AccountMetadataTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedAccountMetadataTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -20317,6 +20400,7 @@ impl TraitSignerPublicKey for EmbeddedAccountMetadataTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicMetadataTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -20819,6 +20903,7 @@ impl TraitSignerPublicKey for MosaicMetadataTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicMetadataTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -21321,6 +21406,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicMetadataTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NamespaceMetadataTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -21823,6 +21909,7 @@ impl TraitSignerPublicKey for NamespaceMetadataTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedNamespaceMetadataTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -22008,6 +22095,7 @@ impl TraitSignerPublicKey for EmbeddedNamespaceMetadataTransactionV1 {
 //*is_unsigned: True
 //*size: 4
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct MosaicNonce(pub u32);
 impl MosaicNonce {
     pub const SIZE: usize = 4;
@@ -22071,6 +22159,7 @@ impl MosaicNonce {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum MosaicFlags {
@@ -22143,6 +22232,7 @@ impl MosaicFlags {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum MosaicSupplyChangeAction {
@@ -22467,6 +22557,7 @@ impl MosaicSupplyChangeAction {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicDefinitionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -22920,6 +23011,7 @@ impl TraitSignerPublicKey for MosaicDefinitionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicDefinitionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -23342,6 +23434,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicDefinitionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicSupplyChangeTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -23745,6 +23838,7 @@ impl TraitSignerPublicKey for MosaicSupplyChangeTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicSupplyChangeTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -24135,6 +24229,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicSupplyChangeTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicSupplyRevocationTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -24516,6 +24611,7 @@ impl TraitSignerPublicKey for MosaicSupplyRevocationTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicSupplyRevocationTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -25003,6 +25099,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicSupplyRevocationTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MultisigAccountModificationTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -25555,6 +25652,7 @@ impl TraitSignerPublicKey for MultisigAccountModificationTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMultisigAccountModificationTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -26013,6 +26111,7 @@ impl TraitSignerPublicKey for EmbeddedMultisigAccountModificationTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AddressAliasTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -26416,6 +26515,7 @@ impl TraitSignerPublicKey for AddressAliasTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedAddressAliasTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -26819,6 +26919,7 @@ impl TraitSignerPublicKey for EmbeddedAddressAliasTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicAliasTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -27222,6 +27323,7 @@ impl TraitSignerPublicKey for MosaicAliasTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicAliasTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -27687,6 +27789,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicAliasTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct NamespaceRegistrationTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -28183,6 +28286,7 @@ impl TraitSignerPublicKey for NamespaceRegistrationTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedNamespaceRegistrationTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -28393,6 +28497,7 @@ impl TraitSignerPublicKey for EmbeddedNamespaceRegistrationTransactionV1 {
 //*is_unsigned: True
 //*size: 2
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u16)]
 pub enum AccountRestrictionFlags {
@@ -28772,6 +28877,7 @@ impl AccountRestrictionFlags {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AccountAddressRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -29290,6 +29396,7 @@ impl TraitSignerPublicKey for AccountAddressRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedAccountAddressRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -29807,6 +29914,7 @@ impl TraitSignerPublicKey for EmbeddedAccountAddressRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AccountMosaicRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -30325,6 +30433,7 @@ impl TraitSignerPublicKey for AccountMosaicRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedAccountMosaicRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -30842,6 +30951,7 @@ impl TraitSignerPublicKey for EmbeddedAccountMosaicRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct AccountOperationRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -31360,6 +31470,7 @@ impl TraitSignerPublicKey for AccountOperationRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedAccountOperationRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -31849,6 +31960,7 @@ impl TraitSignerPublicKey for EmbeddedAccountOperationRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicAddressRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -32314,6 +32426,7 @@ impl TraitSignerPublicKey for MosaicAddressRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicAddressRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -32488,6 +32601,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicAddressRestrictionTransactionV1 {
 //*is_unsigned: True
 //*size: 8
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_integer()
 pub struct MosaicRestrictionKey(pub u64);
 impl MosaicRestrictionKey {
     pub const SIZE: usize = 8;
@@ -32552,6 +32666,7 @@ impl MosaicRestrictionKey {
 //*is_unsigned: True
 //*size: 1
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_enum()
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum MosaicRestrictionType {
@@ -32922,6 +33037,7 @@ impl MosaicRestrictionType {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct MosaicGlobalRestrictionTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -33431,6 +33547,7 @@ impl TraitSignerPublicKey for MosaicGlobalRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedMosaicGlobalRestrictionTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
@@ -33973,6 +34090,7 @@ impl TraitSignerPublicKey for EmbeddedMosaicGlobalRestrictionTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct TransferTransactionV1 {
     pub signature: Signature,
     pub signer_public_key: PublicKey,
@@ -34524,6 +34642,7 @@ impl TraitMessage for TransferTransactionV1 {
 //*is_size_implicit: None
 //*size: size
 #[derive(Debug, Clone, PartialEq, Eq)]
+// generated from generate_struct()
 pub struct EmbeddedTransferTransactionV1 {
     pub signer_public_key: PublicKey,
     pub network: NetworkType,
