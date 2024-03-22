@@ -7,13 +7,15 @@ use std::array::TryFromSliceError;
 pub enum SymbolError {
     FromHexError(FromHexError),
     Base32DecodeError(String),
-    // Base32DecodeError(DecodeError),
     TryFromSliceError(TryFromSliceError),
-    SizeError { expect: usize, real: usize },
+    SizeError { expect: Vec<usize>, real: usize },
+    InvalidLengthError(crypto_common::InvalidLength),
     ReservedIsNotZeroError(u32),
     MismatchError { pattern: Vec<u32>, place: String },
     Ed25519Error(ed25519::Error),
     AesGcmError(aes_gcm::Error),
+    OverflowError(String),
+    IoError(std::io::Error),
 }
 
 impl From<FromHexError> for SymbolError {
@@ -21,13 +23,6 @@ impl From<FromHexError> for SymbolError {
         SymbolError::FromHexError(err)
     }
 }
-
-// impl From<DecodeError> for SymbolError {
-//     fn from(err: DecodeError) -> Self {
-//         SymbolError::Base32DecodeError(err)
-//     }
-// }
-
 impl From<TryFromSliceError> for SymbolError {
     fn from(err: TryFromSliceError) -> SymbolError {
         SymbolError::TryFromSliceError(err)
@@ -41,6 +36,16 @@ impl From<ed25519::Error> for SymbolError {
 impl From<aes_gcm::Error> for SymbolError {
     fn from(err: aes_gcm::Error) -> SymbolError {
         SymbolError::AesGcmError(err)
+    }
+}
+impl From<std::io::Error> for SymbolError {
+    fn from(err: std::io::Error) -> SymbolError {
+        SymbolError::IoError(err)
+    }
+}
+impl From<crypto_common::InvalidLength> for SymbolError {
+    fn from(err: crypto_common::InvalidLength) -> SymbolError {
+        SymbolError::InvalidLengthError(err)
     }
 }
 
@@ -74,7 +79,7 @@ impl ModelsSignature for Signature {
     fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -107,12 +112,12 @@ impl ModelsPublicKey for PublicKey {
     fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
         let (bytes, rest) = payload.split_at(Self::SIZE);
-        Ok((Self::from_bytes(bytes.try_into()?).unwrap(), rest))
+        Ok((Self::from_bytes(bytes.try_into()?)?, rest))
     }
     fn serialize(&self) -> Vec<u8> {
         self.to_bytes().to_vec()
@@ -135,7 +140,7 @@ impl NetworkType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }

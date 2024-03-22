@@ -27,7 +27,7 @@ impl MosaicId {
         let bytes = decode(str)?;
         if bytes.len() != MosaicId::SIZE {
             return Err(SymbolError::SizeError {
-                expect: 8,
+                expect: vec![8],
                 real: bytes.len(),
             });
         }

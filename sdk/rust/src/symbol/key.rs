@@ -1,4 +1,5 @@
-pub use crate::symbol::models::*;
+use crate::symbol::models::*;
+pub use ed25519_dalek::Signer;
 
 pub trait ExtentionPublicKey
 where
@@ -63,7 +64,6 @@ impl ExtentionPrivateKey for PrivateKey {
         Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?))
     }
     fn sign_transaction<T: TraitMessage + TraitSignature>(&self, mut transaction: T) -> T {
-        use ed25519_dalek::Signer;
         let signature = self.sign(transaction.get_message());
         transaction.set_signature(signature);
         transaction

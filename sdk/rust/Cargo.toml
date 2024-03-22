@@ -23,6 +23,8 @@ cipher = "0.4.4"
 aes-gcm = "0.10.3"
 bip39 = "2.0.0"
 hmac = "0.12.1"
+byteorder = "1.5.0"
+crypto-common = "0.1.6"
 
 [features]
 private_network = []

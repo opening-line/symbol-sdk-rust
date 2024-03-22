@@ -37,7 +37,7 @@ def generate_bytearray(ast_model):
 
     ## deserialize
     ret += 'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {'
-    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
+    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: vec![Self::SIZE], real: payload.len()}) }'
     ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
     ret += 'Ok((Self(bytes.try_into()?), rest))'
     ret += '}'

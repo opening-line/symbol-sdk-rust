@@ -119,7 +119,7 @@ def generate_struct(ast_model):
         ft = f.field_type
         fs = f.size
         if f.name == 'size':
-            ret += f'if payload.len() < {fs} {{ return Err(SymbolError::SizeError{{expect: {fs}, real: payload.len()}}) }}'
+            ret += f'if payload.len() < {fs} {{ return Err(SymbolError::SizeError{{expect: vec![{fs}], real: payload.len()}}) }}'
         if type(ft) == catparser.ast.FixedSizeInteger:
             ret += f'let {fn} = {ft}::from_le_bytes(payload[..{fs}].try_into()?);'
             ret += f'payload = &payload[{fs}..];'
@@ -148,7 +148,7 @@ def generate_struct(ast_model):
             ret += f'({fn}, payload) = {ft}::deserialize(payload)?;'
         
         if f.name == 'size':
-            ret += f'if size as usize >= payload.len() + {fs} {{ return Err(SymbolError::SizeError{{expect: size as usize, real: payload.len() + {fs} }}); }}'
+            ret += f'if size as usize >= payload.len() + {fs} {{ return Err(SymbolError::SizeError{{expect: vec![size as usize], real: payload.len() + {fs} }}); }}'
         if f.is_reserved:
             ret += f'if {f.name} != 0 {{ return Err(SymbolError::ReservedIsNotZeroError({f.name} as u32)); }}'
         if util.constantized_by(f.name, ast_model):

@@ -22,7 +22,7 @@ impl ExtentionAddress for Address {
                     Ok(Address(arr))
                 } else {
                     Err(SymbolError::SizeError {
-                        expect: Address::SIZE,
+                        expect: vec![Address::SIZE],
                         real: bytes.len(),
                     })
                 }

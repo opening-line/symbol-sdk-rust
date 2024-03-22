@@ -444,3 +444,119 @@ fn test6_bip39_derivation() {
         }
     }
 }
+
+#[test]
+fn test7_voting_keys_generation() {
+    #[derive(Deserialize, Debug)]
+    #[allow(non_snake_case)]
+    struct Test {
+        name: String,
+        rootPrivateKey: String,
+        startEpoch: u64,
+        endEpoch: u64,
+        expectedFileHex: String,
+    }
+
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/7.test-voting-keys-generation.json";
+    let tests_json_str = read_to_string(tests_path).unwrap();
+    let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
+
+    struct SeededPrivateKeyGenerator {
+        values: Vec<PrivateKey>,
+        next_index: usize,
+    }
+
+    impl SeededPrivateKeyGenerator {
+        fn new(values: Vec<PrivateKey>) -> Self {
+            Self {
+                values: values,
+                next_index: 0,
+            }
+        }
+    }
+
+    impl KeyGenerator for SeededPrivateKeyGenerator {
+        fn generate(&mut self) -> PrivateKey {
+            self.next_index += 1;
+            self.values[self.next_index - 1].clone()
+        }
+    }
+
+    struct FibPrivateKeyGenerator {
+        fill_private_key: bool,
+        value1: u32,
+        value2: u32,
+    }
+
+    impl FibPrivateKeyGenerator {
+        fn new(fill_private_key: bool) -> Self {
+            Self {
+                fill_private_key: fill_private_key,
+                value1: 1,
+                value2: 2,
+            }
+        }
+    }
+
+    impl KeyGenerator for FibPrivateKeyGenerator {
+        fn generate(&mut self) -> PrivateKey {
+            let next_value = self.value1 + self.value2;
+            self.value1 = self.value2;
+            self.value2 = next_value;
+
+            let seed_value = next_value as u8;
+
+            let mut private_key_buffer = [0u8; PrivateKey::SIZE];
+            if self.fill_private_key {
+                for i in 0..PrivateKey::SIZE {
+                    private_key_buffer[i] = (seed_value as u16 + i as u16) as u8;
+                }
+            } else {
+                private_key_buffer[private_key_buffer.len() - 1] = seed_value;
+            }
+
+            PrivateKey::from_bytes(&private_key_buffer)
+        }
+    }
+
+    for test in tests {
+        let name = test.name;
+        let root_private_key = PrivateKey::from_str(&test.rootPrivateKey).unwrap();
+        let start_epoch = test.startEpoch;
+        let end_epoch = test.endEpoch;
+        let expected_file_hex = decode(test.expectedFileHex).unwrap();
+
+        let voting_keys_buffer = match name.as_str() {
+            "test_vector_1" => {
+                VotingKeysGenerator::new(root_private_key, FibPrivateKeyGenerator::new(false))
+                    .generate(start_epoch, end_epoch)
+            }
+            "test_vector_2" => {
+                VotingKeysGenerator::new(root_private_key, FibPrivateKeyGenerator::new(true))
+                    .generate(start_epoch, end_epoch)
+            }
+            "test_vector_3" => VotingKeysGenerator::new(
+                root_private_key,
+                SeededPrivateKeyGenerator::new(vec![
+                    PrivateKey::from_str(
+                        "12F98B7CB64A6D840931A2B624FB1EACAFA2C25C3EF0018CD67E8D470A248B2F",
+                    )
+                    .unwrap(),
+                    PrivateKey::from_str(
+                        "B5593870940F28DAEE262B26367B69143AD85E43048D23E624F4ED8008C0427F",
+                    )
+                    .unwrap(),
+                    PrivateKey::from_str(
+                        "6CFC879ABCCA78F5A4C9739852C7C643AEC3990E93BF4C6F685EB58224B16A59",
+                    )
+                    .unwrap(),
+                ]),
+            )
+            .generate(start_epoch, end_epoch),
+            _ => panic!("unexpected."),
+        }
+        .unwrap();
+
+        assert_eq!(expected_file_hex, voting_keys_buffer);
+    }
+}

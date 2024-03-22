@@ -1,9 +1,10 @@
-pub mod models;
-pub mod models_header;
+pub(crate) mod models;
+pub(crate) mod models_header;
 
-pub mod addoress;
-pub mod bip;
-pub mod cipher;
-pub mod key;
+pub(crate) mod addoress;
+pub(crate) mod bip;
+pub(crate) mod cipher;
+pub(crate) mod key;
+pub(crate) mod voting_keys_generator;
 
 pub mod prelude;

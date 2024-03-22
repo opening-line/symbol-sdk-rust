@@ -44,7 +44,7 @@ impl Amount {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -84,7 +84,7 @@ impl BlockDuration {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -125,7 +125,7 @@ impl BlockFeeMultiplier {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -168,7 +168,7 @@ impl Difficulty {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -209,7 +209,7 @@ impl FinalizationEpoch {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -250,7 +250,7 @@ impl FinalizationPoint {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -291,7 +291,7 @@ impl Height {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -332,7 +332,7 @@ impl Importance {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -372,7 +372,7 @@ impl ImportanceHeight {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -413,7 +413,7 @@ impl UnresolvedMosaicId {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -453,7 +453,7 @@ impl MosaicId {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -494,7 +494,7 @@ impl Timestamp {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -533,7 +533,7 @@ impl UnresolvedAddress {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -570,7 +570,7 @@ impl Address {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -608,7 +608,7 @@ impl Hash256 {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -646,7 +646,7 @@ impl Hash512 {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -683,7 +683,7 @@ impl VotingPublicKey {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -894,7 +894,7 @@ impl LinkAction {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -954,7 +954,7 @@ impl NetworkType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -1104,7 +1104,7 @@ impl TransactionType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -1404,7 +1404,7 @@ impl Transaction {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -1412,7 +1412,7 @@ impl Transaction {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -2708,7 +2708,7 @@ impl EmbeddedTransaction {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -2716,7 +2716,7 @@ impl EmbeddedTransaction {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -3580,7 +3580,7 @@ impl ProofGamma {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -3616,7 +3616,7 @@ impl ProofVerificationHash {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -3652,7 +3652,7 @@ impl ProofScalar {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -3707,7 +3707,7 @@ impl BlockType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -4142,7 +4142,7 @@ impl Block {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -4150,7 +4150,7 @@ impl Block {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -4864,7 +4864,7 @@ impl NemesisBlockV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -4872,7 +4872,7 @@ impl NemesisBlockV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -5499,7 +5499,7 @@ impl NormalBlockV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -5507,7 +5507,7 @@ impl NormalBlockV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -6183,7 +6183,7 @@ impl ImportanceBlockV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -6191,7 +6191,7 @@ impl ImportanceBlockV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -6633,7 +6633,7 @@ impl ReceiptType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -6792,7 +6792,7 @@ impl Receipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -6800,7 +6800,7 @@ impl Receipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -7207,7 +7207,7 @@ impl HarvestFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -7215,7 +7215,7 @@ impl HarvestFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -7396,7 +7396,7 @@ impl InflationReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -7404,7 +7404,7 @@ impl InflationReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -7591,7 +7591,7 @@ impl LockHashCreatedFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -7599,7 +7599,7 @@ impl LockHashCreatedFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -7799,7 +7799,7 @@ impl LockHashCompletedFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -7807,7 +7807,7 @@ impl LockHashCompletedFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -8007,7 +8007,7 @@ impl LockHashExpiredFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -8015,7 +8015,7 @@ impl LockHashExpiredFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -8215,7 +8215,7 @@ impl LockSecretCreatedFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -8223,7 +8223,7 @@ impl LockSecretCreatedFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -8423,7 +8423,7 @@ impl LockSecretCompletedFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -8431,7 +8431,7 @@ impl LockSecretCompletedFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -8631,7 +8631,7 @@ impl LockSecretExpiredFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -8639,7 +8639,7 @@ impl LockSecretExpiredFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -8823,7 +8823,7 @@ impl MosaicExpiredReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -8831,7 +8831,7 @@ impl MosaicExpiredReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -9047,7 +9047,7 @@ impl MosaicRentalFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -9055,7 +9055,7 @@ impl MosaicRentalFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -9125,7 +9125,7 @@ impl NamespaceId {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -9177,7 +9177,7 @@ impl NamespaceRegistrationType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -9235,7 +9235,7 @@ impl AliasAction {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -9399,7 +9399,7 @@ impl NamespaceExpiredReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -9407,7 +9407,7 @@ impl NamespaceExpiredReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -9586,7 +9586,7 @@ impl NamespaceDeletedReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -9594,7 +9594,7 @@ impl NamespaceDeletedReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -9810,7 +9810,7 @@ impl NamespaceRentalFeeReceipt {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -9818,7 +9818,7 @@ impl NamespaceRentalFeeReceipt {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -11118,7 +11118,7 @@ impl AccountKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -11126,7 +11126,7 @@ impl AccountKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -11486,7 +11486,7 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -11494,7 +11494,7 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -11882,7 +11882,7 @@ impl NodeKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -11890,7 +11890,7 @@ impl NodeKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -12250,7 +12250,7 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -12258,7 +12258,7 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -13026,7 +13026,7 @@ impl AggregateCompleteTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -13034,7 +13034,7 @@ impl AggregateCompleteTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -13563,7 +13563,7 @@ impl AggregateCompleteTransactionV2 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -13571,7 +13571,7 @@ impl AggregateCompleteTransactionV2 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -14102,7 +14102,7 @@ impl AggregateBondedTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -14110,7 +14110,7 @@ impl AggregateBondedTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -14641,7 +14641,7 @@ impl AggregateBondedTransactionV2 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -14649,7 +14649,7 @@ impl AggregateBondedTransactionV2 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -15131,7 +15131,7 @@ impl VotingKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -15139,7 +15139,7 @@ impl VotingKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -15543,7 +15543,7 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -15551,7 +15551,7 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -15950,7 +15950,7 @@ impl VrfKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -15958,7 +15958,7 @@ impl VrfKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -16318,7 +16318,7 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -16326,7 +16326,7 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -16734,7 +16734,7 @@ impl HashLockTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -16742,7 +16742,7 @@ impl HashLockTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -17124,7 +17124,7 @@ impl EmbeddedHashLockTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -17132,7 +17132,7 @@ impl EmbeddedHashLockTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -17254,7 +17254,7 @@ impl LockHashAlgorithm {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -17640,7 +17640,7 @@ impl SecretLockTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -17648,7 +17648,7 @@ impl SecretLockTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -18074,7 +18074,7 @@ impl EmbeddedSecretLockTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -18082,7 +18082,7 @@ impl EmbeddedSecretLockTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -18553,7 +18553,7 @@ impl SecretProofTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -18561,7 +18561,7 @@ impl SecretProofTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -19008,7 +19008,7 @@ impl EmbeddedSecretProofTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -19016,7 +19016,7 @@ impl EmbeddedSecretProofTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -19504,7 +19504,7 @@ impl AccountMetadataTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -19512,7 +19512,7 @@ impl AccountMetadataTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -19971,7 +19971,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -19979,7 +19979,7 @@ impl EmbeddedAccountMetadataTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -20483,7 +20483,7 @@ impl MosaicMetadataTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -20491,7 +20491,7 @@ impl MosaicMetadataTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -20972,7 +20972,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -20980,7 +20980,7 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -21489,7 +21489,7 @@ impl NamespaceMetadataTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -21497,7 +21497,7 @@ impl NamespaceMetadataTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -21978,7 +21978,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -21986,7 +21986,7 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -22111,7 +22111,7 @@ impl MosaicNonce {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -22181,7 +22181,7 @@ impl MosaicFlags {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -22250,7 +22250,7 @@ impl MosaicSupplyChangeAction {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -22639,7 +22639,7 @@ impl MosaicDefinitionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -22647,7 +22647,7 @@ impl MosaicDefinitionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -23079,7 +23079,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -23087,7 +23087,7 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -23506,7 +23506,7 @@ impl MosaicSupplyChangeTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -23514,7 +23514,7 @@ impl MosaicSupplyChangeTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -23896,7 +23896,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -23904,7 +23904,7 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -24296,7 +24296,7 @@ impl MosaicSupplyRevocationTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -24304,7 +24304,7 @@ impl MosaicSupplyRevocationTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -24664,7 +24664,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -24672,7 +24672,7 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -25187,7 +25187,7 @@ impl MultisigAccountModificationTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -25195,7 +25195,7 @@ impl MultisigAccountModificationTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -25726,7 +25726,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -25734,7 +25734,7 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -26183,7 +26183,7 @@ impl AddressAliasTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -26191,7 +26191,7 @@ impl AddressAliasTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -26573,7 +26573,7 @@ impl EmbeddedAddressAliasTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -26581,7 +26581,7 @@ impl EmbeddedAddressAliasTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -26991,7 +26991,7 @@ impl MosaicAliasTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -26999,7 +26999,7 @@ impl MosaicAliasTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -27381,7 +27381,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -27389,7 +27389,7 @@ impl EmbeddedMosaicAliasTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -27872,7 +27872,7 @@ impl NamespaceRegistrationTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -27880,7 +27880,7 @@ impl NamespaceRegistrationTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -28355,7 +28355,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -28363,7 +28363,7 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -28519,7 +28519,7 @@ impl AccountRestrictionFlags {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -28960,7 +28960,7 @@ impl AccountAddressRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -28968,7 +28968,7 @@ impl AccountAddressRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -29465,7 +29465,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -29473,7 +29473,7 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -29997,7 +29997,7 @@ impl AccountMosaicRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -30005,7 +30005,7 @@ impl AccountMosaicRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -30502,7 +30502,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -30510,7 +30510,7 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -31034,7 +31034,7 @@ impl AccountOperationRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -31042,7 +31042,7 @@ impl AccountOperationRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -31539,7 +31539,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -31547,7 +31547,7 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -32042,7 +32042,7 @@ impl MosaicAddressRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -32050,7 +32050,7 @@ impl MosaicAddressRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -32494,7 +32494,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -32502,7 +32502,7 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -32617,7 +32617,7 @@ impl MosaicRestrictionKey {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -32689,7 +32689,7 @@ impl MosaicRestrictionType {
     pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < Self::SIZE {
             return Err(SymbolError::SizeError {
-                expect: Self::SIZE,
+                expect: vec![Self::SIZE],
                 real: payload.len(),
             });
         }
@@ -33129,7 +33129,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -33137,7 +33137,7 @@ impl MosaicGlobalRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -33625,7 +33625,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -33633,7 +33633,7 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -34166,7 +34166,7 @@ impl TransferTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -34174,7 +34174,7 @@ impl TransferTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }
@@ -34704,7 +34704,7 @@ impl EmbeddedTransferTransactionV1 {
     pub fn deserialize(mut payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {
         if payload.len() < 4 {
             return Err(SymbolError::SizeError {
-                expect: 4,
+                expect: vec![4],
                 real: payload.len(),
             });
         }
@@ -34712,7 +34712,7 @@ impl EmbeddedTransferTransactionV1 {
         payload = &payload[4..];
         if size as usize >= payload.len() + 4 {
             return Err(SymbolError::SizeError {
-                expect: size as usize,
+                expect: vec![size as usize],
                 real: payload.len() + 4,
             });
         }

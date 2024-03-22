@@ -14,7 +14,7 @@ pub struct Bip32Node {
 impl Bip32Node {
     pub const ROOT_HMAC_KEY: &'static [u8] = "ed25519 seed".as_bytes();
     pub fn new(hmac_key: &[u8], data: &[u8]) -> Result<Self, SymbolError> {
-        let mut hmac = HmacSha512::new_from_slice(hmac_key).unwrap();
+        let mut hmac = HmacSha512::new_from_slice(hmac_key)?;
         hmac.update(data);
 
         let result = hmac.finalize().into_bytes();

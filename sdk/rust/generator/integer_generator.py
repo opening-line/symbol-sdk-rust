@@ -41,7 +41,7 @@ def generate_integer(ast_model):
 
     ## deserialize
     ret += 'pub fn deserialize(payload: &[u8]) -> Result<(Self, &[u8]), SymbolError> {'
-    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: Self::SIZE, real: payload.len()}) }'
+    ret += 'if payload.len() < Self::SIZE { return Err(SymbolError::SizeError{expect: vec![Self::SIZE], real: payload.len()}) }'
     ret += 'let (bytes, rest) = payload.split_at(Self::SIZE);'
     ret += f'let value = {value_type}::from_le_bytes(bytes.try_into()?);'
     ret += 'Ok((Self(value), rest))'
