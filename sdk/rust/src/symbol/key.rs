@@ -6,7 +6,7 @@ where
     Self: Sized,
 {
     fn from_str(str: &str) -> Result<Self, SymbolError>;
-    fn address(&self, network: NetworkType) -> Address;
+    fn address(&self, network: NetworkType) -> UnresolvedAddress;
     fn verify_transaction<T: TraitMessage + TraitSignature>(
         &self,
         transaction: &T,
@@ -17,7 +17,7 @@ impl ExtentionPublicKey for PublicKey {
     fn from_str(str: &str) -> Result<Self, SymbolError> {
         Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?)?)
     }
-    fn address(&self, network_type: NetworkType) -> Address {
+    fn address(&self, network_type: NetworkType) -> UnresolvedAddress {
         use ripemd::Ripemd160;
         use sha3::Sha3_256;
 
@@ -32,7 +32,7 @@ impl ExtentionPublicKey for PublicKey {
         let mut address = version;
         address.append(&mut checksum);
 
-        Address::new(address.try_into().unwrap())
+        UnresolvedAddress::new(address.try_into().unwrap())
     }
     fn verify_transaction<T: TraitMessage + TraitSignature>(
         &self,

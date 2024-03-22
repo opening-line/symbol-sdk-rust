@@ -1,7 +1,7 @@
 pub(crate) mod models;
 pub(crate) mod models_header;
 
-pub(crate) mod addoress;
+pub(crate) mod address;
 pub(crate) mod bip;
 pub(crate) mod cipher;
 pub(crate) mod key;

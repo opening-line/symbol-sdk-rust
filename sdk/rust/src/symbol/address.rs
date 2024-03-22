@@ -1,28 +1,28 @@
 use crate::symbol::models::*;
 
-pub trait ExtentionAddress
+pub trait ExtentionUnresolvedAddress
 where
     Self: Sized,
 {
     fn to_string(&self) -> String;
-    fn from_str(s: &str) -> Result<Address, SymbolError>;
+    fn from_str(s: &str) -> Result<UnresolvedAddress, SymbolError>;
     fn mosaic_id(&self, nonce: &MosaicNonce) -> MosaicId;
 }
 
-impl ExtentionAddress for Address {
+impl ExtentionUnresolvedAddress for UnresolvedAddress {
     fn to_string(&self) -> String {
         base32::encode(base32::Alphabet::RFC4648 { padding: false }, &self.0)
     }
-    fn from_str(s: &str) -> Result<Address, SymbolError> {
+    fn from_str(s: &str) -> Result<UnresolvedAddress, SymbolError> {
         match base32::decode(base32::Alphabet::RFC4648 { padding: false }, s) {
             Some(bytes) => {
-                if bytes.len() == Address::SIZE {
-                    let mut arr = [0u8; Address::SIZE];
-                    arr.copy_from_slice(&bytes[0..Address::SIZE]);
-                    Ok(Address(arr))
+                if bytes.len() == UnresolvedAddress::SIZE {
+                    let mut arr = [0u8; UnresolvedAddress::SIZE];
+                    arr.copy_from_slice(&bytes[0..UnresolvedAddress::SIZE]);
+                    Ok(UnresolvedAddress(arr))
                 } else {
                     Err(SymbolError::SizeError {
-                        expect: vec![Address::SIZE],
+                        expect: vec![UnresolvedAddress::SIZE],
                         real: bytes.len(),
                     })
                 }

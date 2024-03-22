@@ -4957,12 +4957,12 @@ impl NemesisBlockV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let height = self.height.serialize();
@@ -5587,12 +5587,12 @@ impl NormalBlockV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let height = self.height.serialize();
@@ -6276,12 +6276,12 @@ impl ImportanceBlockV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let height = self.height.serialize();
@@ -7235,7 +7235,7 @@ impl HarvestFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -7418,7 +7418,7 @@ impl InflationReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -7619,7 +7619,7 @@ impl LockHashCreatedFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -7827,7 +7827,7 @@ impl LockHashCompletedFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -8035,7 +8035,7 @@ impl LockHashExpiredFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -8243,7 +8243,7 @@ impl LockSecretCreatedFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -8451,7 +8451,7 @@ impl LockSecretCompletedFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -8659,7 +8659,7 @@ impl LockSecretExpiredFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -8848,7 +8848,7 @@ impl MosaicExpiredReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let artifact_id = self.artifact_id.serialize();
@@ -9078,7 +9078,7 @@ impl MosaicRentalFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -9424,7 +9424,7 @@ impl NamespaceExpiredReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let artifact_id = self.artifact_id.serialize();
@@ -9611,7 +9611,7 @@ impl NamespaceDeletedReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let artifact_id = self.artifact_id.serialize();
@@ -9841,7 +9841,7 @@ impl NamespaceRentalFeeReceipt {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let version = self.version.to_le_bytes();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -10163,7 +10163,7 @@ impl AddressResolutionStatement {
     }
     pub fn serialize(&self) -> Vec<u8> {
         let unresolved = self.unresolved.serialize();
-        let resolution_entries_count = self.resolution_entries.len().to_le_bytes();
+        let resolution_entries_count = (self.resolution_entries.len() as u32).to_le_bytes();
         let resolution_entries: Vec<u8> = self
             .resolution_entries
             .iter()
@@ -10384,7 +10384,7 @@ impl MosaicResolutionStatement {
     }
     pub fn serialize(&self) -> Vec<u8> {
         let unresolved = self.unresolved.serialize();
-        let resolution_entries_count = self.resolution_entries.len().to_le_bytes();
+        let resolution_entries_count = (self.resolution_entries.len() as u32).to_le_bytes();
         let resolution_entries: Vec<u8> = self
             .resolution_entries
             .iter()
@@ -10544,7 +10544,7 @@ impl TransactionStatement {
     pub fn serialize(&self) -> Vec<u8> {
         let primary_id = self.primary_id.to_le_bytes();
         let secondary_id = self.secondary_id.to_le_bytes();
-        let receipt_count = self.receipts.len().to_le_bytes();
+        let receipt_count = (self.receipts.len() as u32).to_le_bytes();
         let receipts: Vec<u8> = self.receipts.iter().flat_map(|x| x.serialize()).collect();
         [
             primary_id.iter(),
@@ -10769,21 +10769,21 @@ impl BlockStatement {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let transaction_statement_count = self.transaction_statements.len().to_le_bytes();
+        let transaction_statement_count = (self.transaction_statements.len() as u32).to_le_bytes();
         let transaction_statements: Vec<u8> = self
             .transaction_statements
             .iter()
             .flat_map(|x| x.serialize())
             .collect();
         let address_resolution_statement_count =
-            self.address_resolution_statements.len().to_le_bytes();
+            (self.address_resolution_statements.len() as u32).to_le_bytes();
         let address_resolution_statements: Vec<u8> = self
             .address_resolution_statements
             .iter()
             .flat_map(|x| x.serialize())
             .collect();
         let mosaic_resolution_statement_count =
-            self.mosaic_resolution_statements.len().to_le_bytes();
+            (self.mosaic_resolution_statements.len() as u32).to_le_bytes();
         let mosaic_resolution_statements: Vec<u8> = self
             .mosaic_resolution_statements
             .iter()
@@ -11174,12 +11174,12 @@ impl AccountKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -11533,11 +11533,11 @@ impl EmbeddedAccountKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let linked_public_key = self.linked_public_key.serialize();
@@ -11938,12 +11938,12 @@ impl NodeKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -12297,11 +12297,11 @@ impl EmbeddedNodeKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let linked_public_key = self.linked_public_key.serialize();
@@ -13102,18 +13102,18 @@ impl AggregateCompleteTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let transactions_hash = self.transactions_hash.serialize();
-        let payload_size = self.transactions.len().to_le_bytes();
+        let payload_size = (self.transactions.len() as u32).to_le_bytes();
         let aggregate_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let transactions: Vec<u8> = self
             .transactions
@@ -13639,18 +13639,18 @@ impl AggregateCompleteTransactionV2 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let transactions_hash = self.transactions_hash.serialize();
-        let payload_size = self.transactions.len().to_le_bytes();
+        let payload_size = (self.transactions.len() as u32).to_le_bytes();
         let aggregate_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let transactions: Vec<u8> = self
             .transactions
@@ -14178,18 +14178,18 @@ impl AggregateBondedTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let transactions_hash = self.transactions_hash.serialize();
-        let payload_size = self.transactions.len().to_le_bytes();
+        let payload_size = (self.transactions.len() as u32).to_le_bytes();
         let aggregate_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let transactions: Vec<u8> = self
             .transactions
@@ -14717,18 +14717,18 @@ impl AggregateBondedTransactionV2 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let transactions_hash = self.transactions_hash.serialize();
-        let payload_size = self.transactions.len().to_le_bytes();
+        let payload_size = (self.transactions.len() as u32).to_le_bytes();
         let aggregate_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let transactions: Vec<u8> = self
             .transactions
@@ -15193,12 +15193,12 @@ impl VotingKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -15596,11 +15596,11 @@ impl EmbeddedVotingKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let linked_public_key = self.linked_public_key.serialize();
@@ -16006,12 +16006,12 @@ impl VrfKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -16365,11 +16365,11 @@ impl EmbeddedVrfKeyLinkTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let linked_public_key = self.linked_public_key.serialize();
@@ -16793,12 +16793,12 @@ impl HashLockTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -17174,11 +17174,11 @@ impl EmbeddedHashLockTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let mosaic = self.mosaic.serialize();
@@ -17705,12 +17705,12 @@ impl SecretLockTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -18130,11 +18130,11 @@ impl EmbeddedSecretLockTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let recipient_address = self.recipient_address.serialize();
@@ -18623,19 +18623,19 @@ impl SecretProofTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let recipient_address = self.recipient_address.serialize();
         let secret = self.secret.serialize();
-        let proof_size = self.proof.len().to_le_bytes();
+        let proof_size = (self.proof.len() as u16).to_le_bytes();
         let hash_algorithm = self.hash_algorithm.serialize();
         let proof: Vec<u8> = self.proof.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
@@ -19069,16 +19069,16 @@ impl EmbeddedSecretProofTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let recipient_address = self.recipient_address.serialize();
         let secret = self.secret.serialize();
-        let proof_size = self.proof.len().to_le_bytes();
+        let proof_size = (self.proof.len() as u16).to_le_bytes();
         let hash_algorithm = self.hash_algorithm.serialize();
         let proof: Vec<u8> = self.proof.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
@@ -19574,12 +19574,12 @@ impl AccountMetadataTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -19587,7 +19587,7 @@ impl AccountMetadataTransactionV1 {
         let target_address = self.target_address.serialize();
         let scoped_metadata_key = self.scoped_metadata_key.to_le_bytes();
         let value_size_delta = self.value_size_delta.to_le_bytes();
-        let value_size = self.value.len().to_le_bytes();
+        let value_size = (self.value.len() as u16).to_le_bytes();
         let value: Vec<u8> = self.value.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -20032,17 +20032,17 @@ impl EmbeddedAccountMetadataTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let target_address = self.target_address.serialize();
         let scoped_metadata_key = self.scoped_metadata_key.to_le_bytes();
         let value_size_delta = self.value_size_delta.to_le_bytes();
-        let value_size = self.value.len().to_le_bytes();
+        let value_size = (self.value.len() as u16).to_le_bytes();
         let value: Vec<u8> = self.value.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -20556,12 +20556,12 @@ impl MosaicMetadataTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -20570,7 +20570,7 @@ impl MosaicMetadataTransactionV1 {
         let scoped_metadata_key = self.scoped_metadata_key.to_le_bytes();
         let target_mosaic_id = self.target_mosaic_id.serialize();
         let value_size_delta = self.value_size_delta.to_le_bytes();
-        let value_size = self.value.len().to_le_bytes();
+        let value_size = (self.value.len() as u16).to_le_bytes();
         let value: Vec<u8> = self.value.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -21036,18 +21036,18 @@ impl EmbeddedMosaicMetadataTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let target_address = self.target_address.serialize();
         let scoped_metadata_key = self.scoped_metadata_key.to_le_bytes();
         let target_mosaic_id = self.target_mosaic_id.serialize();
         let value_size_delta = self.value_size_delta.to_le_bytes();
-        let value_size = self.value.len().to_le_bytes();
+        let value_size = (self.value.len() as u16).to_le_bytes();
         let value: Vec<u8> = self.value.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -21562,12 +21562,12 @@ impl NamespaceMetadataTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -21576,7 +21576,7 @@ impl NamespaceMetadataTransactionV1 {
         let scoped_metadata_key = self.scoped_metadata_key.to_le_bytes();
         let target_namespace_id = self.target_namespace_id.serialize();
         let value_size_delta = self.value_size_delta.to_le_bytes();
-        let value_size = self.value.len().to_le_bytes();
+        let value_size = (self.value.len() as u16).to_le_bytes();
         let value: Vec<u8> = self.value.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -22042,18 +22042,18 @@ impl EmbeddedNamespaceMetadataTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let target_address = self.target_address.serialize();
         let scoped_metadata_key = self.scoped_metadata_key.to_le_bytes();
         let target_namespace_id = self.target_namespace_id.serialize();
         let value_size_delta = self.value_size_delta.to_le_bytes();
-        let value_size = self.value.len().to_le_bytes();
+        let value_size = (self.value.len() as u16).to_le_bytes();
         let value: Vec<u8> = self.value.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -22704,12 +22704,12 @@ impl MosaicDefinitionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -23135,11 +23135,11 @@ impl EmbeddedMosaicDefinitionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let id = self.id.serialize();
@@ -23565,12 +23565,12 @@ impl MosaicSupplyChangeTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -23946,11 +23946,11 @@ impl EmbeddedMosaicSupplyChangeTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let mosaic_id = self.mosaic_id.serialize();
@@ -24352,12 +24352,12 @@ impl MosaicSupplyRevocationTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -24711,11 +24711,11 @@ impl EmbeddedMosaicSupplyRevocationTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let source_address = self.source_address.serialize();
@@ -25269,20 +25269,20 @@ impl MultisigAccountModificationTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let min_removal_delta = self.min_removal_delta.to_le_bytes();
         let min_approval_delta = self.min_approval_delta.to_le_bytes();
-        let address_additions_count = self.address_additions.len().to_le_bytes();
-        let address_deletions_count = self.address_deletions.len().to_le_bytes();
+        let address_additions_count = (self.address_additions.len() as u8).to_le_bytes();
+        let address_deletions_count = (self.address_deletions.len() as u8).to_le_bytes();
         let multisig_account_modification_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let address_additions: Vec<u8> = self
             .address_additions
@@ -25799,17 +25799,17 @@ impl EmbeddedMultisigAccountModificationTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let min_removal_delta = self.min_removal_delta.to_le_bytes();
         let min_approval_delta = self.min_approval_delta.to_le_bytes();
-        let address_additions_count = self.address_additions.len().to_le_bytes();
-        let address_deletions_count = self.address_deletions.len().to_le_bytes();
+        let address_additions_count = (self.address_additions.len() as u8).to_le_bytes();
+        let address_deletions_count = (self.address_deletions.len() as u8).to_le_bytes();
         let multisig_account_modification_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let address_additions: Vec<u8> = self
             .address_additions
@@ -26242,12 +26242,12 @@ impl AddressAliasTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -26623,11 +26623,11 @@ impl EmbeddedAddressAliasTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let namespace_id = self.namespace_id.serialize();
@@ -27050,12 +27050,12 @@ impl MosaicAliasTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -27431,11 +27431,11 @@ impl EmbeddedMosaicAliasTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let namespace_id = self.namespace_id.serialize();
@@ -27945,12 +27945,12 @@ impl NamespaceRegistrationTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -27959,7 +27959,7 @@ impl NamespaceRegistrationTransactionV1 {
         let parent_id = self.parent_id.serialize();
         let id = self.id.serialize();
         let registration_type_ = self.registration_type_.serialize();
-        let name_size = self.name.len().to_le_bytes();
+        let name_size = (self.name.len() as u8).to_le_bytes();
         let name: Vec<u8> = self.name.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -28419,18 +28419,18 @@ impl EmbeddedNamespaceRegistrationTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let duration = self.duration.serialize();
         let parent_id = self.parent_id.serialize();
         let id = self.id.serialize();
         let registration_type_ = self.registration_type_.serialize();
-        let name_size = self.name.len().to_le_bytes();
+        let name_size = (self.name.len() as u8).to_le_bytes();
         let name: Vec<u8> = self.name.iter().flat_map(|x| x.to_le_bytes()).collect();
         [
             size.iter(),
@@ -29039,19 +29039,19 @@ impl AccountAddressRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let restriction_flags = self.restriction_flags.serialize();
-        let restriction_additions_count = self.restriction_additions.len().to_le_bytes();
-        let restriction_deletions_count = self.restriction_deletions.len().to_le_bytes();
+        let restriction_additions_count = (self.restriction_additions.len() as u8).to_le_bytes();
+        let restriction_deletions_count = (self.restriction_deletions.len() as u8).to_le_bytes();
         let account_restriction_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let restriction_additions: Vec<u8> = self
             .restriction_additions
@@ -29535,16 +29535,16 @@ impl EmbeddedAccountAddressRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let restriction_flags = self.restriction_flags.serialize();
-        let restriction_additions_count = self.restriction_additions.len().to_le_bytes();
-        let restriction_deletions_count = self.restriction_deletions.len().to_le_bytes();
+        let restriction_additions_count = (self.restriction_additions.len() as u8).to_le_bytes();
+        let restriction_deletions_count = (self.restriction_deletions.len() as u8).to_le_bytes();
         let account_restriction_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let restriction_additions: Vec<u8> = self
             .restriction_additions
@@ -30076,19 +30076,19 @@ impl AccountMosaicRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let restriction_flags = self.restriction_flags.serialize();
-        let restriction_additions_count = self.restriction_additions.len().to_le_bytes();
-        let restriction_deletions_count = self.restriction_deletions.len().to_le_bytes();
+        let restriction_additions_count = (self.restriction_additions.len() as u8).to_le_bytes();
+        let restriction_deletions_count = (self.restriction_deletions.len() as u8).to_le_bytes();
         let account_restriction_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let restriction_additions: Vec<u8> = self
             .restriction_additions
@@ -30572,16 +30572,16 @@ impl EmbeddedAccountMosaicRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let restriction_flags = self.restriction_flags.serialize();
-        let restriction_additions_count = self.restriction_additions.len().to_le_bytes();
-        let restriction_deletions_count = self.restriction_deletions.len().to_le_bytes();
+        let restriction_additions_count = (self.restriction_additions.len() as u8).to_le_bytes();
+        let restriction_deletions_count = (self.restriction_deletions.len() as u8).to_le_bytes();
         let account_restriction_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let restriction_additions: Vec<u8> = self
             .restriction_additions
@@ -31113,19 +31113,19 @@ impl AccountOperationRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let restriction_flags = self.restriction_flags.serialize();
-        let restriction_additions_count = self.restriction_additions.len().to_le_bytes();
-        let restriction_deletions_count = self.restriction_deletions.len().to_le_bytes();
+        let restriction_additions_count = (self.restriction_additions.len() as u8).to_le_bytes();
+        let restriction_deletions_count = (self.restriction_deletions.len() as u8).to_le_bytes();
         let account_restriction_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let restriction_additions: Vec<u8> = self
             .restriction_additions
@@ -31609,16 +31609,16 @@ impl EmbeddedAccountOperationRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let restriction_flags = self.restriction_flags.serialize();
-        let restriction_additions_count = self.restriction_additions.len().to_le_bytes();
-        let restriction_deletions_count = self.restriction_deletions.len().to_le_bytes();
+        let restriction_additions_count = (self.restriction_additions.len() as u8).to_le_bytes();
+        let restriction_deletions_count = (self.restriction_deletions.len() as u8).to_le_bytes();
         let account_restriction_transaction_body_reserved_1 = 0u32.to_le_bytes();
         let restriction_additions: Vec<u8> = self
             .restriction_additions
@@ -32107,12 +32107,12 @@ impl MosaicAddressRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -32550,11 +32550,11 @@ impl EmbeddedMosaicAddressRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let mosaic_id = self.mosaic_id.serialize();
@@ -33200,12 +33200,12 @@ impl MosaicGlobalRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
@@ -33687,11 +33687,11 @@ impl EmbeddedMosaicGlobalRestrictionTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let mosaic_id = self.mosaic_id.serialize();
@@ -34253,19 +34253,19 @@ impl TransferTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let verifiable_entity_header_reserved_1 = 0u32.to_le_bytes();
         let signature = self.signature.serialize();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let fee = self.fee.serialize();
         let deadline = self.deadline.serialize();
         let recipient_address = self.recipient_address.serialize();
-        let message_size = self.message.len().to_le_bytes();
-        let mosaics_count = self.mosaics.len().to_le_bytes();
+        let message_size = (self.message.len() as u16).to_le_bytes();
+        let mosaics_count = (self.mosaics.len() as u8).to_le_bytes();
         let transfer_transaction_body_reserved_1 = 0u8.to_le_bytes();
         let transfer_transaction_body_reserved_2 = 0u32.to_le_bytes();
         let mosaics: Vec<u8> = self.mosaics.iter().flat_map(|x| x.serialize()).collect();
@@ -34782,16 +34782,16 @@ impl EmbeddedTransferTransactionV1 {
         Ok((self_, payload))
     }
     pub fn serialize(&self) -> Vec<u8> {
-        let size = self.size().to_le_bytes();
+        let size = (self.size() as u32).to_le_bytes();
         let embedded_transaction_header_reserved_1 = 0u32.to_le_bytes();
         let signer_public_key = self.signer_public_key.serialize();
         let entity_body_reserved_1 = 0u32.to_le_bytes();
-        let version = self.version().to_le_bytes();
+        let version = (self.version() as u8).to_le_bytes();
         let network = self.network.serialize();
         let type_ = self.type_().serialize();
         let recipient_address = self.recipient_address.serialize();
-        let message_size = self.message.len().to_le_bytes();
-        let mosaics_count = self.mosaics.len().to_le_bytes();
+        let message_size = (self.message.len() as u16).to_le_bytes();
+        let mosaics_count = (self.mosaics.len() as u8).to_le_bytes();
         let transfer_transaction_body_reserved_1 = 0u8.to_le_bytes();
         let transfer_transaction_body_reserved_2 = 0u32.to_le_bytes();
         let mosaics: Vec<u8> = self.mosaics.iter().flat_map(|x| x.serialize()).collect();

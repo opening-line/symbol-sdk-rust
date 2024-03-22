@@ -103,14 +103,14 @@ fn test1_address_with_public_network() {
         assert_eq!(address_public.to_string(), test.address_Public);
         assert_eq!(
             address_public,
-            Address::from_str(&test.address_Public).unwrap()
+            UnresolvedAddress::from_str(&test.address_Public).unwrap()
         );
 
         let address_public_test = pubilc_key.address(NetworkType::TESTNET);
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
         assert_eq!(
             address_public_test,
-            Address::from_str(&test.address_PublicTest).unwrap()
+            UnresolvedAddress::from_str(&test.address_PublicTest).unwrap()
         );
     }
 }
@@ -140,14 +140,14 @@ fn test1_address_with_private_network() {
         assert_eq!(address_public.to_string(), test.address_Private);
         assert_eq!(
             address_public,
-            Address::from_str(&test.address_Private).unwrap()
+            UnresolvedAddress::from_str(&test.address_Private).unwrap()
         );
 
         let address_public_test = pubilc_key.address(TEST_NETWORKTYPE);
         assert_eq!(address_public_test.to_string(), test.address_PrivateTest);
         assert_eq!(
             address_public_test,
-            Address::from_str(&test.address_PrivateTest).unwrap()
+            UnresolvedAddress::from_str(&test.address_PrivateTest).unwrap()
         );
     }
 }
@@ -291,9 +291,12 @@ fn test5_mosaic_with_public_network() {
         let address = public_key.address(NetworkType::MAINNET);
         let test_address = public_key.address(NetworkType::TESTNET);
 
-        assert_eq!(Address::from_str(&test.address_Public).unwrap(), address);
         assert_eq!(
-            Address::from_str(&test.address_PublicTest).unwrap(),
+            UnresolvedAddress::from_str(&test.address_Public).unwrap(),
+            address
+        );
+        assert_eq!(
+            UnresolvedAddress::from_str(&test.address_PublicTest).unwrap(),
             test_address
         );
 
@@ -338,9 +341,12 @@ fn test5_mosaic_with_private_network() {
         let address = public_key.address(MAIN_NETWORKTYPE);
         let test_address = public_key.address(TEST_NETWORKTYPE);
 
-        assert_eq!(Address::from_str(&test.address_Private).unwrap(), address);
         assert_eq!(
-            Address::from_str(&test.address_PrivateTest).unwrap(),
+            UnresolvedAddress::from_str(&test.address_Private).unwrap(),
+            address
+        );
+        assert_eq!(
+            UnresolvedAddress::from_str(&test.address_PrivateTest).unwrap(),
             test_address
         );
 

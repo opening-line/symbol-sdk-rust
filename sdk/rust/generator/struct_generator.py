@@ -176,7 +176,7 @@ def generate_struct(ast_model):
         fs = f.size
         if fn == 'size' or util.constantized_by(f.name, ast_model):
             if type(ft) == catparser.ast.FixedSizeInteger:
-                ret += f"let {fn} = self.{fn}().to_le_bytes();"
+                ret += f"let {fn} = (self.{fn}() as {ft}).to_le_bytes();"
             else:
                 ret += f"let {fn} = self.{fn}().serialize();"
         elif f.is_reserved:
@@ -184,7 +184,7 @@ def generate_struct(ast_model):
         elif util.is_size_of_other(f, ast_model):
             other_field = util.is_size_of_other(f, ast_model)
             ofn = other_field.name
-            ret += f'let {fn} = self.{ofn}.len().to_le_bytes();'
+            ret += f'let {fn} = (self.{ofn}.len() as {ft}).to_le_bytes();'
         elif type(ft) == catparser.ast.Array:
             fte = ft.element_type
             if type(fte) == catparser.ast.FixedSizeInteger:
