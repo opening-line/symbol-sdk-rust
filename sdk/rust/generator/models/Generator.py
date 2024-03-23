@@ -1,17 +1,16 @@
 #!/usr/bin/python
 
 from pathlib import Path
-from enum import Enum
 import catparser
 from catparser.DisplayType import DisplayType
 
 from generator import constant
 from generator import util
-from generator import array_generator
-from generator import integer_generator
-from generator import enum_generator
-from generator import struct_generator
-from generator import factory_generator
+from generator.models import array_generator
+from generator.models import integer_generator
+from generator.models import enum_generator
+from generator.models import struct_generator
+from generator.models import factory_generator
 
 class Generator:
     @staticmethod

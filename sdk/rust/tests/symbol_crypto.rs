@@ -4,9 +4,8 @@ use std::{fs::read_to_string, str::FromStr};
 
 use symbol::symbol::prelude::*;
 
-const TEST_VECTERS_PATH: &str = "../../tests/vectors/symbol";
+const TEST_VECTERS_PATH: &str = "../../tests/vectors/symbol/crypto";
 
-#[cfg(test)]
 fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {
     Hasher::new().chain_update(data).finalize().to_vec()
 }
@@ -22,7 +21,7 @@ fn test0_keccak_256() {
         data: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/0.test-keccak-256.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/0.test-keccak-256.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -47,7 +46,7 @@ fn test0_sha3_256() {
         data: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/0.test-sha3-256.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/0.test-sha3-256.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -70,7 +69,7 @@ fn test1_keys() {
         publicKey: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-keys.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/1.test-keys.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -92,7 +91,7 @@ fn test1_address_with_public_network() {
         address_PublicTest: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-address.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/1.test-address.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -129,7 +128,7 @@ fn test1_address_with_private_network() {
         address_PrivateTest: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/1.test-address.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/1.test-address.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -166,7 +165,7 @@ fn test2_sign() {
         signature: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/2.test-sign.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/2.test-sign.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -198,7 +197,7 @@ fn test3_derive_hkdf() {
         // For details, see https://github.com/symbol/symbol/tree/dev/tests/vectors/README.md.
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/3.test-derive-hkdf.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/3.test-derive-hkdf.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -233,7 +232,7 @@ fn test4_cipher() {
         clearText: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/4.test-cipher.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/4.test-cipher.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -281,7 +280,7 @@ fn test5_mosaic_with_public_network() {
         mosaicId_PublicTest: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/5.test-mosaic-id.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/5.test-mosaic-id.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -331,7 +330,7 @@ fn test5_mosaic_with_private_network() {
         mosaicId_PrivateTest: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/5.test-mosaic-id.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/5.test-mosaic-id.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -389,7 +388,7 @@ fn test6_bip32_derivation() {
         publicKey: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/6.test-hd-derivation.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/6.test-hd-derivation.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Test = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -434,7 +433,7 @@ fn test6_bip39_derivation() {
         seed: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/6.test-hd-derivation.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/6.test-hd-derivation.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Test = serde_json::from_str(&tests_json_str).unwrap();
 
@@ -463,7 +462,7 @@ fn test7_voting_keys_generation() {
         expectedFileHex: String,
     }
 
-    let tests_path = TEST_VECTERS_PATH.to_string() + "/crypto/7.test-voting-keys-generation.json";
+    let tests_path = TEST_VECTERS_PATH.to_string() + "/7.test-voting-keys-generation.json";
     let tests_json_str = read_to_string(tests_path).unwrap();
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 

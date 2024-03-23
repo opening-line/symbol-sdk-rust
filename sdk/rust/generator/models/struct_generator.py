@@ -1,5 +1,3 @@
-from pathlib import Path
-from enum import Enum
 import catparser
 from catparser.DisplayType import DisplayType
 from generator import constant

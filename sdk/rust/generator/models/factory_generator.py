@@ -1,5 +1,3 @@
-from pathlib import Path
-from enum import Enum
 import catparser
 from generator import util
 

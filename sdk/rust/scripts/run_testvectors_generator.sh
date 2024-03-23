@@ -2,7 +2,7 @@
 
 set -ex
 
-function generate_code() {
+function generate_model_vectors() {
 	# $1 blockchain
 
 	local git_root
@@ -11,11 +11,11 @@ function generate_code() {
 	PYTHONPATH="${git_root}/catbuffer/parser" python3 -m catparser \
 		--schema "${git_root}/catbuffer/schemas/$1/all_generated.cats"  \
 		--include "${git_root}/catbuffer/schemas/$1" \
-		--output "${git_root}/sdk/rust/src/$1" \
+		--output "${git_root}/sdk/rust/tests/${1}_models.rs" \
 		--quiet \
-		--generator generator.models.Generator
+		--generator generator.models_test_vector.Generator
 }
 
-generate_code "symbol"
+generate_model_vectors "symbol"
 cargo fmt
 cargo check
