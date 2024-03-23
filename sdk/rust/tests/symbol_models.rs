@@ -1,14 +1,6 @@
-use hex::{decode, encode};
-use serde::Deserialize;
-use std::{fs::read_to_string, str::FromStr};
-
+use hex::decode;
+use std::str::FromStr;
 use symbol::symbol::prelude::*;
-
-const TEST_VECTERS_PATH: &str = "../../tests/vectors/symbol";
-
-fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {
-    Hasher::new().chain_update(data).finalize().to_vec()
-}
 
 #[test]
 fn test_transaction() {
