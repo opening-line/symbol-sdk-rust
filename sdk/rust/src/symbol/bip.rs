@@ -53,6 +53,6 @@ impl Bip32Node {
         Ok(next_node)
     }
     pub fn public_key(&self) -> PublicKey {
-        self.private_key.pubilc_key()
+        self.private_key.public_key()
     }
 }
