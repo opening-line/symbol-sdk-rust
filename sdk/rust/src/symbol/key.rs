@@ -54,7 +54,7 @@ where
         &self,
         transaction: &T,
     ) -> Result<(), SymbolError>;
-    fn pubilc_key(&self) -> PublicKey;
+    fn public_key(&self) -> PublicKey;
     fn shared_key(&self, other_public_key: PublicKey) -> SharedKey;
 }
 
@@ -74,7 +74,7 @@ impl ExtentionPrivateKey for PrivateKey {
     ) -> Result<(), SymbolError> {
         self.verifying_key().verify_transaction(transaction)
     }
-    fn pubilc_key(&self) -> PublicKey {
+    fn public_key(&self) -> PublicKey {
         self.verifying_key()
     }
     fn shared_key(&self, other_public_key: PublicKey) -> SharedKey {

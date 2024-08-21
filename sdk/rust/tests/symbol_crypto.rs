@@ -76,7 +76,7 @@ fn test1_keys() {
     for test in tests {
         let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
         let public_key = PublicKey::from_str(&test.publicKey).unwrap();
-        assert_eq!(private_key.pubilc_key(), public_key);
+        assert_eq!(private_key.public_key(), public_key);
     }
 }
 
@@ -96,16 +96,16 @@ fn test1_address_with_public_network() {
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
     for test in tests {
-        let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
+        let public_key = PublicKey::from_str(&test.publicKey).unwrap();
 
-        let address_public = pubilc_key.address(NetworkType::MAINNET);
+        let address_public = public_key.address(NetworkType::MAINNET);
         assert_eq!(address_public.to_string(), test.address_Public);
         assert_eq!(
             address_public,
             UnresolvedAddress::from_str(&test.address_Public).unwrap()
         );
 
-        let address_public_test = pubilc_key.address(NetworkType::TESTNET);
+        let address_public_test = public_key.address(NetworkType::TESTNET);
         assert_eq!(address_public_test.to_string(), test.address_PublicTest);
         assert_eq!(
             address_public_test,
@@ -133,16 +133,16 @@ fn test1_address_with_private_network() {
     let tests: Vec<Test> = serde_json::from_str(&tests_json_str).unwrap();
 
     for test in tests {
-        let pubilc_key = PublicKey::from_str(&test.publicKey).unwrap();
+        let public_key = PublicKey::from_str(&test.publicKey).unwrap();
 
-        let address_public = pubilc_key.address(MAIN_NETWORKTYPE);
+        let address_public = public_key.address(MAIN_NETWORKTYPE);
         assert_eq!(address_public.to_string(), test.address_Private);
         assert_eq!(
             address_public,
             UnresolvedAddress::from_str(&test.address_Private).unwrap()
         );
 
-        let address_public_test = pubilc_key.address(TEST_NETWORKTYPE);
+        let address_public_test = public_key.address(TEST_NETWORKTYPE);
         assert_eq!(address_public_test.to_string(), test.address_PrivateTest);
         assert_eq!(
             address_public_test,
@@ -172,7 +172,7 @@ fn test2_sign() {
     for test in tests {
         let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
         let public_key = PublicKey::from_str(&test.publicKey).unwrap();
-        assert_eq!(private_key.pubilc_key(), public_key);
+        assert_eq!(private_key.public_key(), public_key);
 
         let data = decode(test.data).expect("Decoding failed");
         assert_eq!(data.len(), test.length);
@@ -204,7 +204,7 @@ fn test3_derive_hkdf() {
     for test in tests {
         let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
         let other_public_key = PublicKey::from_str(&test.otherPublicKey).unwrap();
-        assert_ne!(private_key.pubilc_key(), other_public_key);
+        assert_ne!(private_key.public_key(), other_public_key);
 
         let shared_key = private_key.shared_key(other_public_key);
 
@@ -239,7 +239,7 @@ fn test4_cipher() {
     for test in tests {
         let private_key = PrivateKey::from_str(&test.privateKey).unwrap();
         let other_public_key = PublicKey::from_str(&test.otherPublicKey).unwrap();
-        assert_ne!(private_key.pubilc_key(), other_public_key);
+        assert_ne!(private_key.public_key(), other_public_key);
 
         let shared_key = private_key.shared_key(other_public_key);
 

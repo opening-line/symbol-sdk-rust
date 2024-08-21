@@ -37,7 +37,7 @@ impl<KG: KeyGenerator> VotingKeysGenerator<KG> {
         buffer.extend_from_slice(&end_epoch.to_le_bytes()); // 8..16  // end key identifier
         buffer.extend_from_slice(&0xFFFFFFFFFFFFFFFFu64.to_le_bytes()); // 16..24 // reserved - last (used) key identifier
         buffer.extend_from_slice(&0xFFFFFFFFFFFFFFFFu64.to_le_bytes()); // 24..32 // reserved - last wiped key identifier
-        buffer.extend_from_slice(&self.root_private_key.pubilc_key().to_bytes()); // 32..64 // root voting public key
+        buffer.extend_from_slice(&self.root_private_key.public_key().to_bytes()); // 32..64 // root voting public key
         buffer.extend_from_slice(&start_epoch.to_le_bytes()); // 64..72 // level 1/1 start key identifier
         buffer.extend_from_slice(&end_epoch.to_le_bytes()); // 72..80 // level 1/1 end key identifier
 
@@ -47,7 +47,7 @@ impl<KG: KeyGenerator> VotingKeysGenerator<KG> {
 
             let mut parent_signed_payload_buffer = Vec::with_capacity(40);
             parent_signed_payload_buffer
-                .append(&mut child_private_key.pubilc_key().to_bytes().to_vec()); // 0..32
+                .append(&mut child_private_key.public_key().to_bytes().to_vec()); // 0..32
             parent_signed_payload_buffer.extend_from_slice(&identifier.to_le_bytes()); // 32..40
             let signature = self.root_private_key.sign(&parent_signed_payload_buffer);
 
