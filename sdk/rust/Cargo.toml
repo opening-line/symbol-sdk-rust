@@ -19,7 +19,7 @@ sha2 = "0.10.8"
 curve25519-dalek = { version = "4.1.2", features = ["legacy_compatibility"] }
 digest = "0.10.7"
 cipher = "0.4.4"
-aes-gcm = "0.10.3"
+aes-gcm = { version="0.10.3", default-features = false, features = ["aes","alloc"] }
 bip39 = "2.0.0"
 hmac = "0.12.1"
 crypto-common = "0.1.6"
