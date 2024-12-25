@@ -1,7 +1,7 @@
 use crate::symbol::models::*;
 pub use ed25519_dalek::Signer;
 
-pub trait ExtentionPublicKey
+pub trait ExtensionPublicKey
 where
     Self: Sized,
 {
@@ -13,7 +13,7 @@ where
     ) -> Result<(), SymbolError>;
 }
 
-impl ExtentionPublicKey for PublicKey {
+impl ExtensionPublicKey for PublicKey {
     fn from_str(str: &str) -> Result<Self, SymbolError> {
         Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?)?)
     }
@@ -43,7 +43,7 @@ impl ExtentionPublicKey for PublicKey {
     }
 }
 
-pub trait ExtentionPrivateKey
+pub trait ExtensionPrivateKey
 where
     Self: Sized,
 {
@@ -58,7 +58,7 @@ where
     fn shared_key(&self, other_public_key: PublicKey) -> SharedKey;
 }
 
-impl ExtentionPrivateKey for PrivateKey {
+impl ExtensionPrivateKey for PrivateKey {
     const SIZE: usize = 32;
     fn from_str(str: &str) -> Result<Self, SymbolError> {
         Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?))
