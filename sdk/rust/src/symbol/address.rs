@@ -1,6 +1,6 @@
 use crate::symbol::models::*;
 
-pub trait ExtentionUnresolvedAddress
+pub trait ExtensionUnresolvedAddress
 where
     Self: Sized,
 {
@@ -9,7 +9,7 @@ where
     fn mosaic_id(&self, nonce: &MosaicNonce) -> MosaicId;
 }
 
-impl ExtentionUnresolvedAddress for UnresolvedAddress {
+impl ExtensionUnresolvedAddress for UnresolvedAddress {
     fn to_string(&self) -> String {
         base32::encode(base32::Alphabet::RFC4648 { padding: false }, &self.0)
     }
