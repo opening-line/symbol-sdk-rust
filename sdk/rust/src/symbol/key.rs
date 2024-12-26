@@ -1,27 +1,24 @@
 use crate::symbol::models::*;
 pub use ed25519_dalek::Signer;
+pub use ed25519_dalek::Signature;
+use ed25519_dalek::SigningKey;
+use ed25519_dalek::VerifyingKey;
+use core::ops::{Deref, DerefMut};
+use core::fmt;
+use core::str::FromStr;
 
-pub trait ExtensionPublicKey
-where
-    Self: Sized,
-{
-    fn from_str(str: &str) -> Result<Self, SymbolError>;
-    fn address(&self, network: NetworkType) -> UnresolvedAddress;
-    fn verify_transaction<T: TraitMessage + TraitSignature>(
-        &self,
-        transaction: &T,
-    ) -> Result<(), SymbolError>;
-}
-
-impl ExtensionPublicKey for PublicKey {
-    fn from_str(str: &str) -> Result<Self, SymbolError> {
-        Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?)?)
-    }
-    fn address(&self, network_type: NetworkType) -> UnresolvedAddress {
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct PublicKey(VerifyingKey);
+impl PublicKey {
+	pub const SIZE:usize=32;
+	pub fn from_bytes(bytes:&[u8;32])->Result<Self,SymbolError>{
+		Ok(Self(VerifyingKey::from_bytes(bytes)?))
+	}
+    pub fn address(&self, network_type: NetworkType) -> UnresolvedAddress {
         use ripemd::Ripemd160;
         use sha3::Sha3_256;
 
-        let part_one_hash = get_hash::<Sha3_256>(&self);
+        let part_one_hash = get_hash::<Sha3_256>(&self.0.to_bytes());
         let part_two_hash = get_hash::<Ripemd160>(part_one_hash);
 
         let mut version = network_type.serialize();
@@ -34,50 +31,70 @@ impl ExtensionPublicKey for PublicKey {
 
         UnresolvedAddress::new(address.try_into().unwrap())
     }
-    fn verify_transaction<T: TraitMessage + TraitSignature>(
+	#[allow(unused_variables)]
+    pub fn verify_transaction<T: TraitSignature>(
         &self,
         transaction: &T,
     ) -> Result<(), SymbolError> {
-        use ed25519_dalek::Verifier;
-        Ok(self.verify(transaction.get_message(), transaction.get_signature())?)
+		todo!();
+    }
+}
+impl Deref for PublicKey {
+    type Target = VerifyingKey;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl DerefMut for PublicKey {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+impl From<PublicKey> for VerifyingKey {
+    fn from(public_key: PublicKey) -> Self {
+        public_key.0
+    }
+}
+impl From<VerifyingKey> for PublicKey {
+    fn from(verifying_key: VerifyingKey) -> Self {
+        Self(verifying_key)
+    }
+}
+impl FromStr for PublicKey {
+    type Err = SymbolError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Self::from_bytes(hex::decode(s)?.as_slice().try_into()?)?)
+    }
+}
+impl fmt::Display for PublicKey {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", hex::encode(self.to_bytes()).to_uppercase())
     }
 }
 
-pub trait ExtensionPrivateKey
-where
-    Self: Sized,
-{
-    const SIZE: usize;
-    fn from_str(str: &str) -> Result<Self, SymbolError>;
-    fn sign_transaction<T: TraitMessage + TraitSignature>(&self, transaction: T) -> T;
-    fn verify_transaction<T: TraitMessage + TraitSignature>(
-        &self,
-        transaction: &T,
-    ) -> Result<(), SymbolError>;
-    fn public_key(&self) -> PublicKey;
-    fn shared_key(&self, other_public_key: PublicKey) -> SharedKey;
-}
-
-impl ExtensionPrivateKey for PrivateKey {
-    const SIZE: usize = 32;
-    fn from_str(str: &str) -> Result<Self, SymbolError> {
-        Ok(Self::from_bytes(hex::decode(str)?.as_slice().try_into()?))
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PrivateKey(SigningKey);
+impl PrivateKey {
+	pub const SIZE:usize=32;
+	pub fn from_bytes(bytes:&[u8;32])->Self{
+		Self(SigningKey::from_bytes(bytes))
+	}
+	#[allow(unused_mut)]
+	#[allow(unused_variables)]
+    pub fn sign_transaction<T: TraitSignature>(&self, mut transaction: T) -> T {
+		todo!();
     }
-    fn sign_transaction<T: TraitMessage + TraitSignature>(&self, mut transaction: T) -> T {
-        let signature = self.sign(transaction.get_message());
-        transaction.set_signature(signature);
-        transaction
-    }
-    fn verify_transaction<T: TraitMessage + TraitSignature>(
+	#[allow(unused_variables)]
+    pub fn verify_transaction<T: TraitSignature>(
         &self,
         transaction: &T,
     ) -> Result<(), SymbolError> {
-        self.verifying_key().verify_transaction(transaction)
+		todo!();
     }
-    fn public_key(&self) -> PublicKey {
-        self.verifying_key()
+    pub fn public_key(&self) -> PublicKey {
+        self.0.verifying_key().into()
     }
-    fn shared_key(&self, other_public_key: PublicKey) -> SharedKey {
+	pub fn shared_key(&self, other_public_key: PublicKey) -> SharedKey {
         use curve25519_dalek::{edwards::CompressedEdwardsY, scalar::Scalar};
         use hkdf::Hkdf;
         use sha2::{Sha256, Sha512};
@@ -104,6 +121,38 @@ impl ExtensionPrivateKey for PrivateKey {
         hkdf.expand(b"catapult", &mut shared_key).unwrap();
 
         SharedKey(shared_key)
+    }
+}
+impl Deref for PrivateKey {
+    type Target = SigningKey;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl DerefMut for PrivateKey {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+impl From<PrivateKey> for SigningKey {
+    fn from(private_key: PrivateKey) -> Self {
+        private_key.0
+    }
+}
+impl From<SigningKey> for PrivateKey {
+    fn from(signing_key: SigningKey) -> Self {
+        Self(signing_key)
+    }
+}
+impl FromStr for PrivateKey {
+    type Err = SymbolError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Self::from_bytes(hex::decode(s)?.as_slice().try_into()?))
+    }
+}
+impl fmt::Display for PrivateKey {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", hex::encode(self.to_bytes()).to_uppercase())
     }
 }
 
