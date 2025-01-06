@@ -153,3 +153,7 @@ impl NetworkType {
 pub(crate) fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8> {
     Hasher::new().chain_update(data).finalize().to_vec()
 }
+
+pub(crate) fn is_aggregate_transaction(payload:impl AsRef<[u8]>)->bool{
+	todo!();
+}
