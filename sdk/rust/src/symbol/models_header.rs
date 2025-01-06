@@ -2,8 +2,7 @@
 use ed25519_dalek::ed25519;
 use hex::FromHexError;
 use std::array::TryFromSliceError;
-use super::models::AggregateBondedTransactionV2;
-use super::models::AggregateCompleteTransactionV2;
+use super::models::TransactionType;
 
 #[derive(Debug)]
 pub enum SymbolError {
@@ -172,8 +171,8 @@ pub(crate) fn is_aggregate_transaction(payload:impl AsRef<[u8]>)->Result<bool,Sy
 	}
 	let transaction_type:[u8;2]=transaction_type.try_into().unwrap();
 	let transaction_type=u16::from_le_bytes(transaction_type);
-	let return_value=transaction_type==AggregateBondedTransactionV2::TRANSACTION_TYPE as u16;
-	let return_value=return_value||transaction_type==AggregateCompleteTransactionV2::TRANSACTION_TYPE as u16;
+	let return_value=transaction_type==TransactionType::AGGREGATE_COMPLETE as u16;
+	let return_value=return_value||transaction_type==TransactionType::AGGREGATE_BONDED as u16;
 	Ok(return_value)
 }
 
