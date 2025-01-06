@@ -2,6 +2,8 @@
 use ed25519_dalek::ed25519;
 use hex::FromHexError;
 use std::array::TryFromSliceError;
+use super::models::AggregateBondedTransactionV2;
+use super::models::AggregateCompleteTransactionV2;
 
 #[derive(Debug)]
 pub enum SymbolError {
@@ -154,6 +156,41 @@ pub(crate) fn get_hash<Hasher: digest::Digest>(data: impl AsRef<[u8]>) -> Vec<u8
     Hasher::new().chain_update(data).finalize().to_vec()
 }
 
-pub(crate) fn is_aggregate_transaction(payload:impl AsRef<[u8]>)->bool{
-	todo!();
+pub(crate) fn is_aggregate_transaction(payload:impl AsRef<[u8]>)->Result<bool,SymbolError>{
+	let transaction_type=payload
+		.as_ref()
+		.iter()
+		.skip(110)
+		.take(2)
+		.map(|x|*x)
+		.collect::<Vec<u8>>();
+	if 2!=transaction_type.len() {
+		return Err(SymbolError::SizeError{
+			expect:vec![2],
+			real:2,
+		});
+	}
+	let transaction_type:[u8;2]=transaction_type.try_into().unwrap();
+	let transaction_type=u16::from_le_bytes(transaction_type);
+	let return_value=transaction_type==AggregateBondedTransactionV2::TRANSACTION_TYPE as u16;
+	let return_value=return_value||transaction_type==AggregateCompleteTransactionV2::TRANSACTION_TYPE as u16;
+	Ok(return_value)
+}
+
+#[cfg(test)]
+#[test]
+fn is_aggregate_transaction_returns_true_on_aggregate_complete_transaction_v2(){
+	use super::models::*;
+	let payload=AggregateBondedTransactionV2::default().serialize();
+	let actual=is_aggregate_transaction(payload).unwrap();
+	assert_eq!(true,actual);
+}
+
+#[cfg(test)]
+#[test]
+fn is_aggregate_transaction_returns_false_on_vrf_key_link_transaction_v1(){
+	use super::models::*;
+	let payload=VrfKeyLinkTransactionV1::default().serialize();
+	let actual=is_aggregate_transaction(payload).unwrap();
+	assert_eq!(false,actual);
 }
