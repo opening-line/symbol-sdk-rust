@@ -28,13 +28,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 ### set up conan
 if(USE_CONAN)
 	set(CONAN_SYSTEM_INCLUDES ON)
-	include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-
-	if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-		conan_basic_setup(KEEP_RPATHS)
-	else()
-		conan_basic_setup()
-	endif()
 endif()
 
 ### set boost settings
@@ -130,7 +123,13 @@ if(MSVC)
 	set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /DEBUG:FASTLINK")
 	set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} /DEBUG")
 
-	add_definitions(-D_WIN32_WINNT=0x0601 /w44287 /w44388)
+	add_compile_options(/MP)            # Enable parallel compilation
+	add_compile_options(/GA)            # Optimizes for Windows applications
+
+	add_definitions(-D_WIN32_WINNT=0x0601)
+
+	add_compile_options(/w44287)		# 'operator' : unsigned/negative constant mismatch
+	add_compile_options(/w44388)		# 'token' : signed/unsigned mismatch
 
 	# explicitly disable linking against static boost libs
 	add_definitions(-DBOOST_ALL_NO_LIB)
@@ -173,7 +172,8 @@ elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 		-Wno-switch-enum \
 		-Wno-weak-vtables \
 		-Wno-unsafe-buffer-usage \
-		-Wno-shadow-uncaptured-local")
+		-Wno-shadow-uncaptured-local \
+		-Wno-switch-default")
 
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -g1")
 endif()
@@ -191,7 +191,7 @@ endif()
 if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
 	# set hardening flags
 	if(ENABLE_HARDENING)
-		set(HARDENING_FLAGS "-fstack-protector-all -D_FORTIFY_SOURCE=2")
+		set(HARDENING_FLAGS "-fstack-protector-all -D_FORTIFY_SOURCE=3")
 		if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
 			set(HARDENING_FLAGS "${HARDENING_FLAGS} -fstack-clash-protection")
 		else()

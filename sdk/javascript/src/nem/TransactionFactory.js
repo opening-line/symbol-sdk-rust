@@ -22,7 +22,7 @@ export default class TransactionFactory {
 	/**
 	 * Creates a factory for the specified network.
 	 * @param {Network} network NEM network.
-	 * @param {Map<string, function>|undefined} typeRuleOverrides Type rule overrides.
+	 * @param {Map<string, Function>|undefined} typeRuleOverrides Type rule overrides.
 	 */
 	constructor(network, typeRuleOverrides = undefined) {
 		/**
@@ -38,6 +38,7 @@ export default class TransactionFactory {
 
 	/**
 	 * Gets class type.
+	 * @returns {typeof TransactionFactory} Class type.
 	 */
 	get static() { // eslint-disable-line class-methods-use-this
 		return TransactionFactory;
@@ -45,6 +46,7 @@ export default class TransactionFactory {
 
 	/**
 	 * Gets rule names with registered hints.
+	 * @returns {Array<string>} Rule names with registered hints.
 	 */
 	get ruleNames() {
 		return Array.from(this._factory.rules.keys());
@@ -80,6 +82,15 @@ export default class TransactionFactory {
 			transaction.message.message = new TextEncoder().encode(transaction.message.message);
 
 		return transaction;
+	}
+
+	/**
+	 * Deserializes a transaction from a binary payload.
+	 * @param {Uint8Array} payload Binary payload.
+	 * @returns {nc.Transaction} Deserialized transaction.
+	 */
+	static deserialize(payload) {
+		return nc.TransactionFactory.deserialize(payload);
 	}
 
 	/**
@@ -138,7 +149,7 @@ export default class TransactionFactory {
 
 	/**
 	 * Builds a rule based transaction factory.
-	 * @param {Map<string, function>|undefined} typeRuleOverrides Type rule overrides.
+	 * @param {Map<string, Function>|undefined} typeRuleOverrides Type rule overrides.
 	 * @returns {RuleBasedTransactionFactory} Rule based transaction factory.
 	 * @private
 	 */

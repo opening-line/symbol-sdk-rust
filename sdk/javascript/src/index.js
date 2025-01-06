@@ -9,9 +9,14 @@ import {
 	Signature
 } from './CryptoTypes.js';
 import { NetworkLocator } from './Network.js';
-import { hexToUint8, uint8ToHex } from './utils/converter.js';
+import { deepCompare } from './utils/arrayHelpers.js';
+import {
+	bytesToBigInt, bytesToInt, hexToUint8, intToBytes, isHexString, tryParseUint, uint8ToHex
+} from './utils/converter.js';
 
-const utils = { hexToUint8, uint8ToHex };
+const utils = {
+	bytesToBigInt, bytesToInt, deepCompare, hexToUint8, intToBytes, isHexString, tryParseUint, uint8ToHex
+};
 
 export {
 	/**
@@ -36,31 +41,31 @@ export {
 
 	/**
 	 * Represents a 256-bit hash.
-	 * @type {typeof CryptoTypes.Hash256}
+	 * @type {typeof Hash256}
 	 */
 	Hash256,
 
 	/**
 	 * Represents a private key.
-	 * @type {typeof CryptoTypes.PrivateKey}
+	 * @type {typeof PrivateKey}
 	 */
 	PrivateKey,
 
 	/**
 	 * Represents a public key.
-	 * @type {typeof CryptoTypes.PublicKey}
+	 * @type {typeof PublicKey}
 	 */
 	PublicKey,
 
 	/**
 	 * Represents a 256-bit symmetric encryption key.
-	 * @type {typeof CryptoTypes.SharedKey256}
+	 * @type {typeof SharedKey256}
 	 */
 	SharedKey256,
 
 	/**
 	 * Represents a signature.
-	 * @type {typeof CryptoTypes.Signature}
+	 * @type {typeof Signature}
 	 */
 	Signature,
 

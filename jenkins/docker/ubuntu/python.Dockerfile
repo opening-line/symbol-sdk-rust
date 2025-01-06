@@ -5,7 +5,7 @@ FROM ${FROM_IMAGE}
 # install tzdata first to prevent 'geographic area' prompt
 RUN apt-get update >/dev/null \
 	&& apt-get install -y tzdata \
-	&& apt-get install -y git curl
+	&& apt-get install -y git curl zip unzip
 
 # install python
 ARG FROM_IMAGE
@@ -33,6 +33,12 @@ RUN ARCH=$([ "$(uname -m)" = "x86_64" ] && echo "linux" || echo "aarch64") \
 	&& chmod +x codecov \
 	&& mv codecov /usr/local/bin
 
+# install aws cli
+RUN ARCH=$([ "$(uname -m)" = "x86_64" ] && echo "x86_64" || echo "aarch64") \
+	&& curl "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}.zip" -o "awscliv2.zip" \
+	&& unzip awscliv2.zip \
+	&& ./aws/install
+
 # add ubuntu user (used by jenkins)
 RUN id -u "ubuntu" || useradd --uid 1000 -ms /bin/bash ubuntu
 USER ubuntu
@@ -45,3 +51,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # install poetry and gitlint
 RUN python3 -m pip install poetry gitlint wheel setuptools
+
+# install common python packages
+RUN python3 -m pip install --upgrade aiohttp colorama coverage cryptography Jinja2 lark ply Pillow pynacl pytest PyYAML pyzbar requests \
+	ripemd-hash safe-pysha3 websockets zenlog
