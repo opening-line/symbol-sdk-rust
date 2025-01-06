@@ -167,13 +167,16 @@ class OptionsManager:
 			# https://devblogs.microsoft.com/cppblog/msvc-now-correctly-reports-__cplusplus/
 			descriptor.cxxflags += ['/Zc:__cplusplus']
 
+			# https://www.mongodb.com/docs/languages/cpp/cpp-driver/upcoming/api-abi-versioning/#shared-libraries--msvc-only-
+			descriptor.options += ['-DENABLE_ABI_TAG_IN_LIBRARY_FILENAMES=OFF']
+
 		return self._cmake(descriptor)
 
 	def libzmq(self):
 		descriptor = self._enable_thread_san_descriptor()
 		descriptor.options += get_dependency_flags('zeromq_libzmq')
 
-		if self.is_clang:
+		if not 'arm64' == self.architecture and self.is_clang:
 			# Xeon-based build machine, even with -mskylake seems to do miscompilation in libzmq,
 			# try to pass additional flags to disable faulty optimizations
 			descriptor.cxxflags += ['-mno-avx', '-mno-avx2']
@@ -200,7 +203,7 @@ class OptionsManager:
 		# Disable warning as error due to a bug in gcc which should be fix in 12.2
 		# https://github.com/facebook/rocksdb/issues/9925
 		if self.compiler.c.startswith('gcc') and 12 == self.compiler.version:
-			descriptor.cxxflags += ['-Wno-error=maybe-uninitialized']
+			descriptor.cxxflags += ['-Wno-error=maybe-uninitialized', '-Wno-error=array-bounds']
 
 		if self.compiler.c.startswith('clang') and 15 == self.compiler.version:
 			descriptor.cxxflags += ['-Wno-error=unused-but-set-variable']
@@ -265,8 +268,9 @@ class OptionsManager:
 # region SYSTEMS
 
 class UbuntuSystem:
-	def __init__(self):
-		self.user = 'ubuntu'
+	@staticmethod
+	def user():
+		return 'ubuntu'
 
 	@staticmethod
 	def add_base_os_packages():
@@ -296,7 +300,8 @@ class UbuntuSystem:
 			'rm -rf /var/lib/apt/lists/*'
 		], APT_PACKAGES=' '.join(apt_packages))
 
-	def add_test_packages(self, install_openssl):
+	@staticmethod
+	def add_test_packages(user, install_openssl):
 		apt_packages = ['python3-pip', 'lcov']
 		if install_openssl:
 			apt_packages += ['libssl-dev']
@@ -306,12 +311,20 @@ class UbuntuSystem:
 			'apt-get remove -y --purge pylint',
 			'apt-get install -y {APT_PACKAGES}'
 		], APT_PACKAGES=' '.join(apt_packages))
-		install_pip_package(self.user, 'pycodestyle pylint pyyaml')
+		install_pip_package(user, 'pycodestyle pylint pyyaml')
+
+	@staticmethod
+	def add_conan_packages(packages):
+		print_line([
+			'RUN apt-get -y update',
+			'apt-get install -y {APT_PACKAGES}'
+		], APT_PACKAGES=' '.join(packages))
 
 
 class FedoraSystem:
-	def __init__(self):
-		self.user = 'fedora'
+	@staticmethod
+	def user():
+		return 'fedora'
 
 	@staticmethod
 	def add_base_os_packages():
@@ -335,7 +348,8 @@ class FedoraSystem:
 			'rm -rf /var/cache/yum'
 		], RPM_PACKAGES=' '.join(rpm_packages))
 
-	def add_test_packages(self, install_openssl):
+	@staticmethod
+	def add_test_packages(user, install_openssl):
 		rpm_packages = ['python3-pip']
 		if install_openssl:
 			rpm_packages += ['openssl-devel']
@@ -347,7 +361,14 @@ class FedoraSystem:
 			'dnf clean all',
 			'rm -rf /var/cache/yum'
 		], RPM_PACKAGES=' '.join(rpm_packages))
-		install_pip_package(self.user, 'pycodestyle pylint pyyaml')
+		install_pip_package(user, 'pycodestyle pylint pyyaml')
+
+	@staticmethod
+	def add_conan_packages(packages):
+		print_line([
+			'RUN dnf update --assumeyes',
+			'dnf install --assumeyes {RPM_PACKAGES}'
+		], RPM_PACKAGES=' '.join(packages))
 
 
 class WindowsSystem:
@@ -406,11 +427,11 @@ class LinuxSystemGenerator:
 
 		# create a virtual python environment
 		print_lines([
-			# add user (used by jenkins)
-			f'RUN id -u "{self.system.user}" || useradd --uid 1000 -ms /bin/bash {self.system.user}',
-			f'USER {self.system.user}',
-			f'WORKDIR /home/{self.system.user}',
-			f'ENV VIRTUAL_ENV=/home/{self.system.user}/venv',
+			f'# add user {self.system.user()} (used by jenkins) if it does not exist',
+			f'RUN id -u "{self.system.user()}" || useradd --uid 1000 -ms /bin/bash {self.system.user()}',
+			f'USER {self.system.user()}',
+			f'WORKDIR /home/{self.system.user()}',
+			f'ENV VIRTUAL_ENV=/home/{self.system.user()}/venv',
 			'RUN python3 -m venv $VIRTUAL_ENV',
 			'ENV PATH="$VIRTUAL_ENV/bin:$PATH"',
 			'USER root'
@@ -498,7 +519,7 @@ class LinuxSystemGenerator:
 		self.add_git_dependency('google', 'googletest', self.options.googletest())
 		self.add_git_dependency('google', 'benchmark', self.options.googlebench())
 
-		self.system.add_test_packages(not self.options.sanitizers)
+		self.system.add_test_packages(self.system.user(), not self.options.sanitizers)
 
 		self.add_openssl(self.options, self.options.openssl_configure() if self.options.sanitizers else [])
 
@@ -510,13 +531,8 @@ class LinuxSystemGenerator:
 	def generate_phase_conan(self):
 		print(f'FROM {self.options.layer_image_name("os")}')
 
-		apt_packages = ['python3-pip']
-
-		print_line([
-			'RUN apt-get -y update',
-			'apt-get install -y {APT_PACKAGES}'
-		], APT_PACKAGES=' '.join(apt_packages))
-		install_pip_package(self.system.user, '"conan<2.0"')
+		self.system.add_conan_packages(['python3-pip'])
+		install_pip_package(self.system.user(), 'conan')
 
 
 class WindowsSystemGenerator:
@@ -636,7 +652,7 @@ class WindowsSystemGenerator:
 
 		print_powershell_lines([
 			'scoop update',
-			'python3 -m pip install -U "conan<2.0"',
+			'python3 -m pip install -U conan',
 			'echo "docker image build $BUILD_NUMBER"'
 		])
 

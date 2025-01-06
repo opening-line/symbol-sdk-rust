@@ -15,16 +15,33 @@ import {
 	proveMerkle,
 	provePatriciaMerkle
 } from './merkle.js';
-import { metadataUpdateValue } from './metadata.js';
+import { metadataGenerateKey, metadataUpdateValue } from './metadata.js';
 import * as models from './models.js';
-import SymbolFacade from '../facade/SymbolFacade.js';
+import * as descriptors from './models_ts.js';
+import { SymbolAccount, SymbolFacade, SymbolPublicAccount } from '../facade/SymbolFacade.js';
 
 export {
+	// region facade
+
 	/**
 	 * Facade used to interact with Symbol blockchain.
 	 * @type {typeof SymbolFacade}
 	 */
 	SymbolFacade,
+
+	/**
+	 * Symbol public account.
+	 * @type {typeof SymbolPublicAccount}
+	 */
+	SymbolPublicAccount,
+
+	/**
+	 * Symbol account.
+	 * @type {typeof SymbolAccount}
+	 */
+	SymbolAccount,
+
+	// endregion
 
 	// region common
 
@@ -36,37 +53,37 @@ export {
 
 	/**
 	 * Represents a Symbol network timestamp with second resolution.
-	 * @type {typeof SymbolNetwork.NetworkTimestamp}
+	 * @type {typeof NetworkTimestamp}
 	 */
 	NetworkTimestamp,
 
 	/**
 	 * Represents a Symbol address.
-	 * @type {typeof SymbolNetwork.Address}
+	 * @type {typeof Address}
 	 */
 	Address,
 
 	/**
 	 * Represents a Symbol network.
-	 * @type {typeof SymbolNetwork.Network}
+	 * @type {typeof Network}
 	 */
 	Network,
 
 	/**
 	 * Encrypts and encodes messages between two parties.
-	 * @type {typeof SymbolMessageEncoder}
+	 * @type {typeof MessageEncoder}
 	 */
 	MessageEncoder,
 
 	/**
 	 * Encrypts and encodes messages between two parties.
-	 * @type {typeof SymbolKeyPair.KeyPair}
+	 * @type {typeof KeyPair}
 	 */
 	KeyPair,
 
 	/**
 	 * Encrypts and encodes messages between two parties.
-	 * @type {typeof SymbolKeyPair.Verifier}
+	 * @type {typeof Verifier}
 	 */
 	Verifier,
 
@@ -84,6 +101,7 @@ export {
 	deserializePatriciaTreeNodes,
 	provePatriciaMerkle,
 
+	metadataGenerateKey,
 	metadataUpdateValue,
 
 	/**
@@ -95,7 +113,12 @@ export {
 	/**
 	 * Raw models generated from catbuffer schemas.
 	 */
-	models
+	models,
+
+	/**
+	 * Descriptors generated from catbuffer schemas for improved TypeScript support.
+	 */
+	descriptors
 
 	// endregion
 };
