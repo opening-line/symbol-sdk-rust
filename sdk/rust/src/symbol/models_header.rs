@@ -163,13 +163,10 @@ pub(crate) fn is_aggregate_transaction(payload:impl AsRef<[u8]>)->Result<bool,Sy
 		.take(2)
 		.map(|x|*x)
 		.collect::<Vec<u8>>();
-	if 2!=transaction_type.len() {
-		return Err(SymbolError::SizeError{
-			expect:vec![2],
-			real:2,
-		});
-	}
-	let transaction_type:[u8;2]=transaction_type.try_into().unwrap();
+	let transaction_type:[u8;2]=<Vec<u8>as AsRef<[u8]>>::as_ref(&transaction_type)
+		.as_ref()
+		.try_into()
+		.map_err(|_|SymbolError::SizeError{expect:vec![2],real:transaction_type.len(),})?;
 	let transaction_type=u16::from_le_bytes(transaction_type);
 	let return_value=transaction_type==TransactionType::AGGREGATE_COMPLETE as u16;
 	let return_value=return_value||transaction_type==TransactionType::AGGREGATE_BONDED as u16;
@@ -192,4 +189,11 @@ fn is_aggregate_transaction_returns_false_on_vrf_key_link_transaction_v1(){
 	let payload=VrfKeyLinkTransactionV1::default().serialize();
 	let actual=is_aggregate_transaction(payload).unwrap();
 	assert_eq!(false,actual);
+}
+
+#[cfg(test)]
+#[test]
+fn is_aggregate_transaction_raises_error_on_empty_input(){
+	let err=is_aggregate_transaction(&[])
+		.unwrap_err();
 }
