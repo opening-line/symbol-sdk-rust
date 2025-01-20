@@ -94,6 +94,9 @@ impl PrivateKey {
     pub fn public_key(&self) -> PublicKey {
         self.0.verifying_key().into()
     }
+    pub fn cosign_transaction_hash(&self,transaction_hash:Hash256)->Signature{
+        self.0.sign(&transaction_hash.0)
+    }
 	pub fn shared_key(&self, other_public_key: PublicKey) -> SharedKey {
         use curve25519_dalek::{edwards::CompressedEdwardsY, scalar::Scalar};
         use hkdf::Hkdf;
