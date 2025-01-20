@@ -194,6 +194,6 @@ fn is_aggregate_transaction_returns_false_on_vrf_key_link_transaction_v1(){
 #[cfg(test)]
 #[test]
 fn is_aggregate_transaction_raises_error_on_empty_input(){
-	let err=is_aggregate_transaction(&[])
-		.unwrap_err();
+    is_aggregate_transaction(&[])
+        .unwrap_err();
 }
