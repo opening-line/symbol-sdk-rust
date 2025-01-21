@@ -159,6 +159,17 @@ impl fmt::Display for PrivateKey {
     }
 }
 
+#[cfg(test)]
+#[test]
+fn cosign_transaction_hash_returns_identical_signature(){
+	let private_key:PrivateKey="168F5EA1B66CA015D78098EE10F13BF506FDDDCEC7635991867CED6423728E60".parse().unwrap();
+	let transaction_hash=Hash256(hex::decode("88852497279EF7571E49F3D420B882ED5F2D6DD2F03684E01D89034E9C29D432").unwrap().try_into().unwrap());
+	let expected_cosignature=hex::decode("7EC9D46E8569F5FE3D2C3DBA8F6C402D66229C96ADEE82AE9779276D73637054581962F5911C63709721607C550EA07BA46EE5171E103ECBA04D66BA5A854A02").unwrap();
+	let expected_signature=Signature::from_bytes(&expected_cosignature.as_slice().try_into().unwrap());
+	let actual_signature=private_key.cosign_transaction_hash(transaction_hash);
+	assert_eq!(actual_signature,expected_signature);
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SharedKey(pub [u8; 32]);
 
