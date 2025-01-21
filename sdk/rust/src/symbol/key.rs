@@ -1,19 +1,19 @@
 use crate::symbol::models::*;
-pub use ed25519_dalek::Signer;
+use core::fmt;
+use core::ops::{Deref, DerefMut};
+use core::str::FromStr;
 pub use ed25519_dalek::Signature;
+pub use ed25519_dalek::Signer;
 use ed25519_dalek::SigningKey;
 use ed25519_dalek::VerifyingKey;
-use core::ops::{Deref, DerefMut};
-use core::fmt;
-use core::str::FromStr;
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct PublicKey(VerifyingKey);
 impl PublicKey {
-	pub const SIZE:usize=32;
-	pub fn from_bytes(bytes:&[u8;32])->Result<Self,SymbolError>{
-		Ok(Self(VerifyingKey::from_bytes(bytes)?))
-	}
+    pub const SIZE: usize = 32;
+    pub fn from_bytes(bytes: &[u8; 32]) -> Result<Self, SymbolError> {
+        Ok(Self(VerifyingKey::from_bytes(bytes)?))
+    }
     pub fn address(&self, network_type: NetworkType) -> UnresolvedAddress {
         use ripemd::Ripemd160;
         use sha3::Sha3_256;
@@ -31,12 +31,12 @@ impl PublicKey {
 
         UnresolvedAddress::new(address.try_into().unwrap())
     }
-	#[allow(unused_variables)]
+    #[allow(unused_variables)]
     pub fn verify_transaction<T: TraitSignature>(
         &self,
         transaction: &T,
     ) -> Result<(), SymbolError> {
-		todo!();
+        todo!();
     }
 }
 impl Deref for PublicKey {
@@ -75,29 +75,29 @@ impl fmt::Display for PublicKey {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PrivateKey(SigningKey);
 impl PrivateKey {
-	pub const SIZE:usize=32;
-	pub fn from_bytes(bytes:&[u8;32])->Self{
-		Self(SigningKey::from_bytes(bytes))
-	}
-	#[allow(unused_mut)]
-	#[allow(unused_variables)]
-    pub fn sign_transaction<T: TraitSignature>(&self, mut transaction: T) -> T {
-		todo!();
+    pub const SIZE: usize = 32;
+    pub fn from_bytes(bytes: &[u8; 32]) -> Self {
+        Self(SigningKey::from_bytes(bytes))
     }
-	#[allow(unused_variables)]
+    #[allow(unused_mut)]
+    #[allow(unused_variables)]
+    pub fn sign_transaction<T: TraitSignature>(&self, mut transaction: T) -> T {
+        todo!();
+    }
+    #[allow(unused_variables)]
     pub fn verify_transaction<T: TraitSignature>(
         &self,
         transaction: &T,
     ) -> Result<(), SymbolError> {
-		todo!();
+        todo!();
     }
     pub fn public_key(&self) -> PublicKey {
         self.0.verifying_key().into()
     }
-    pub fn cosign_transaction_hash(&self,transaction_hash:Hash256)->Signature{
+    pub fn cosign_transaction_hash(&self, transaction_hash: Hash256) -> Signature {
         self.0.sign(&transaction_hash.0)
     }
-	pub fn shared_key(&self, other_public_key: PublicKey) -> SharedKey {
+    pub fn shared_key(&self, other_public_key: PublicKey) -> SharedKey {
         use curve25519_dalek::{edwards::CompressedEdwardsY, scalar::Scalar};
         use hkdf::Hkdf;
         use sha2::{Sha256, Sha512};
@@ -161,13 +161,22 @@ impl fmt::Display for PrivateKey {
 
 #[cfg(test)]
 #[test]
-fn cosign_transaction_hash_returns_identical_signature(){
-	let private_key:PrivateKey="168F5EA1B66CA015D78098EE10F13BF506FDDDCEC7635991867CED6423728E60".parse().unwrap();
-	let transaction_hash=Hash256(hex::decode("88852497279EF7571E49F3D420B882ED5F2D6DD2F03684E01D89034E9C29D432").unwrap().try_into().unwrap());
-	let expected_cosignature=hex::decode("7EC9D46E8569F5FE3D2C3DBA8F6C402D66229C96ADEE82AE9779276D73637054581962F5911C63709721607C550EA07BA46EE5171E103ECBA04D66BA5A854A02").unwrap();
-	let expected_signature=Signature::from_bytes(&expected_cosignature.as_slice().try_into().unwrap());
-	let actual_signature=private_key.cosign_transaction_hash(transaction_hash);
-	assert_eq!(actual_signature,expected_signature);
+fn cosign_transaction_hash_returns_identical_signature() {
+    let private_key: PrivateKey =
+        "168F5EA1B66CA015D78098EE10F13BF506FDDDCEC7635991867CED6423728E60"
+            .parse()
+            .unwrap();
+    let transaction_hash = Hash256(
+        hex::decode("88852497279EF7571E49F3D420B882ED5F2D6DD2F03684E01D89034E9C29D432")
+            .unwrap()
+            .try_into()
+            .unwrap(),
+    );
+    let expected_cosignature=hex::decode("7EC9D46E8569F5FE3D2C3DBA8F6C402D66229C96ADEE82AE9779276D73637054581962F5911C63709721607C550EA07BA46EE5171E103ECBA04D66BA5A854A02").unwrap();
+    let expected_signature =
+        Signature::from_bytes(&expected_cosignature.as_slice().try_into().unwrap());
+    let actual_signature = private_key.cosign_transaction_hash(transaction_hash);
+    assert_eq!(actual_signature, expected_signature);
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
